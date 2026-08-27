@@ -98,7 +98,7 @@ const buyerDashboardContent = document.getElementById("buyerDashboardContent");
 const sellerCommandCenter = document.getElementById("sellerCommandCenter");
 const connectionStatus = document.getElementById("connectionStatus");
 const connectionStatusText = document.getElementById("connectionStatusText");
-const retryConnection = document.getElementById("retryConnection");
+const connectionWarning = document.getElementById("connectionWarning");
 const sellerApiMessage = document.getElementById("sellerApiMessage");
 const sellerInventoryBody = document.getElementById("sellerInventoryBody");
 const sellerCatalogMeta = document.getElementById("sellerCatalogMeta");
@@ -108,6 +108,18 @@ const sellerDetailsTitle = document.getElementById("sellerDetailsTitle");
 const sellerDetailsContent = document.getElementById("sellerDetailsContent");
 const sellerRiskPanel = document.getElementById("sellerRiskPanel");
 const sellerRiskContent = document.getElementById("sellerRiskContent");
+const accountTypeLabel = document.getElementById("accountTypeLabel");
+const accountSubtitle = document.getElementById("accountSubtitle");
+const sellerViewEyebrow = document.getElementById("sellerViewEyebrow");
+const agentExecution = document.getElementById("agentExecution");
+const agentStateLabel = document.getElementById("agentStateLabel");
+const supplierFindings = document.getElementById("supplierFindings");
+const supplierFindingsContent = document.getElementById("supplierFindingsContent");
+const strategyResults = document.getElementById("strategyResults");
+const agentRecommendation = document.getElementById("agentRecommendation");
+const recommendationContent = document.getElementById("recommendationContent");
+const approvalGate = document.getElementById("approvalGate");
+const agentRejection = document.getElementById("agentRejection");
 
 const authModal = document.getElementById("authModal");
 const closeAuthModalButton = document.getElementById("closeAuthModal");
@@ -134,6 +146,8 @@ let authState = {
   mode: "login"
 };
 
+let executionState = "IDLE";
+
 const fieldConfig = [
   {
     id: "category",
@@ -154,6 +168,11 @@ const fieldConfig = [
     id: "requestedQuantity",
     validate: (value) => Number.isInteger(Number(value)) && Number(value) > 0,
     message: "Requested quantity must be a positive whole number."
+  },
+  {
+    id: "maximumBudgetRange",
+    validate: (value) => value.trim() !== "",
+    message: "Please select a maximum budget range."
   },
   {
     id: "leadTime",
@@ -222,13 +241,22 @@ function updateDashboardForRole() {
   const currentUser = getCurrentUser();
   const isSeller = currentUser?.role === "Seller";
 
+  accountTypeLabel.textContent = isSeller ? "Seller Account" : "Buyer Account";
+  document.getElementById("order-ingestion-title").textContent = isSeller
+    ? "Seller Command Center"
+    : "Autonomous Fulfillment Console";
+  accountSubtitle.textContent = isSeller
+    ? "Monitor inventory, incoming orders, fulfillment decisions, and supply-chain impact."
+    : "Submit a spare-parts request and let the autonomous agent evaluate inventory, suppliers, logistics, cost, and lead-time constraints.";
+  sellerViewEyebrow.textContent = isSeller ? "Seller Operations" : "Buyer Workspace";
+
   orderForm.hidden = isSeller;
   sellerWorkspace.hidden = !isSeller;
   requestPanel.classList.toggle("panel--seller", isSeller);
-  formTitle.textContent = isSeller ? "Seller Workspace" : "New Fulfillment Request";
+  formTitle.textContent = isSeller ? "Seller Workspace" : "New Spare Parts Request";
   formDescription.textContent = isSeller
     ? "Your account is ready for seller-side fulfillment activity."
-    : "Choose a category and part name. The matching part ID is filled in automatically.";
+    : "Tell the agent what you need. It will evaluate available fulfillment options against your quantity, budget, urgency, and lead-time requirements.";
   buyerDashboardContent.hidden = isSeller;
   sellerCommandCenter.hidden = !isSeller;
   if (isSeller) refreshSellerData();
@@ -263,6 +291,7 @@ function showSellerMessage(message, type = "error") {
 function setConnectionStatus(isOnline) {
   connectionStatus.dataset.status = isOnline ? "online" : "offline";
   connectionStatusText.textContent = isOnline ? "SYSTEM ONLINE" : "SYSTEM OFFLINE";
+  connectionWarning.hidden = isOnline;
 }
 
 function renderSellerCatalog(catalog) {
@@ -383,6 +412,7 @@ function buildOrderPayload(formData) {
     partName: formData.get("partName").trim(),
     partId: formData.get("partId").trim(),
     requestedQuantity: Number(formData.get("requestedQuantity")),
+    maximumBudgetRange: formData.get("maximumBudgetRange"),
     maximumAcceptableLeadTimeDays: Number(formData.get("leadTime")),
     priorityLevel: formData.get("priorityLevel"),
     specialInstructions: formData.get("specialInstructions").trim() || "None provided"
@@ -411,6 +441,7 @@ function renderSummaryTable(payload) {
     ["Part Name", payload.partName],
     ["Part ID", payload.partId],
     ["Requested Quantity", String(payload.requestedQuantity)],
+    ["Maximum Budget Range", payload.maximumBudgetRange],
     ["Lead Time", `${payload.maximumAcceptableLeadTimeDays} day(s)`],
     ["Priority Level", payload.priorityLevel],
     ["Special Instructions", payload.specialInstructions]
@@ -419,6 +450,64 @@ function renderSummaryTable(payload) {
   resultTableBody.innerHTML = rows
     .map(([label, value]) => `<tr><th scope="row">${label}</th><td>${value}</td></tr>`)
     .join("");
+}
+
+function resetAgentExecution() {
+  executionState = "IDLE";
+  agentExecution.hidden = true;
+  supplierFindings.hidden = true;
+  strategyResults.hidden = true;
+  agentRecommendation.hidden = true;
+  approvalGate.hidden = true;
+  agentRejection.hidden = true;
+  document.querySelectorAll("#agentPipeline li").forEach((step, index) => {
+    step.dataset.status = index === 0 ? "completed" : "waiting";
+    step.querySelector(".pipeline-symbol").textContent = index === 0 ? "✓" : "○";
+  });
+}
+
+function renderExecutionConstraints(payload) {
+  document.getElementById("executionQuantity").textContent = payload.requestedQuantity;
+  document.getElementById("executionBudget").textContent = payload.maximumBudgetRange;
+  document.getElementById("executionLeadTime").textContent = `${payload.maximumAcceptableLeadTimeDays} day(s)`;
+  document.getElementById("executionPriority").textContent = payload.priorityLevel;
+}
+
+function updatePipelineStage(stageName, status, message = "") {
+  const step = document.querySelector(`#agentPipeline li[data-stage="${stageName}"]`);
+  if (!step) return;
+  step.dataset.status = status;
+  step.querySelector(".pipeline-symbol").textContent = status === "completed" ? "✓" : status === "running" ? "●" : status === "failed" ? "✕" : "○";
+  if (message) step.querySelector("small").textContent = message;
+}
+
+function handleAgentEvent(event) {
+  if (!event || !event.stage || !event.status) return;
+  updatePipelineStage(event.stage, event.status, event.message || "");
+  if (event.status === "running") executionState = "ANALYZING";
+  if (event.status === "completed" && event.stage === "final_recommendation" && event.data) {
+    executionState = "WAITING_FOR_APPROVAL";
+    renderAgentRecommendation(event.data);
+  }
+  agentStateLabel.textContent = executionState.replaceAll("_", " ");
+}
+
+function renderAgentRecommendation(data) {
+  recommendationContent.innerHTML = `<div class="recommendation-grid"><p>Recommended Strategy<strong>${data.strategy_name || "--"}</strong></p><p>Fulfillment Allocation<strong>${data.fulfillment_allocation || "--"}</strong></p><p>Total Cost<strong>${data.total_cost ?? "--"}</strong></p><p>Estimated Lead Time<strong>${data.estimated_lead_time ?? "--"} days</strong></p><p>TOPSIS Score<strong>${data.topsis_score ?? "--"}</strong></p></div><p>${data.explanation || "No explanation provided."}</p>`;
+  agentRecommendation.hidden = false;
+  approvalGate.hidden = false;
+}
+
+function startAgentExecution(payload) {
+  resetAgentExecution();
+  executionState = "ANALYZING";
+  agentExecution.hidden = false;
+  agentStateLabel.textContent = "ANALYZING";
+  renderExecutionConstraints(payload);
+}
+
+async function approveStrategy(strategy) {
+  console.warn("Approval API is not connected yet. No supplier order was placed.", strategy);
 }
 
 function setAuthMode(mode) {
@@ -590,7 +679,6 @@ partNameSelect.addEventListener("change", () => {
 });
 
 document.getElementById("refreshSellerData").addEventListener("click", refreshSellerData);
-retryConnection.addEventListener("click", refreshSellerData);
 document.getElementById("closeSellerDetails").addEventListener("click", () => {
   sellerDetailsPanel.hidden = true;
   sellerRiskPanel.hidden = true;
@@ -627,16 +715,37 @@ form.addEventListener("submit", (event) => {
 
   console.log("Order ingestion payload:", orderPayload);
   renderSummaryTable(orderPayload);
+  startAgentExecution(orderPayload);
 
   statusMessage.textContent = "Order validated successfully. Visible table stays clean, while customer ID remains hidden inside the payload.";
   statusMessage.classList.add("status-message--success");
 });
 
+document.getElementById("returnToRequest").addEventListener("click", () => {
+  resetAgentExecution();
+  form.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+document.getElementById("approveStrategy").addEventListener("click", () => {
+  approveStrategy(null);
+});
+
+document.getElementById("rejectStrategy").addEventListener("click", () => {
+  executionState = "REJECTED";
+  agentRecommendation.hidden = true;
+  approvalGate.hidden = true;
+  agentRejection.hidden = false;
+  agentStateLabel.textContent = "REJECTED";
+});
+
 updateCustomerIdFromSession();
 renderPartOptions("");
+resetAgentExecution();
 
 if (getCurrentUser()) {
   showDashboard();
 } else {
   showWelcomeScreen();
 }
+
+  loadSellerHealth();
