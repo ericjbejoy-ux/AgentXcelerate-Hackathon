@@ -121,3 +121,25 @@ class SupplierClient:
         )
         resp.raise_for_status()
         return StockCheckResponse(**resp.json())
+
+    # -- Order Operations --------------------------------------------------
+
+    def place_order(self, supplier_id: str, sku: str, quantity: int) -> dict:
+        """Place an order with a supplier. Returns order receipt details."""
+        resp = requests.post(
+            f"{self.base_url}/{supplier_id}/order",
+            json={"sku": sku, "quantity": quantity},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        return resp.json()
+
+    def cancel_order(self, order_id: str) -> dict:
+        """Cancel an order by ID. Restores stock at the supplier."""
+        resp = requests.post(
+            f"{self.base_url}/orders/{order_id}/cancel",
+            timeout=10,
+        )
+        resp.raise_for_status()
+        return resp.json()
+

@@ -82,3 +82,29 @@ def test_client_get_all_quotes_and_logistics_pipeline():
     assert "supplier_a" in rejected_ids
     assert "supplier_b" in viable_ids
     assert "supplier_c" in viable_ids
+
+
+def test_order_placement_and_cancelation():
+    client = SupplierClient(base_url="http://127.0.0.1:8002")
+    sku = "SKU-MOTOR-001"
+    
+    # Get initial stock
+    initial_stock = client.check_stock("supplier_a", sku).available_qty
+    
+    # 1. Place order
+    order = client.place_order("supplier_a", sku, quantity=5)
+    assert order["status"] == "PENDING"
+    assert order["quantity"] == 5
+    
+    # Confirm stock was deducted
+    post_order_stock = client.check_stock("supplier_a", sku).available_qty
+    assert post_order_stock == initial_stock - 5
+    
+    # 2. Cancel order
+    cancelled = client.cancel_order(order["order_id"])
+    assert cancelled["status"] == "CANCELLED"
+    
+    # Confirm stock was restored
+    restored_stock = client.check_stock("supplier_a", sku).available_qty
+    assert restored_stock == initial_stock
+
