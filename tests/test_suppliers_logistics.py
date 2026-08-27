@@ -54,7 +54,7 @@ class TestSupplierAPI:
     async def test_get_catalog_returns_items(self) -> None:
         api = MockSupplierAPI(SupplierID.A)
         catalog = await api.get_catalog()
-        assert len(catalog.items) == 5
+        assert len(catalog.items) == 10
         assert catalog.supplier_id == "supplier_a"
 
     @pytest.mark.asyncio

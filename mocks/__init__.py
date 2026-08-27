@@ -1,7 +1,19 @@
 """
-mocks — Mock supplier APIs, logistics cost estimation, and constraint verification.
+mocks — Mock inventory database, supplier APIs, logistics cost estimation,
+and constraint verification.
 """
 
+from mocks.inventory_db import (
+    SKU_CATALOG,
+    SKURecord,
+    WAREHOUSE_STOCK,
+    WarehouseStock,
+    get_all_skus,
+    get_critical_items,
+    get_low_stock_items,
+    get_sku,
+    get_stock,
+)
 from mocks.suppliers import (
     MockSupplierAPI,
     SupplierCatalog,
@@ -21,6 +33,16 @@ from mocks.logistics import (
 )
 
 __all__ = [
+    # Inventory DB
+    "SKU_CATALOG",
+    "SKURecord",
+    "WAREHOUSE_STOCK",
+    "WarehouseStock",
+    "get_all_skus",
+    "get_critical_items",
+    "get_low_stock_items",
+    "get_sku",
+    "get_stock",
     # Suppliers
     "MockSupplierAPI",
     "SupplierCatalog",

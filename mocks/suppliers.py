@@ -66,40 +66,22 @@ class SupplierCatalog(BaseModel):
 
 
 # ---------------------------------------------------------------------------
-# In-memory mock catalog data
+# Derive catalog data from the centralized inventory database
 # ---------------------------------------------------------------------------
 
-_CATALOG_TEMPLATE: dict[str, StockItem] = {
-    "SKU-MOTOR-001": StockItem(
-        sku="SKU-MOTOR-001",
-        description="Industrial servo motor 5kW",
+# Build catalog template and base prices from the single source of truth
+_CATALOG_TEMPLATE: Dict[str, StockItem] = {
+    sku: StockItem(
+        sku=sku,
+        description=record.description,
         unit_price=0.0,  # overridden per supplier
         available_qty=0,
-    ),
-    "SKU-SENSOR-002": StockItem(
-        sku="SKU-SENSOR-002",
-        description="IoT temperature sensor array",
-        unit_price=0.0,
-        available_qty=0,
-    ),
-    "SKU-VALVE-003": StockItem(
-        sku="SKU-VALVE-003",
-        description="Pneumatic control valve DN50",
-        unit_price=0.0,
-        available_qty=0,
-    ),
-    "SKU-PUMP-004": StockItem(
-        sku="SKU-PUMP-004",
-        description="Centrifugal pump 10HP",
-        unit_price=0.0,
-        available_qty=0,
-    ),
-    "SKU-CABLE-005": StockItem(
-        sku="SKU-CABLE-005",
-        description="Industrial Ethernet cable 100m spool",
-        unit_price=0.0,
-        available_qty=0,
-    ),
+    )
+    for sku, record in SKU_CATALOG.items()
+}
+
+_BASE_PRICES: Dict[str, float] = {
+    sku: record.base_unit_price for sku, record in SKU_CATALOG.items()
 }
 
 
@@ -114,11 +96,11 @@ class _SupplierProfile:
     speed_factor: float
     price_multiplier: float  # applied to a base price
     stock_ratio: float  # fraction of max stock available (0.0–1.0)
-    base_prices: dict[str, float] = field(default_factory=dict)
+    base_prices: Dict[str, float] = field(default_factory=dict)
     max_stock: int = 500
 
-    def build_catalog(self) -> dict[str, StockItem]:
-        items: dict[str, StockItem] = {}
+    def build_catalog(self) -> Dict[str, StockItem]:
+        items: Dict[str, StockItem] = {}
         for sku, template in _CATALOG_TEMPLATE.items():
             base = self.base_prices.get(sku, 100.0)
             qty = int(self.max_stock * self.stock_ratio)
@@ -133,17 +115,7 @@ class _SupplierProfile:
         return items
 
 
-# Base prices shared across suppliers (USD)
-_BASE_PRICES: dict[str, float] = {
-    "SKU-MOTOR-001": 320.00,
-    "SKU-SENSOR-002": 45.00,
-    "SKU-VALVE-003": 185.00,
-    "SKU-PUMP-004": 720.00,
-    "SKU-CABLE-005": 28.00,
-}
-
-
-_PROFILES: dict[SupplierID, _SupplierProfile] = {
+_PROFILES: Dict[SupplierID, _SupplierProfile] = {
     SupplierID.A: _SupplierProfile(
         supplier_id=SupplierID.A,
         name="Supplier A (Primary)",
