@@ -27,6 +27,6 @@ Keep all code strictly inside assigned modular subdirectories:
 - Documentation: Keep inline comments concise and functional. No verbose boilerplate.
 
 ## 5. AI Assistant Behavior Constraints
-- Do NOT rewrite entire codebases when asked to make small changes. Modify only the targeted functions.
+- Do NOT rewrite entire codebases when asked to make small changes. Modify only the targeted functions. DONOT CHNAGE THE BASE ARCHITECTURE.
 - Respect environment isolation—never leak API key placeholders into code files (always source from `os.getenv`).
 - Avoid introducing unrequested third-party dependencies beyond `requirements.txt`.
