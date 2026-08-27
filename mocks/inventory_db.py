@@ -1,0 +1,29 @@
+INVENTORY_DB = [
+    {
+        "candidate_id": "OPT-01",
+        "warehouse_id": "WH-Central-TX",
+        "unit_cost": 145.50,
+        "lead_time_days": 5,
+        "reliability_score": 0.96,
+        "distance_km": 450
+    },
+    {
+        "candidate_id": "OPT-02",
+        "warehouse_id": "WH-East-NC",
+        "unit_cost": 130.00,
+        "lead_time_days": 7,
+        "reliability_score": 0.88,
+        "distance_km": 820
+    },
+    {
+        "candidate_id": "OPT-03",
+        "warehouse_id": "WH-West-CA",
+        "unit_cost": 160.00,
+        "lead_time_days": 2,
+        "reliability_score": 0.99,
+        "distance_km": 1200
+    }
+]
+
+def get_inventory():
+    return INVENTORY_DB
