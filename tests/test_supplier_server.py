@@ -1,5 +1,5 @@
 """
-Tests for Supplier HTTP Server, Client, and Logistics Pipeline.
+Integration Tests for Supplier HTTP Server, Client, and Logistics Pipeline.
 """
 
 from __future__ import annotations
@@ -12,7 +12,6 @@ import requests
 
 from mocks.supplier_server import app
 from mocks.supplier_client import SupplierClient
-from mocks.logistics import build_cost_breakdown, filter_by_lead_time
 
 # Run mock supplier server on port 8002 in a separate process for integration tests
 def run_server():
@@ -62,49 +61,43 @@ def test_client_get_quote():
     assert quote.supplier_id == "supplier_a"
 
 
-def test_client_get_all_quotes_and_logistics_pipeline():
+def test_logistics_quote_endpoint():
     client = SupplierClient(base_url="http://127.0.0.1:8002")
-    # 1. Fetch quotes from all suppliers over HTTP
-    quotes = client.get_all_quotes("SKU-MOTOR-001", quantity=5)
-    assert len(quotes) == 3
-    
-    # 2. Build landed cost breakdowns
-    breakdowns = [build_cost_breakdown(q, 5) for q in quotes]
-    assert len(breakdowns) == 3
-    
-    # 3. Filter using constraint verifier (max 5 days lead time)
-    # Supplier A should be rejected (10 days), B and C should be viable
-    result = filter_by_lead_time(breakdowns, max_lead_time_days=5.0)
-    
-    viable_ids = {v.supplier_id for v in result.viable}
-    rejected_ids = {r.supplier_id for r in result.rejected}
-    
-    assert "supplier_a" in rejected_ids
-    assert "supplier_b" in viable_ids
-    assert "supplier_c" in viable_ids
+    quote = client.get_freight_quote(
+        origin="supplier_b",
+        destination="ZONE-WEST",
+        sku="SKU-MOTOR-001",
+        quantity=5,
+        transit_speed_mode="express"
+    )
+    assert quote.transit_speed_mode == "EXPRESS"
+    assert quote.carrier_transit_days == 1.5
+    assert quote.total_transit_days == 3.5
+    assert quote.freight_cost > 0.0
 
 
-def test_order_placement_and_cancelation():
+def test_seller_order_placement_and_reallocation():
     client = SupplierClient(base_url="http://127.0.0.1:8002")
     sku = "SKU-MOTOR-001"
     
-    # Get initial stock
-    initial_stock = client.check_stock("supplier_a", sku).available_qty
+    # 1. Place a low priority buffer order to commit some stock
+    low_order = client.place_seller_order(
+        supplier_id="supplier_a",
+        buyer_id="CLIENT-LOW-PRIO",
+        sku=sku,
+        quantity=3,
+        priority="LOW"
+    )
+    assert low_order["priority"] == "LOW"
     
-    # 1. Place order
-    order = client.place_order("supplier_a", sku, quantity=5)
-    assert order["status"] == "PENDING"
-    assert order["quantity"] == 5
-    
-    # Confirm stock was deducted
-    post_order_stock = client.check_stock("supplier_a", sku).available_qty
-    assert post_order_stock == initial_stock - 5
-    
-    # 2. Cancel order
-    cancelled = client.cancel_order(order["order_id"])
-    assert cancelled["status"] == "CANCELLED"
-    
-    # Confirm stock was restored
-    restored_stock = client.check_stock("supplier_a", sku).available_qty
-    assert restored_stock == initial_stock
-
+    # 2. Place a high-priority order that triggers a potential reallocation or direct check
+    high_order = client.place_seller_order(
+        supplier_id="supplier_a",
+        buyer_id="CLIENT-HIGH-PRIO",
+        sku=sku,
+        quantity=5,
+        priority="HIGH"
+    )
+    assert high_order["priority"] == "HIGH"
+    assert high_order["gross_revenue"] > 0
+    assert high_order["net_margin"] != 0

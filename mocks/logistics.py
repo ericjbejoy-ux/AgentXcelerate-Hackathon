@@ -1,172 +1,97 @@
 """
-Logistics Total Cost Estimator & Constraint Verifier
-=====================================================
-Calculates total landed cost and filters supplier paths by lead-time constraints.
-
-Landed Cost formula:
-    Landed_Cost = (Unit_Price × Q) + Freight_Base_Rate × e^(Speed_Factor)
+Logistics Total Cost Estimator & Carrier Simulator
+===================================================
+Simulates a dynamic logistics carrier network. Returns dynamic freight quotes
+and transit durations using shipment weights, origins, destinations, and speeds.
 """
 
 from __future__ import annotations
 
 import math
-from typing import List, Optional
-
+from typing import Dict, List, Optional
 from pydantic import BaseModel, Field
 
-from mocks.suppliers import SupplierQuote
+
+class FreightQuoteRequest(BaseModel):
+    origin: str = Field(..., description="E.g., supplier_a, supplier_b, supplier_c")
+    destination: str = Field(..., description="Target delivery zone, e.g., ZONE-EAST, ZONE-WEST")
+    sku: str = Field(..., description="Target SKU to calculate weight")
+    quantity: int = Field(..., ge=1)
+    transit_speed_mode: str = Field("standard", description="standard or express")
 
 
-# ---------------------------------------------------------------------------
-# Models
-# ---------------------------------------------------------------------------
-
-class LandedCostBreakdown(BaseModel):
-    """Detailed cost breakdown for a supplier quote."""
-    supplier_id: str
-    supplier_name: str
-    sku: str
-    quantity: int
-    unit_price: float
-    item_subtotal: float = Field(description="Unit Price × Quantity")
-    freight_base_rate: float
+class FreightQuoteResponse(BaseModel):
+    carrier_name: str
+    origin: str
+    destination: str
+    total_weight_kg: float
+    transit_speed_mode: str
+    base_rate_usd: float
+    weight_markup_usd: float
     speed_factor: float
-    freight_cost: float = Field(description="Freight Base Rate × e^(Speed Factor)")
-    total_landed_cost: float = Field(description="Item subtotal + freight cost")
-    lead_time_days: float
-    in_stock: bool
+    freight_cost: float
+    carrier_transit_days: float
+    supplier_handling_days: float
+    total_transit_days: float
 
 
-class FilteredSupplierResult(BaseModel):
-    """Result of constraint verification — viable supplier paths."""
-    viable: List[LandedCostBreakdown] = Field(
-        default_factory=list,
-        description="Suppliers that meet the lead-time constraint, sorted by cost",
-    )
-    rejected: List[LandedCostBreakdown] = Field(
-        default_factory=list,
-        description="Suppliers that exceed the lead-time constraint",
-    )
-    max_lead_time_days: float
-    cheapest: Optional[LandedCostBreakdown] = Field(
-        default=None,
-        description="Lowest cost viable option (None if none are viable)",
-    )
-    fastest: Optional[LandedCostBreakdown] = Field(
-        default=None,
-        description="Fastest viable option (None if none are viable)",
-    )
+# Distance markup matrix from origin supplier to destination zone
+_DISTANCE_FACTORS: Dict[str, Dict[str, float]] = {
+    "supplier_a": {"ZONE-EAST": 1.0, "ZONE-WEST": 1.5, "ZONE-CENTRAL": 1.2},
+    "supplier_b": {"ZONE-EAST": 1.4, "ZONE-WEST": 1.0, "ZONE-CENTRAL": 1.1},
+    "supplier_c": {"ZONE-EAST": 2.2, "ZONE-WEST": 2.5, "ZONE-CENTRAL": 2.0},  # Alt region is far
+}
 
 
-# ---------------------------------------------------------------------------
-# Cost Estimator
-# ---------------------------------------------------------------------------
-
-def calculate_landed_cost(
-    unit_price: float,
+def calculate_freight_quote(
+    origin: str,
+    destination: str,
+    weight_kg: float,
     quantity: int,
-    freight_base_rate: float,
-    speed_factor: float,
-) -> tuple[float, float, float]:
+    speed_mode: str,
+    supplier_handling_days: float,
+    base_freight_rate: float,
+    speed_factor_val: float,
+) -> FreightQuoteResponse:
     """
-    Compute landed cost using the formula:
-        Landed Cost = (Unit Price × Q) + Freight Base Rate × e^(Speed Factor)
+    Calculate dynamic freight charges using:
+        Total Weight = weight_kg * quantity
+        Freight Cost = (Base Freight + Weight Markup) * e^(Speed Factor) * Distance Factor
+    """
+    total_weight = round(weight_kg * quantity, 2)
+    
+    # Base weight surcharge
+    weight_markup = round(total_weight * 0.15, 2)  # $0.15 per kg
+    
+    # Speed Mode modifiers
+    if speed_mode.lower() == "express":
+        applied_speed_factor = speed_factor_val * 1.5
+        carrier_days = 1.5  # Express shipping is fast
+    else:
+        applied_speed_factor = speed_factor_val
+        carrier_days = 4.0  # Standard shipping is slower
 
-    Returns:
-        (item_subtotal, freight_cost, total_landed_cost)
-    """
-    item_subtotal = unit_price * quantity
-    freight_cost = freight_base_rate * math.exp(speed_factor)
-    total = item_subtotal + freight_cost
-    return (
-        round(item_subtotal, 2),
-        round(freight_cost, 2),
-        round(total, 2),
+    # Distance factor lookup
+    zone_rates = _DISTANCE_FACTORS.get(origin.lower(), {})
+    distance_mult = zone_rates.get(destination.upper(), 1.2)
+    
+    # Calculate freight cost: Base * e^Speed
+    raw_freight = (base_freight_rate + weight_markup) * math.exp(applied_speed_factor)
+    freight_cost = round(raw_freight * distance_mult, 2)
+    
+    total_transit_days = supplier_handling_days + carrier_days
+
+    return FreightQuoteResponse(
+        carrier_name="Nexus Logistics Carrier Network",
+        origin=origin,
+        destination=destination,
+        total_weight_kg=total_weight,
+        transit_speed_mode=speed_mode.upper(),
+        base_rate_usd=base_freight_rate,
+        weight_markup_usd=weight_markup,
+        speed_factor=round(applied_speed_factor, 2),
+        freight_cost=freight_cost,
+        carrier_transit_days=carrier_days,
+        supplier_handling_days=supplier_handling_days,
+        total_transit_days=total_transit_days
     )
-
-
-def build_cost_breakdown(
-    quote: SupplierQuote,
-    quantity: int,
-) -> LandedCostBreakdown:
-    """Build a full cost breakdown from a supplier quote and desired quantity."""
-    item_sub, freight, total = calculate_landed_cost(
-        unit_price=quote.unit_price,
-        quantity=quantity,
-        freight_base_rate=quote.freight_base_rate,
-        speed_factor=quote.speed_factor,
-    )
-    return LandedCostBreakdown(
-        supplier_id=quote.supplier_id,
-        supplier_name=quote.supplier_name,
-        sku=quote.sku,
-        quantity=quantity,
-        unit_price=quote.unit_price,
-        item_subtotal=item_sub,
-        freight_base_rate=quote.freight_base_rate,
-        speed_factor=quote.speed_factor,
-        freight_cost=freight,
-        total_landed_cost=total,
-        lead_time_days=quote.lead_time_days,
-        in_stock=quote.in_stock,
-    )
-
-
-# ---------------------------------------------------------------------------
-# Constraint Verifier
-# ---------------------------------------------------------------------------
-
-def filter_by_lead_time(
-    breakdowns: List[LandedCostBreakdown],
-    max_lead_time_days: float,
-) -> FilteredSupplierResult:
-    """
-    Partition supplier cost breakdowns into viable / rejected based on a
-    customer's maximum lead-time threshold.
-
-    Viable results are sorted ascending by ``total_landed_cost``.
-    """
-    viable: List[LandedCostBreakdown] = []
-    rejected: List[LandedCostBreakdown] = []
-
-    for bd in breakdowns:
-        if bd.lead_time_days <= max_lead_time_days:
-            viable.append(bd)
-        else:
-            rejected.append(bd)
-
-    viable.sort(key=lambda b: b.total_landed_cost)
-
-    cheapest = viable[0] if viable else None
-    fastest = min(viable, key=lambda b: b.lead_time_days) if viable else None
-
-    return FilteredSupplierResult(
-        viable=viable,
-        rejected=rejected,
-        max_lead_time_days=max_lead_time_days,
-        cheapest=cheapest,
-        fastest=fastest,
-    )
-
-
-# ---------------------------------------------------------------------------
-# High-level convenience
-# ---------------------------------------------------------------------------
-
-async def evaluate_suppliers(
-    sku: str,
-    quantity: int,
-    max_lead_time_days: float,
-) -> FilteredSupplierResult:
-    """
-    End-to-end helper: query all suppliers → compute landed costs → filter.
-
-    This is the primary entry-point other agents/modules should call.
-    """
-    from mocks.suppliers import query_all_suppliers
-
-    quotes = await query_all_suppliers(sku, quantity)
-
-    breakdowns = [build_cost_breakdown(q, quantity) for q in quotes]
-
-    return filter_by_lead_time(breakdowns, max_lead_time_days)

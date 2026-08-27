@@ -1,6 +1,5 @@
 """
-mocks — Mock inventory database, supplier APIs, logistics cost estimation,
-and constraint verification.
+mocks — Mock inventory database, supplier APIs, and logistics carriers.
 """
 
 from mocks.inventory_db import (
@@ -24,12 +23,9 @@ from mocks.suppliers import (
     query_all_suppliers,
 )
 from mocks.logistics import (
-    LandedCostBreakdown,
-    FilteredSupplierResult,
-    calculate_landed_cost,
-    build_cost_breakdown,
-    filter_by_lead_time,
-    evaluate_suppliers,
+    FreightQuoteRequest,
+    FreightQuoteResponse,
+    calculate_freight_quote,
 )
 
 __all__ = [
@@ -52,10 +48,7 @@ __all__ = [
     "get_all_supplier_apis",
     "query_all_suppliers",
     # Logistics
-    "LandedCostBreakdown",
-    "FilteredSupplierResult",
-    "calculate_landed_cost",
-    "build_cost_breakdown",
-    "filter_by_lead_time",
-    "evaluate_suppliers",
+    "FreightQuoteRequest",
+    "FreightQuoteResponse",
+    "calculate_freight_quote",
 ]
