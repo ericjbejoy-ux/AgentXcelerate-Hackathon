@@ -1,62 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Ingestion Interface</title>
+  <title>Autonomous SCM — Order Ingestion Interface</title>
+  <meta name="description"
+    content="Autonomous spare parts supply chain orchestration agent with AI-powered TOPSIS fulfillment optimization.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
+
 <body>
+  <!-- Welcome / splash screen -->
   <section class="welcome-screen" id="welcomeScreen" aria-labelledby="welcomeTitle">
     <div class="welcome-screen__content">
-      <p class="eyebrow">Parts Investigation System</p>
+      <p class="eyebrow">Autonomous Supply Chain Mesh</p>
       <h1 id="welcomeTitle" aria-live="polite">Welcome!</h1>
-      <p class="welcome-screen__subtitle">A focused workspace for discovering, requesting, and fulfilling spare parts.</p>
+      <p class="welcome-screen__subtitle">AI-powered orchestration for spare parts discovery, optimization, and
+        fulfillment.</p>
       <button type="button" class="button-primary welcome-screen__button" id="welcomeContinue" hidden>
         Continue to Login
       </button>
     </div>
   </section>
 
+  <!-- Main dashboard -->
   <main class="page" id="dashboardPage" hidden>
     <section class="dashboard" aria-labelledby="order-ingestion-title">
+
       <header class="dashboard__topbar">
         <div class="brand-block">
           <p class="eyebrow">Autonomous Spare Parts Supply Chain Orchestration Agent</p>
           <h1 id="order-ingestion-title">Order Ingestion Interface</h1>
-          <p class="lead">
-            Capture spare-parts requests, validate them locally, and review a compact
-            fulfillment summary before wiring this screen into backend services.
-          </p>
+          <p class="lead">Submit a fulfillment request and the AI mesh will rank all suppliers and warehouses using
+            TOPSIS optimization.</p>
         </div>
-
         <div class="auth-launcher" aria-label="System and account status">
           <div class="connection-status" id="connectionStatus" role="status" aria-live="polite">
             <span class="connection-status__dot" aria-hidden="true">●</span>
-            <span>BACKEND ONLINE</span>
+            <span id="connectionLabel">CHECKING…</span>
           </div>
           <a class="profile-link" href="./profile.html">Profile</a>
         </div>
       </header>
 
       <div class="dashboard__content">
+
+        <!-- LEFT PANEL: Form (Buyer) or Seller workspace -->
         <section class="panel panel--form" id="requestPanel" aria-labelledby="form-title">
           <div class="panel__header">
             <h2 id="form-title">New Fulfillment Request</h2>
-            <p id="form-description">Choose a category and part name. The matching part ID is filled in automatically.</p>
+            <p id="form-description">Choose a category and part name. The matching part ID is filled in automatically.
+            </p>
           </div>
 
+          <!-- Seller workspace -->
           <div class="seller-workspace" id="sellerWorkspace" hidden>
             <span class="seller-workspace__mark">S</span>
             <div>
-              <h3>Seller workspace</h3>
-              <p>Order requests are created by buyers. Use your account profile to manage seller details.</p>
+              <h3>Seller Workspace</h3>
+              <p>Live inventory from all warehouses is shown below. Use your profile to manage seller details.</p>
             </div>
           </div>
 
+          <!-- Buyer order form -->
           <form id="order-form" novalidate>
             <input id="customerId" name="customerId" type="hidden" value="CUST-BUY-1001">
 
@@ -83,18 +93,20 @@
 
               <div class="form-field">
                 <label for="partId">Part ID</label>
-                <input id="partId" name="partId" type="text" placeholder="Auto-selected from category and part name" readonly required>
+                <input id="partId" name="partId" type="text" placeholder="Auto-selected from category and part" readonly
+                  required>
                 <p class="error-message" id="partIdError" aria-live="polite"></p>
               </div>
 
               <div class="form-field">
                 <label for="requestedQuantity">Requested Quantity</label>
-                <input id="requestedQuantity" name="requestedQuantity" type="number" min="1" step="1" placeholder="e.g. 25" required>
+                <input id="requestedQuantity" name="requestedQuantity" type="number" min="1" step="1"
+                  placeholder="e.g. 25" required>
                 <p class="error-message" id="requestedQuantityError" aria-live="polite"></p>
               </div>
 
               <div class="form-field">
-                <label for="leadTime">Maximum Acceptable Lead Time <span class="unit">(days)</span></label>
+                <label for="leadTime">Maximum Lead Time <span class="unit">(days)</span></label>
                 <input id="leadTime" name="leadTime" type="number" min="1" step="1" placeholder="e.g. 7" required>
                 <p class="error-message" id="leadTimeError" aria-live="polite"></p>
               </div>
@@ -111,73 +123,176 @@
               </div>
 
               <div class="form-field form-field--full">
-                <label for="specialInstructions">Special Instructions / Constraints <span class="optional">(optional)</span></label>
-                <textarea
-                  id="specialInstructions"
-                  name="specialInstructions"
-                  rows="5"
-                  placeholder="Examples: Avoid Warehouse B if possible&#10;Prefer lower cost over faster delivery"
-                ></textarea>
-                <p class="help-text">Use this space to describe preferences, exclusions, or fulfillment constraints.</p>
+                <label for="specialInstructions">Special Instructions <span class="optional">(optional)</span></label>
+                <textarea id="specialInstructions" name="specialInstructions" rows="4"
+                  placeholder="Examples: Avoid Warehouse B if possible&#10;Prefer lower cost over faster delivery"></textarea>
+                <p class="help-text">Describe preferences, exclusions, or constraints.</p>
               </div>
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="button-primary">Analyze Fulfillment</button>
-              <p class="form-note">Current behavior: validates inputs and displays the order payload locally.</p>
+              <button type="submit" class="button-primary" id="submitBtn">
+                <span id="submitBtnText">Analyze Fulfillment</span>
+                <span id="submitSpinner" class="spinner" hidden aria-hidden="true"></span>
+              </button>
+              <p class="form-note" id="apiNote">Submitting will call the backend AI optimization pipeline.</p>
             </div>
           </form>
         </section>
 
+        <!-- RIGHT PANEL: Results -->
         <aside class="panel panel--results" aria-labelledby="results-title">
           <div class="panel__header">
-            <h2 id="results-title">Captured Order Data</h2>
-            <p>The validated request appears in a compact summary table and is also logged to the browser console.</p>
+            <h2 id="results-title">Fulfillment Analysis</h2>
+            <p id="results-subtitle">Results from the AI optimization agent will appear here.</p>
           </div>
 
           <div id="statusMessage" class="status-message" aria-live="polite">
-            Submit the form to preview the order payload.
+            Submit the form to run the AI fulfillment pipeline.
           </div>
 
-          <div class="table-wrap">
+          <!-- Winner card (hidden until result) -->
+          <div id="winnerCard" class="winner-card" hidden>
+            <div class="winner-card__header">
+              <span class="winner-badge">🏆 Top Strategy</span>
+              <span id="winnerScore" class="topsis-score"></span>
+            </div>
+            <div class="winner-card__body">
+              <div class="winner-stat">
+                <span class="winner-stat__label">Source</span>
+                <span class="winner-stat__value" id="winnerSource">—</span>
+              </div>
+              <div class="winner-stat">
+                <span class="winner-stat__label">Lead Time</span>
+                <span class="winner-stat__value" id="winnerLeadTime">—</span>
+              </div>
+              <div class="winner-stat">
+                <span class="winner-stat__label">Unit Cost</span>
+                <span class="winner-stat__value" id="winnerCost">—</span>
+              </div>
+              <div class="winner-stat">
+                <span class="winner-stat__label">Total Cost</span>
+                <span class="winner-stat__value" id="winnerTotalCost">—</span>
+              </div>
+              <div class="winner-stat">
+                <span class="winner-stat__label">Can Fulfill?</span>
+                <span class="winner-stat__value" id="winnerFulfill">—</span>
+              </div>
+              <div class="winner-stat">
+                <span class="winner-stat__label">Strategy</span>
+                <span class="winner-stat__value" id="winnerStrategy">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Explanation -->
+          <div id="explanationBlock" class="explanation-block" hidden>
+            <h3 class="explanation-block__title">AI Reasoning</h3>
+            <pre id="explanationText" class="explanation-block__text"></pre>
+          </div>
+
+          <!-- Candidates table -->
+          <div id="candidatesSection" class="table-wrap" hidden>
+            <h3 class="table-label">All Ranked Candidates</h3>
+            <div class="table-scroll">
+              <table class="summary-table candidates-table" aria-label="Ranked fulfillment candidates">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Candidate</th>
+                    <th>Source</th>
+                    <th>SKU</th>
+                    <th>Unit Cost</th>
+                    <th>Lead Time</th>
+                    <th>Stock</th>
+                    <th>Reliability</th>
+                    <th>TOPSIS Score</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="candidatesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Order summary table (always shown, updated on submit) -->
+          <div class="table-wrap" id="summarySection">
+            <h3 class="table-label">Order Summary</h3>
             <table class="summary-table" aria-label="Order summary table">
               <tbody id="resultTableBody">
                 <tr>
                   <th scope="row">Category</th>
-                  <td>Not submitted yet</td>
+                  <td>—</td>
                 </tr>
                 <tr>
                   <th scope="row">Part Name</th>
-                  <td>Not submitted yet</td>
+                  <td>—</td>
                 </tr>
                 <tr>
                   <th scope="row">Part ID</th>
-                  <td>Not submitted yet</td>
+                  <td>—</td>
                 </tr>
                 <tr>
                   <th scope="row">Requested Quantity</th>
-                  <td>Not submitted yet</td>
+                  <td>—</td>
                 </tr>
                 <tr>
                   <th scope="row">Lead Time</th>
-                  <td>Not submitted yet</td>
+                  <td>—</td>
                 </tr>
                 <tr>
                   <th scope="row">Priority Level</th>
-                  <td>Not submitted yet</td>
+                  <td>—</td>
                 </tr>
                 <tr>
                   <th scope="row">Special Instructions</th>
-                  <td>Not submitted yet</td>
+                  <td>—</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </aside>
-      </div>
-    </section>
+
+      </div><!-- .dashboard__content -->
+
+      <!-- SELLER INVENTORY DASHBOARD -->
+      <section id="inventoryDashboard" class="inventory-dashboard" hidden aria-labelledby="inv-title">
+        <div class="panel__header">
+          <h2 id="inv-title">📦 Live Inventory Dashboard</h2>
+          <p>Real-time view of all SKUs across the warehouse network.</p>
+        </div>
+        <div id="inventoryStats" class="inv-stats-row"></div>
+        <div class="table-scroll">
+          <table class="summary-table inventory-table" aria-label="Inventory table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Warehouse</th>
+                <th>On Hand</th>
+                <th>Reserved</th>
+                <th>Available</th>
+                <th>Reorder Point</th>
+                <th>Stock Fill %</th>
+                <th>Unit Price</th>
+                <th>Critical</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody">
+              <tr>
+                <td colspan="12" class="loading-cell">Loading inventory…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </section><!-- .dashboard -->
   </main>
 
+  <!-- Auth modal -->
   <div class="modal-backdrop" id="authModal" hidden>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
       <button type="button" class="modal-close" id="closeAuthModal" aria-label="Close login portal">×</button>
@@ -206,34 +321,29 @@
         </div>
 
         <form id="authForm" class="auth-form" novalidate>
-        <div class="form-grid form-grid--single">
-          <div class="form-field" id="nameField" hidden>
-            <label for="authName">Full Name</label>
-            <input id="authName" name="authName" type="text" placeholder="e.g. Jordan Lee">
+          <div class="form-grid form-grid--single">
+            <div class="form-field" id="nameField" hidden>
+              <label for="authName">Full Name</label>
+              <input id="authName" name="authName" type="text" placeholder="e.g. Jordan Lee">
+            </div>
+            <div class="form-field">
+              <label for="authEmail">Email</label>
+              <input id="authEmail" name="authEmail" type="email" placeholder="name@company.com" required>
+            </div>
+            <div class="form-field" id="companyField" hidden>
+              <label for="authCompany">Company</label>
+              <input id="authCompany" name="authCompany" type="text" placeholder="e.g. Apex Components">
+            </div>
+            <div class="form-field">
+              <label for="authPassword">Password</label>
+              <input id="authPassword" name="authPassword" type="password" placeholder="Enter password" required>
+            </div>
           </div>
-
-          <div class="form-field">
-            <label for="authEmail">Email</label>
-            <input id="authEmail" name="authEmail" type="email" placeholder="name@company.com" required>
+          <p class="error-message" id="authError" aria-live="polite"></p>
+          <div class="modal-actions">
+            <button type="submit" class="button-primary" id="authSubmitButton">Login</button>
+            <button type="button" class="button-secondary" id="toggleAuthMode">New here? Sign up</button>
           </div>
-
-          <div class="form-field" id="companyField" hidden>
-            <label for="authCompany">Company</label>
-            <input id="authCompany" name="authCompany" type="text" placeholder="e.g. Apex Components">
-          </div>
-
-          <div class="form-field">
-            <label for="authPassword">Password</label>
-            <input id="authPassword" name="authPassword" type="password" placeholder="Enter password" required>
-          </div>
-        </div>
-
-        <p class="error-message" id="authError" aria-live="polite"></p>
-
-        <div class="modal-actions">
-          <button type="submit" class="button-primary" id="authSubmitButton">Login</button>
-          <button type="button" class="button-secondary" id="toggleAuthMode">New here? Sign up</button>
-        </div>
         </form>
       </div>
     </div>
@@ -241,4 +351,5 @@
 
   <script src="./script.js"></script>
 </body>
+
 </html>
