@@ -12,7 +12,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import Optional
 
-from core.orchestrator import run_pipeline
+from core.orchestrator import orchestrator
 from utils.data_loader import load_inventory_csv
 
 app = FastAPI(title="AgentXcelerate Supply Chain API", version="1.0.0")
@@ -48,7 +48,7 @@ async def optimize_order(request: OptimizeRequest):
         "quantity": request.requested_qty,
     }
 
-    result = run_pipeline(order_payload)
+    result = orchestrator.process_order(order_payload)
     if "error" in result:
         raise HTTPException(status_code=422, detail=result["error"])
     return result

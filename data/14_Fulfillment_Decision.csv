@@ -1,0 +1,9 @@
+Order_ID,Warehouse_ID,Warehouse_Address,Decision,TOPSIS_Score
+ORD-8821,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",APPROVED,0.9523
+ORD-8822,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",APPROVED,0.9523
+ORD-8823,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",APPROVED,0.8888
+ORD-8824,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",APPROVED,0.7445
+ORD-8825,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",APPROVED,0.9523
+ORD-8826,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",APPROVED,0.8888
+ORD-8827,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",APPROVED,0.745
+ORD-8828,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",APPROVED,0.8888

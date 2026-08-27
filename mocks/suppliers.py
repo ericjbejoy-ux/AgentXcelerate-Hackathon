@@ -18,7 +18,7 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
-from mocks.inventory_db import SKU_CATALOG
+from core.database import db
 
 # ---------------------------------------------------------------------------
 # Pydantic models (shared contract)
@@ -70,6 +70,7 @@ class SupplierCatalog(BaseModel):
 # ---------------------------------------------------------------------------
 
 # Build catalog template and base prices from the single source of truth
+_catalog = db.inventory.get_catalog()
 _CATALOG_TEMPLATE: Dict[str, StockItem] = {
     sku: StockItem(
         sku=sku,
@@ -77,11 +78,11 @@ _CATALOG_TEMPLATE: Dict[str, StockItem] = {
         unit_price=0.0,  # overridden per supplier
         available_qty=0,
     )
-    for sku, record in SKU_CATALOG.items()
+    for sku, record in _catalog.items()
 }
 
 _BASE_PRICES: Dict[str, float] = {
-    sku: record.base_unit_price for sku, record in SKU_CATALOG.items()
+    sku: record.base_unit_price for sku, record in _catalog.items()
 }
 
 

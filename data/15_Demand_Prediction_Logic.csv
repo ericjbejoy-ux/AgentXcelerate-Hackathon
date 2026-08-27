@@ -1,0 +1,12 @@
+Variable,Agent_Purpose,Use
+Units_Sold_7_Days,Recent demand,Main signal for identifying currently selling parts
+Units_Returned_7_Days,Returns,Prevents overstating demand
+Net_Units_Sold_7_Days,Effective demand,Units sold minus returns
+Category,Demand grouping,Compare parts within the same category
+Quantity_Requested,Current demand,Order-specific demand
+Required_By_Date,Urgency input,Agent derives priority from time pressure
+Available,Stock availability,Inventory feasibility
+Reorder_Level,Replenishment trigger,Identifies stock pressure
+Base_Unit_Cost_USD,Cost criterion,TOPSIS minimizes cost
+Lead_Time_Days,Delivery criterion,TOPSIS minimizes lead time
+Reliability,Service criterion,TOPSIS maximizes reliability

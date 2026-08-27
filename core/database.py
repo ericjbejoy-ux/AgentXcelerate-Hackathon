@@ -1,148 +1,283 @@
 """
-SQLite database layer for AgentXcelerate.
-Stores all optimization requests and their results.
+Unified Database Interface
+==========================
+SQLite-backed data access for all agents and endpoints.
+Single import: from core.database import db
 """
 
-import sqlite3
-import json
-import datetime
+from __future__ import annotations
+
+import logging
 import os
-from typing import Optional
+import sqlite3
+from contextlib import contextmanager
+from typing import Any, Dict, List, Optional
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "supply_chain.db")
+logger = logging.getLogger("database")
 
-# ── Schema ────────────────────────────────────────────────────────────────────
-_SCHEMA = """
-CREATE TABLE IF NOT EXISTS orders (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    order_id        TEXT NOT NULL,
-    buyer_id        TEXT,
-    part_id         TEXT NOT NULL,
-    requested_qty   INTEGER NOT NULL,
-    priority        TEXT NOT NULL,
-    max_lead_time   INTEGER,
-    special_notes   TEXT,
-    created_at      TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS optimization_results (
-    id                     INTEGER PRIMARY KEY AUTOINCREMENT,
-    order_id               TEXT NOT NULL,
-    top_candidate_id       TEXT,
-    top_warehouse_id       TEXT,
-    topsis_score           REAL,
-    total_cost             REAL,
-    lead_time_days         INTEGER,
-    fulfilled_by_date      TEXT,
-    fulfillment_type       TEXT,
-    approval_status        TEXT,
-    net_margin             REAL,
-    explanation            TEXT,
-    agent_confidence       REAL,
-    alternatives_json      TEXT,
-    created_at             TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS users (
-    id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    customer_id  TEXT UNIQUE NOT NULL,
-    email        TEXT UNIQUE NOT NULL,
-    name         TEXT,
-    company      TEXT,
-    role         TEXT NOT NULL DEFAULT 'Buyer',
-    created_at   TEXT NOT NULL
-);
-"""
+DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "scm.db")
 
 
-def get_connection() -> sqlite3.Connection:
+@contextmanager
+def get_conn():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
-    return conn
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 
-def init_db():
-    """Initialise all tables (idempotent)."""
-    with get_connection() as conn:
-        conn.executescript(_SCHEMA)
+# ── SKURecord / WarehouseStock as lightweight dataclasses ──
+
+from dataclasses import dataclass
 
 
-def save_order(order_payload: dict) -> int:
-    """Persist an incoming order. Returns the rowid."""
-    now = datetime.datetime.utcnow().isoformat()
-    with get_connection() as conn:
-        cur = conn.execute(
-            """INSERT INTO orders
-               (order_id, buyer_id, part_id, requested_qty, priority,
-                max_lead_time, special_notes, created_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-            (
-                order_payload.get("order_id", ""),
-                order_payload.get("buyer_id", ""),
-                order_payload.get("part_id", order_payload.get("item", "")),
-                order_payload.get("requested_qty", order_payload.get("quantity", 0)),
-                order_payload.get("priority", "STANDARD"),
-                order_payload.get("max_lead_time_days"),
-                order_payload.get("special_instructions"),
-                now,
-            ),
-        )
-        return cur.lastrowid
+@dataclass
+class SKURecord:
+    sku: str
+    description: str
+    category: str
+    base_unit_price: float
+    weight_kg: float = 1.0
+
+    @property
+    def critical(self) -> bool:
+        return False
 
 
-def save_result(order_id: str, result: dict) -> int:
-    """Persist a pipeline result. Returns the rowid."""
-    now = datetime.datetime.utcnow().isoformat()
-    ts  = result.get("top_strategy", {})
-    si  = result.get("seller_impact", {})
+@dataclass
+class WarehouseStock:
+    sku: str
+    on_hand_qty: int
+    reserved_qty: int
+    damaged_qty: int
+    reorder_point: int
+    warehouse_loc: str
+    warehouse_name: str = ""
 
-    with get_connection() as conn:
-        cur = conn.execute(
-            """INSERT INTO optimization_results
-               (order_id, top_candidate_id, top_warehouse_id, topsis_score,
-                total_cost, lead_time_days, fulfilled_by_date, fulfillment_type,
-                approval_status, net_margin, explanation, agent_confidence,
-                alternatives_json, created_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (
-                order_id,
-                ts.get("candidate_id"),
-                ts.get("warehouse_id"),
-                ts.get("topsis_score"),
-                ts.get("total_cost"),
-                ts.get("lead_time_days"),
-                ts.get("fulfilled_by_date"),
-                ts.get("fulfillment_type"),
-                si.get("automated_approval_status"),
-                si.get("net_margin"),
-                result.get("explanation"),
-                result.get("agent_confidence_score"),
-                json.dumps(result.get("alternatives", [])),
-                now,
-            ),
-        )
-        return cur.lastrowid
+    @property
+    def available_qty(self) -> int:
+        return max(0, self.on_hand_qty - self.reserved_qty - self.damaged_qty)
+
+    @property
+    def needs_reorder(self) -> bool:
+        return self.available_qty <= self.reorder_point
 
 
-def get_recent_results(limit: int = 20) -> list[dict]:
-    with get_connection() as conn:
-        rows = conn.execute(
-            """SELECT r.*, o.part_id, o.requested_qty, o.priority, o.buyer_id
-               FROM optimization_results r
-               JOIN orders o ON r.order_id = o.order_id
-               ORDER BY r.created_at DESC LIMIT ?""",
-            (limit,),
-        ).fetchall()
-        return [dict(row) for row in rows]
+@dataclass
+class Warehouse:
+    warehouse_id: str
+    warehouse_name: str
+    address: str
+    city: str
+    state: str
+    region: str
+    base_lead_days: int
+    reliability: float
 
 
-def get_all_orders(limit: int = 50) -> list[dict]:
-    with get_connection() as conn:
-        rows = conn.execute(
-            "SELECT * FROM orders ORDER BY created_at DESC LIMIT ?", (limit,)
-        ).fetchall()
-        return [dict(row) for row in rows]
+# ── Inventory DB ──
+
+class InventoryDB:
+
+    def get_sku(self, sku: str) -> Optional[SKURecord]:
+        with get_conn() as conn:
+            row = conn.execute("SELECT * FROM parts WHERE part_id=?", (sku,)).fetchone()
+            if row:
+                # Estimate weight from category (kg per unit)
+                cat_weights = {
+                    "HYDRAULICS": 5.0, "ELECTRONIC": 1.0,
+                    "FASTENERS": 0.5, "FILTERS": 1.5,
+                }
+                w = cat_weights.get(row["category_id"], 1.0)
+                return SKURecord(row["part_id"], row["part_name"], row["category_id"],
+                                 row["unit_price_usd"], w)
+        return None
+
+    def get_stock(self, sku: str) -> Optional[WarehouseStock]:
+        with get_conn() as conn:
+            row = conn.execute(
+                "SELECT i.*, w.warehouse_name FROM inventory i "
+                "JOIN warehouses w ON i.warehouse_id=w.warehouse_id "
+                "WHERE i.part_id=? ORDER BY i.available DESC LIMIT 1", (sku,)
+            ).fetchone()
+            if row:
+                return WarehouseStock(
+                    sku=row["part_id"], on_hand_qty=row["on_hand"],
+                    reserved_qty=row["reserved"], damaged_qty=row["damaged"],
+                    reorder_point=row["reorder_level"], warehouse_loc=row["warehouse_id"],
+                    warehouse_name=row["warehouse_name"],
+                )
+        return None
+
+    def get_all_stocks(self, sku: str) -> List[WarehouseStock]:
+        with get_conn() as conn:
+            rows = conn.execute(
+                "SELECT i.*, w.warehouse_name FROM inventory i "
+                "JOIN warehouses w ON i.warehouse_id=w.warehouse_id "
+                "WHERE i.part_id=? AND i.available>0 ORDER BY i.available DESC", (sku,)
+            ).fetchall()
+            return [WarehouseStock(
+                sku=r["part_id"], on_hand_qty=r["on_hand"],
+                reserved_qty=r["reserved"], damaged_qty=r["damaged"],
+                reorder_point=r["reorder_level"], warehouse_loc=r["warehouse_id"],
+                warehouse_name=r["warehouse_name"],
+            ) for r in rows]
+
+    def get_warehouse(self, warehouse_id: str) -> Optional[Warehouse]:
+        with get_conn() as conn:
+            row = conn.execute("SELECT * FROM warehouses WHERE warehouse_id=?", (warehouse_id,)).fetchone()
+            if row:
+                return Warehouse(row["warehouse_id"], row["warehouse_name"], row["address"],
+                                 row["city"], row["state"], row["region"],
+                                 row["base_lead_days"], row["reliability"])
+        return None
+
+    def get_warehouses(self) -> Dict[str, Warehouse]:
+        with get_conn() as conn:
+            rows = conn.execute("SELECT * FROM warehouses").fetchall()
+            return {r["warehouse_id"]: Warehouse(r["warehouse_id"], r["warehouse_name"],
+                    r["address"], r["city"], r["state"], r["region"],
+                    r["base_lead_days"], r["reliability"]) for r in rows}
+
+    def get_all_skus(self) -> List[str]:
+        with get_conn() as conn:
+            return [r["part_id"] for r in conn.execute("SELECT part_id FROM parts").fetchall()]
+
+    def get_categories(self) -> List[str]:
+        with get_conn() as conn:
+            return [r["category_id"] for r in conn.execute("SELECT category_id FROM categories").fetchall()]
+
+    def get_parts_by_category(self, category: str) -> List[SKURecord]:
+        with get_conn() as conn:
+            rows = conn.execute("SELECT * FROM parts WHERE category_id=?", (category.upper(),)).fetchall()
+            return [SKURecord(r["part_id"], r["part_name"], r["category_id"], r["unit_price_usd"]) for r in rows]
+
+    def get_catalog(self) -> Dict[str, SKURecord]:
+        with get_conn() as conn:
+            rows = conn.execute("SELECT * FROM parts").fetchall()
+            return {r["part_id"]: SKURecord(r["part_id"], r["part_name"], r["category_id"], r["unit_price_usd"]) for r in rows}
+
+    def get_low_stock(self) -> List[WarehouseStock]:
+        with get_conn() as conn:
+            rows = conn.execute(
+                "SELECT i.*, w.warehouse_name FROM inventory i "
+                "JOIN warehouses w ON i.warehouse_id=w.warehouse_id "
+                "WHERE i.available <= i.reorder_level"
+            ).fetchall()
+            return [WarehouseStock(
+                sku=r["part_id"], on_hand_qty=r["on_hand"],
+                reserved_qty=r["reserved"], damaged_qty=r["damaged"],
+                reorder_point=r["reorder_level"], warehouse_loc=r["warehouse_id"],
+                warehouse_name=r["warehouse_name"],
+            ) for r in rows]
+
+    def get_critical_parts(self) -> List[str]:
+        """Return part_ids that have very low stock across all warehouses."""
+        with get_conn() as conn:
+            rows = conn.execute(
+                "SELECT part_id, SUM(available) as total_available FROM inventory "
+                "GROUP BY part_id HAVING total_available < 10"
+            ).fetchall()
+            return [r["part_id"] for r in rows]
+
+    def get_demand(self, sku: str) -> Optional[dict]:
+        with get_conn() as conn:
+            row = conn.execute("SELECT * FROM part_demand WHERE part_id=?", (sku,)).fetchone()
+            if row:
+                return {"units_sold_7d": row["units_sold_7d"],
+                        "units_returned_7d": row["units_returned_7d"],
+                        "net_demand_7d": row["net_demand_7d"]}
+        return None
+
+    def reserve(self, sku: str, qty: int) -> bool:
+        with get_conn() as conn:
+            row = conn.execute(
+                "SELECT id, available FROM inventory WHERE part_id=? AND available>=? "
+                "ORDER BY available DESC LIMIT 1", (sku, qty)
+            ).fetchone()
+            if row:
+                conn.execute("UPDATE inventory SET reserved=reserved+?, available=available-? WHERE id=?",
+                             (qty, qty, row["id"]))
+                conn.commit()
+                return True
+        return False
+
+    def release(self, sku: str, qty: int) -> bool:
+        with get_conn() as conn:
+            row = conn.execute(
+                "SELECT id, reserved FROM inventory WHERE part_id=? AND reserved>0 "
+                "ORDER BY reserved DESC LIMIT 1", (sku,)
+            ).fetchone()
+            if row:
+                released = min(qty, row["reserved"])
+                conn.execute("UPDATE inventory SET reserved=reserved-?, available=available+? WHERE id=?",
+                             (released, released, row["id"]))
+                conn.commit()
+                return True
+        return False
+
+    def get_sales_stats(self, sku: str, days: int = 30) -> dict:
+        with get_conn() as conn:
+            row = conn.execute(
+                "SELECT SUM(quantity_sold) as sold, SUM(quantity_returned) as returned "
+                "FROM sales WHERE part_id=? AND timestamp >= date('now', ?)",
+                (sku, f"-{days} days")
+            ).fetchone()
+            return {"sold": row["sold"] or 0, "returned": row["returned"] or 0}
+
+    def get_buyer_history(self, buyer_id: str, limit: int = 50) -> List[dict]:
+        with get_conn() as conn:
+            rows = conn.execute(
+                "SELECT * FROM sales WHERE buyer_id=? ORDER BY timestamp DESC LIMIT ?",
+                (buyer_id, limit)
+            ).fetchall()
+            return [dict(r) for r in rows]
+
+    def execute_order(self, order_id: str, part_id: str, qty: int, warehouse_id: str) -> bool:
+        """Deduct stock after order approval."""
+        with get_conn() as conn:
+            row = conn.execute(
+                "SELECT id, available FROM inventory WHERE part_id=? AND warehouse_id=? AND available>=?",
+                (part_id, warehouse_id, qty)
+            ).fetchone()
+            if row:
+                conn.execute(
+                    "UPDATE inventory SET on_hand=on_hand-?, available=available-? WHERE id=?",
+                    (qty, qty, row["id"])
+                )
+                conn.commit()
+                return True
+        return False
 
 
-# Auto-init on import
-init_db()
+# ── Supplier DB ──
+
+class SupplierDB:
+
+    async def get_quote(self, sku: str, quantity: int = 1):
+        from mocks.suppliers import query_all_suppliers
+        return await query_all_suppliers(sku, quantity)
+
+    def get_all_apis(self):
+        from mocks.suppliers import get_all_supplier_apis
+        return get_all_supplier_apis()
+
+
+# ── Combined Database ──
+
+class Database:
+    def __init__(self):
+        self.inventory = InventoryDB()
+        self.suppliers = SupplierDB()
+
+    def health(self) -> dict:
+        with get_conn() as conn:
+            parts = conn.execute("SELECT COUNT(*) as n FROM parts").fetchone()["n"]
+            inv = conn.execute("SELECT COUNT(*) as n FROM inventory").fetchone()["n"]
+            sales = conn.execute("SELECT COUNT(*) as n FROM sales").fetchone()["n"]
+            return {"parts": parts, "inventory_rows": inv, "sales_rows": sales, "db_path": DB_PATH}
+
+
+db = Database()

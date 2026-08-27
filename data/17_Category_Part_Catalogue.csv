@@ -1,0 +1,21 @@
+Category_ID,Category_Name,Part_ID,Part_Name,Unit_Price_USD,Latest_Buyer_ID,Latest_Buyer_Purchase_Timestamp,Latest_Seller_ID,Latest_Seller_Warehouse_ID,Latest_Seller_Warehouse_Address,Latest_Seller_Sale_Timestamp
+ELECTRONIC,Electronic,ELE-2001,Control Module,680.0,CUST-101,2026-07-26 19:08:43,Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",2026-07-26 19:08:43
+ELECTRONIC,Electronic,ELE-2002,Electronic Sensor,125.0,CUST-150,2026-07-27 19:30:26,Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",2026-07-27 19:30:26
+ELECTRONIC,Electronic,ELE-2003,Relay Module,75.0,CUST-110,2026-07-25 19:28:04,Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",2026-07-25 19:28:04
+ELECTRONIC,Electronic,ELE-2004,Ignition Controller,390.0,CUST-113,2026-07-27 20:58:08,Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",2026-07-27 20:58:08
+ELECTRONIC,Electronic,ELE-2005,Voltage Regulator,210.0,CUST-131,2026-07-23 19:10:50,Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",2026-07-23 19:10:50
+FASTENERS,Fasteners,FAS-3001,Hex Bolt Set,25.0,CUST-112,2026-07-27 20:57:04,Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",2026-07-27 20:57:04
+FASTENERS,Fasteners,FAS-3002,Lock Nut Set,18.0,CUST-125,2026-07-26 19:39:13,Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",2026-07-26 19:39:13
+FASTENERS,Fasteners,FAS-3003,Mounting Screw Set,22.0,CUST-150,2026-07-27 19:35:22,Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",2026-07-27 19:35:22
+FASTENERS,Fasteners,FAS-3004,Threaded Rod,35.0,CUST-106,2026-07-24 18:10:23,Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",2026-07-24 18:10:23
+FASTENERS,Fasteners,FAS-3005,Retaining Ring Set,30.0,CUST-127,2026-07-27 19:59:25,Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",2026-07-27 19:59:25
+FILTERS,Filters,FIL-4001,Hydraulic Filter,55.0,CUST-146,2026-07-27 17:08:25,Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",2026-07-27 17:08:25
+FILTERS,Filters,FIL-4002,Oil Filter,32.0,CUST-107,2026-07-27 18:56:21,Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",2026-07-27 18:56:21
+FILTERS,Filters,FIL-4003,Air Filter,42.0,CUST-144,2026-07-27 20:34:08,Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",2026-07-27 20:34:08
+FILTERS,Filters,FIL-4004,Fuel Filter,48.0,CUST-141,2026-07-27 18:12:15,Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",2026-07-27 18:12:15
+FILTERS,Filters,FIL-4005,Return Line Filter,62.0,CUST-127,2026-07-26 19:59:40,Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",2026-07-26 19:59:40
+HYDRAULICS,Hydraulics,HYD-1001,Hydraulic Pump,450.0,CUST-103,2026-07-26 19:29:46,Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",2026-07-26 19:29:46
+HYDRAULICS,Hydraulics,HYD-1002,Hydraulic Cylinder,320.0,CUST-137,2026-07-26 18:02:50,Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",2026-07-26 18:02:50
+HYDRAULICS,Hydraulics,HYD-1003,Hydraulic Hose,85.0,CUST-124,2026-07-27 20:47:16,Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",2026-07-27 20:47:16
+HYDRAULICS,Hydraulics,HYD-1004,Hydraulic Valve,175.0,CUST-116,2026-07-27 17:53:04,Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",2026-07-27 17:53:04
+HYDRAULICS,Hydraulics,HYD-1005,Pressure Relief Valve,140.0,CUST-108,2026-07-27 20:39:30,Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",2026-07-27 20:39:30

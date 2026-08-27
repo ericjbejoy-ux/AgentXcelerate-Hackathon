@@ -1,0 +1,301 @@
+Seller_ID,Warehouse_ID,Warehouse_Address,Part_ID,Seller_Transactions,Seller_Units_Sold,Seller_Units_Returned,Last_Seller_Sale_Timestamp
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",ELE-2001,13,27,0,2026-07-12 18:15:06
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",ELE-2002,20,47,1,2026-07-09 18:01:08
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",ELE-2003,20,47,1,2026-07-20 19:57:14
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",ELE-2004,33,66,0,2026-07-13 20:34:49
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",ELE-2005,17,43,1,2026-07-07 17:08:40
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FAS-3001,23,208,0,2026-07-13 17:59:07
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FAS-3002,20,176,0,2026-07-26 19:39:13
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FAS-3003,22,195,0,2026-07-14 20:03:00
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FAS-3004,29,225,0,2026-07-21 20:55:33
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FAS-3005,16,157,0,2026-07-27 19:59:25
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FIL-4001,12,58,4,2026-03-31 19:59:02
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FIL-4002,28,174,0,2026-07-26 19:27:40
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FIL-4003,9,66,4,2026-06-24 20:25:57
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FIL-4004,15,106,6,2026-07-12 18:26:11
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FIL-4005,13,88,2,2026-07-20 19:22:27
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",HYD-1001,21,63,7,2026-07-24 17:07:49
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",HYD-1002,17,58,5,2026-07-02 20:03:13
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",HYD-1003,15,47,7,2026-07-25 17:43:30
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",HYD-1004,33,118,6,2026-07-18 17:58:24
+Ahmedabad Southwest Hub,WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",HYD-1005,21,66,5,2026-07-12 18:59:25
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",ELE-2001,12,23,0,2026-05-06 17:30:40
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",ELE-2002,17,33,1,2026-07-20 20:13:53
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",ELE-2003,30,73,4,2026-07-24 19:07:13
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",ELE-2004,23,54,3,2026-07-09 17:33:35
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",ELE-2005,14,33,2,2026-06-29 19:00:34
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FAS-3001,14,104,0,2026-07-09 18:12:07
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FAS-3002,24,203,7,2026-07-18 19:27:37
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FAS-3003,18,157,1,2026-07-02 19:17:12
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FAS-3004,17,169,0,2026-07-17 18:38:45
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FAS-3005,22,179,0,2026-07-15 18:14:45
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FIL-4001,19,129,11,2026-07-20 17:37:47
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FIL-4002,13,69,1,2026-06-26 18:19:18
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FIL-4003,19,118,7,2026-07-09 18:51:12
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FIL-4004,17,114,11,2026-07-21 19:44:17
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FIL-4005,26,171,7,2026-07-19 18:42:09
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",HYD-1001,23,73,5,2026-07-20 17:10:01
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",HYD-1002,30,105,7,2026-07-24 17:10:06
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",HYD-1003,21,85,0,2026-07-14 20:35:42
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",HYD-1004,28,100,0,2026-07-05 20:51:44
+Bengaluru Technology Hub,WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",HYD-1005,23,83,0,2026-07-02 17:50:06
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",ELE-2001,19,41,0,2026-07-13 19:46:27
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",ELE-2002,12,27,0,2026-07-18 19:20:45
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",ELE-2003,21,53,3,2026-07-16 17:17:17
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",ELE-2004,21,47,0,2026-07-16 18:12:05
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",ELE-2005,20,66,4,2026-07-15 18:34:40
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FAS-3001,16,122,0,2026-07-17 18:10:25
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FAS-3002,16,134,3,2026-07-04 19:51:36
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FAS-3003,14,116,0,2026-06-21 19:34:19
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FAS-3004,19,148,5,2026-07-24 18:10:23
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FAS-3005,23,216,0,2026-07-21 20:46:36
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FIL-4001,20,120,0,2026-07-27 17:08:25
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FIL-4002,20,125,3,2026-07-20 20:30:02
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FIL-4003,27,168,0,2026-07-21 20:34:36
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FIL-4004,21,125,0,2026-07-10 20:28:42
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FIL-4005,25,147,5,2026-07-13 19:52:32
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",HYD-1001,20,62,0,2026-07-15 18:57:53
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",HYD-1002,26,93,4,2026-07-24 17:55:48
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",HYD-1003,15,51,0,2026-04-12 20:44:03
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",HYD-1004,15,56,3,2026-07-27 17:53:04
+Bhubaneswar Southeast Hub,WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",HYD-1005,16,50,4,2026-06-23 18:38:26
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",ELE-2001,18,47,0,2026-07-03 20:00:08
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",ELE-2002,17,41,4,2026-07-20 18:00:28
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",ELE-2003,27,54,0,2026-07-25 18:59:56
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",ELE-2004,15,35,0,2026-07-27 20:58:08
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",ELE-2005,27,67,2,2026-07-17 20:26:05
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FAS-3001,26,219,0,2026-07-26 18:05:36
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FAS-3002,12,130,14,2026-07-26 17:57:24
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FAS-3003,13,112,0,2026-06-24 20:07:56
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FAS-3004,32,275,8,2026-07-16 18:13:19
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FAS-3005,19,167,4,2026-07-21 17:46:24
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FIL-4001,18,119,1,2026-07-20 17:09:42
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FIL-4002,21,140,0,2026-07-19 17:49:49
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FIL-4003,18,104,8,2026-07-24 18:54:14
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FIL-4004,17,96,12,2026-07-19 19:52:56
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FIL-4005,25,157,5,2026-07-09 20:16:16
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",HYD-1001,24,76,8,2026-07-26 19:29:46
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",HYD-1002,17,57,3,2026-07-23 17:29:40
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",HYD-1003,16,63,1,2026-07-07 18:39:02
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",HYD-1004,19,70,6,2026-07-18 20:43:59
+Chennai South Hub,WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",HYD-1005,27,99,2,2026-07-11 18:50:11
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",ELE-2001,13,32,0,2026-07-26 19:08:43
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",ELE-2002,13,24,1,2026-07-14 20:05:00
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",ELE-2003,20,54,0,2026-07-06 19:34:51
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",ELE-2004,18,44,1,2026-07-13 20:12:33
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",ELE-2005,23,65,0,2026-07-19 17:38:00
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FAS-3001,26,217,3,2026-07-17 17:28:48
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FAS-3002,15,106,0,2026-06-19 20:49:32
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FAS-3003,15,126,0,2026-07-14 18:56:00
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FAS-3004,23,205,7,2026-07-11 17:53:28
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FAS-3005,18,151,0,2026-07-20 20:47:38
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FIL-4001,35,202,17,2026-07-20 20:43:45
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FIL-4002,21,117,6,2026-07-26 17:56:56
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FIL-4003,21,162,4,2026-07-24 20:47:23
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FIL-4004,19,128,12,2026-07-27 18:12:15
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FIL-4005,20,106,10,2026-07-04 19:56:05
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",HYD-1001,18,79,4,2026-07-09 17:47:46
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",HYD-1002,18,54,3,2026-07-22 19:07:47
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",HYD-1003,27,100,1,2026-06-12 17:59:49
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",HYD-1004,12,57,0,2026-06-30 17:33:37
+Coimbatore South Central Hub,WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",HYD-1005,20,64,3,2026-07-11 17:46:56
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",ELE-2001,30,71,0,2026-07-24 20:04:23
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",ELE-2002,21,56,2,2026-07-09 18:35:05
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",ELE-2003,21,48,0,2026-06-21 20:59:31
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",ELE-2004,22,55,0,2026-07-26 18:27:20
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",ELE-2005,17,43,0,2026-07-23 19:10:50
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FAS-3001,25,240,0,2026-07-22 19:24:50
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FAS-3002,18,170,0,2026-06-18 17:44:12
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FAS-3003,15,118,4,2026-07-20 17:53:28
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FAS-3004,13,119,0,2026-05-30 17:36:02
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FAS-3005,26,227,0,2026-07-26 18:16:22
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FIL-4001,16,100,1,2026-07-23 18:14:20
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FIL-4002,23,142,1,2026-07-09 18:21:36
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FIL-4003,18,108,0,2026-07-21 17:27:13
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FIL-4004,16,112,0,2026-07-11 18:54:04
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FIL-4005,20,126,9,2026-07-24 18:05:19
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",HYD-1001,16,56,2,2026-07-18 18:23:32
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",HYD-1002,20,62,2,2026-07-05 18:34:53
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",HYD-1003,20,67,8,2026-06-16 17:48:02
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",HYD-1004,29,96,7,2026-07-18 19:32:00
+Delhi North Hub,WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",HYD-1005,26,86,0,2026-06-18 18:28:01
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",ELE-2001,28,64,1,2026-07-23 20:43:12
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",ELE-2002,20,57,3,2026-07-17 18:54:13
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",ELE-2003,19,46,1,2026-07-24 18:14:26
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",ELE-2004,19,43,6,2026-07-25 18:44:08
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",ELE-2005,21,48,2,2026-07-02 19:09:39
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FAS-3001,20,176,0,2026-07-09 18:25:25
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FAS-3002,20,156,0,2026-07-23 20:56:10
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FAS-3003,22,189,0,2026-06-23 20:36:15
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FAS-3004,20,162,6,2026-07-15 17:14:29
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FAS-3005,17,130,4,2026-06-21 19:42:55
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FIL-4001,24,143,8,2026-07-25 20:34:22
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FIL-4002,22,128,7,2026-07-01 17:50:50
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FIL-4003,17,93,7,2026-07-27 20:34:08
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FIL-4004,17,108,0,2026-07-18 20:44:24
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FIL-4005,21,122,6,2026-06-26 20:54:55
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",HYD-1001,17,62,3,2026-07-13 20:05:02
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",HYD-1002,20,84,5,2026-06-30 17:13:15
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",HYD-1003,19,62,3,2026-06-18 18:15:45
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",HYD-1004,16,55,0,2026-07-08 17:52:14
+Guwahati Northeast Hub,WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",HYD-1005,22,68,5,2026-07-24 20:43:51
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",ELE-2001,24,56,1,2026-07-19 20:17:58
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",ELE-2002,24,58,2,2026-07-25 20:44:05
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",ELE-2003,20,42,1,2026-07-21 20:20:36
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",ELE-2004,21,64,1,2026-07-20 18:53:17
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",ELE-2005,17,46,2,2026-07-08 19:37:55
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FAS-3001,20,178,0,2026-06-26 20:04:24
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FAS-3002,21,195,3,2026-07-18 20:13:24
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FAS-3003,16,148,10,2026-07-27 17:01:48
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FAS-3004,17,139,1,2026-06-27 20:24:18
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FAS-3005,26,238,0,2026-07-22 19:04:03
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FIL-4001,24,164,16,2026-06-19 17:17:50
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FIL-4002,21,131,3,2026-07-27 18:56:21
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FIL-4003,14,89,4,2026-07-15 20:10:19
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FIL-4004,31,202,5,2026-06-01 18:36:22
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FIL-4005,12,72,0,2026-07-14 20:21:05
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",HYD-1001,23,73,4,2026-07-14 17:31:26
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",HYD-1002,13,47,0,2026-07-22 17:06:46
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",HYD-1003,18,56,0,2026-07-14 20:22:57
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",HYD-1004,22,82,0,2026-07-22 18:28:38
+Hyderabad Central Hub,WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",HYD-1005,13,48,0,2026-06-07 18:52:45
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",ELE-2001,25,63,0,2026-07-13 18:05:45
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",ELE-2002,24,49,1,2026-07-27 19:30:26
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",ELE-2003,22,55,0,2026-07-25 19:28:04
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",ELE-2004,17,43,0,2026-07-14 19:46:34
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",ELE-2005,21,44,1,2026-07-23 18:08:04
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FAS-3001,30,251,33,2026-07-25 20:53:48
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FAS-3002,11,95,2,2026-07-19 18:52:37
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FAS-3003,24,243,0,2026-07-18 17:22:19
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FAS-3004,21,161,0,2026-07-20 17:36:06
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FAS-3005,16,119,0,2026-07-17 20:58:39
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FIL-4001,21,130,8,2026-07-26 19:45:37
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FIL-4002,10,57,0,2026-07-01 19:05:43
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FIL-4003,22,138,4,2026-07-24 20:12:40
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FIL-4004,11,59,0,2026-05-09 17:34:16
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FIL-4005,30,179,9,2026-07-25 18:30:02
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",HYD-1001,16,61,1,2026-06-02 18:00:51
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",HYD-1002,18,71,1,2026-06-10 17:42:20
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",HYD-1003,17,64,3,2026-07-26 18:08:41
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",HYD-1004,18,58,1,2026-07-14 20:15:03
+Indore Central-West Hub,WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",HYD-1005,18,61,0,2026-07-27 20:39:30
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",ELE-2001,18,48,1,2026-07-17 20:50:23
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",ELE-2002,23,49,0,2026-06-27 19:08:08
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",ELE-2003,16,33,1,2026-07-08 18:14:09
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",ELE-2004,17,52,1,2026-07-15 17:20:04
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",ELE-2005,14,37,0,2026-07-18 19:13:24
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FAS-3001,25,228,8,2026-07-20 20:10:36
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FAS-3002,22,187,0,2026-07-26 17:04:23
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FAS-3003,21,195,0,2026-07-14 18:34:45
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FAS-3004,18,158,0,2026-07-04 19:34:03
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FAS-3005,18,176,0,2026-07-12 18:31:31
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FIL-4001,23,152,10,2026-06-14 17:09:33
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FIL-4002,22,156,1,2026-07-26 20:14:08
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FIL-4003,19,122,18,2026-07-07 19:16:43
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FIL-4004,13,76,0,2026-07-23 19:46:11
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FIL-4005,18,112,0,2026-07-24 17:38:31
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",HYD-1001,26,101,1,2026-06-18 18:27:43
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",HYD-1002,13,37,0,2026-07-17 20:25:44
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",HYD-1003,14,47,1,2026-06-28 20:10:54
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",HYD-1004,23,78,0,2026-07-22 20:05:48
+Jaipur Regional Hub,WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",HYD-1005,25,81,0,2026-07-15 20:40:19
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",ELE-2001,20,53,0,2026-07-22 18:51:46
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",ELE-2002,27,57,0,2026-06-25 19:05:33
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",ELE-2003,24,44,5,2026-07-12 18:27:18
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",ELE-2004,26,59,1,2026-07-07 20:23:31
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",ELE-2005,17,48,0,2026-07-14 17:57:56
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FAS-3001,16,137,0,2026-07-06 19:55:55
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FAS-3002,21,173,0,2026-07-17 17:45:57
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FAS-3003,17,157,0,2026-07-24 18:09:11
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FAS-3004,20,140,0,2026-06-20 20:38:13
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FAS-3005,18,173,0,2026-07-17 17:23:17
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FIL-4001,17,117,9,2026-07-25 20:35:29
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FIL-4002,18,106,7,2026-06-13 17:09:35
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FIL-4003,22,141,2,2026-07-02 17:34:56
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FIL-4004,21,123,1,2026-07-18 18:56:17
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FIL-4005,16,110,3,2026-07-26 19:59:40
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",HYD-1001,20,69,1,2026-07-17 17:24:06
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",HYD-1002,16,62,0,2026-07-01 19:44:50
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",HYD-1003,20,78,2,2026-07-22 20:00:24
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",HYD-1004,20,71,1,2026-07-02 20:23:40
+Kolkata East Hub,WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",HYD-1005,15,47,0,2026-05-11 18:07:38
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",ELE-2001,23,54,7,2026-07-25 19:15:53
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",ELE-2002,15,30,0,2026-06-09 20:11:44
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",ELE-2003,17,37,2,2026-07-09 19:57:45
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",ELE-2004,17,44,2,2026-06-13 19:32:27
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",ELE-2005,14,31,0,2026-07-19 19:05:53
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FAS-3001,13,129,0,2026-07-23 19:56:00
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FAS-3002,18,137,1,2026-07-16 19:22:32
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FAS-3003,24,186,11,2026-07-27 19:35:22
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FAS-3004,20,180,4,2026-07-16 19:19:13
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FAS-3005,19,145,0,2026-07-24 17:14:05
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FIL-4001,12,72,7,2026-07-17 19:50:14
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FIL-4002,29,177,2,2026-07-12 17:56:24
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FIL-4003,18,107,1,2026-07-03 18:28:45
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FIL-4004,28,180,7,2026-07-26 20:35:48
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FIL-4005,15,75,6,2026-07-20 20:46:05
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",HYD-1001,19,64,3,2026-07-16 19:31:36
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",HYD-1002,19,51,1,2026-06-19 20:13:13
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",HYD-1003,28,96,3,2026-07-27 20:47:16
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",HYD-1004,27,104,1,2026-07-22 17:55:42
+Lucknow Mid-India Hub,WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",HYD-1005,21,81,0,2026-06-09 19:17:19
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",ELE-2001,23,56,2,2026-07-10 20:16:06
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",ELE-2002,12,29,0,2026-06-07 18:22:18
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",ELE-2003,15,28,0,2026-07-22 19:36:50
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",ELE-2004,25,63,3,2026-07-22 19:23:52
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",ELE-2005,27,72,0,2026-06-12 20:30:38
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FAS-3001,15,126,0,2026-07-21 19:20:14
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FAS-3002,23,201,5,2026-07-23 20:53:05
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FAS-3003,28,263,9,2026-07-23 17:49:13
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FAS-3004,22,191,0,2026-06-20 18:45:08
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FAS-3005,24,218,4,2026-07-19 17:21:09
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FIL-4001,20,125,9,2026-07-14 18:59:52
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FIL-4002,17,112,11,2026-07-02 20:39:24
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FIL-4003,28,181,0,2026-07-19 18:00:37
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FIL-4004,31,179,17,2026-07-10 19:07:23
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FIL-4005,13,71,2,2026-05-18 19:38:12
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",HYD-1001,19,68,6,2026-07-19 19:09:25
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",HYD-1002,15,51,7,2026-06-29 17:05:39
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",HYD-1003,32,99,1,2026-07-26 19:31:46
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",HYD-1004,19,76,3,2026-07-07 20:16:08
+Mumbai West Hub,WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",HYD-1005,21,85,5,2026-07-22 17:51:10
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",ELE-2001,16,46,2,2026-07-23 17:26:20
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",ELE-2002,28,63,0,2026-06-18 17:45:09
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",ELE-2003,13,23,2,2026-07-11 17:00:59
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",ELE-2004,17,39,0,2026-06-10 19:35:08
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",ELE-2005,10,20,0,2026-07-17 18:07:18
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FAS-3001,18,147,0,2026-07-27 20:57:04
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FAS-3002,33,259,18,2026-07-03 20:54:36
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FAS-3003,23,189,7,2026-07-27 19:20:27
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FAS-3004,16,144,7,2026-07-14 20:23:17
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FAS-3005,19,160,0,2026-07-09 20:14:44
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FIL-4001,23,157,8,2026-07-18 18:00:13
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FIL-4002,18,114,19,2026-07-13 17:58:13
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FIL-4003,21,130,2,2026-07-01 20:17:21
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FIL-4004,25,149,4,2026-07-23 19:39:23
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FIL-4005,21,118,8,2026-07-11 18:22:16
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",HYD-1001,15,51,5,2026-07-22 20:31:40
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",HYD-1002,24,81,2,2026-07-26 18:02:50
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",HYD-1003,18,63,1,2026-07-09 17:13:59
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",HYD-1004,18,62,4,2026-06-20 18:52:13
+Nagpur Central Hub,WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",HYD-1005,22,69,0,2026-07-08 17:45:38
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",ELE-2001,22,47,0,2026-07-09 19:40:51
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",ELE-2002,14,34,0,2026-06-23 17:54:06
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",ELE-2003,12,37,1,2026-06-27 19:02:22
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",ELE-2004,17,42,0,2026-07-19 19:46:27
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",ELE-2005,22,60,1,2026-07-19 19:46:02
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FAS-3001,20,172,0,2026-07-27 17:55:26
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FAS-3002,17,179,0,2026-07-13 19:22:25
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FAS-3003,9,74,0,2026-07-17 18:14:04
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FAS-3004,30,275,0,2026-07-12 18:44:58
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FAS-3005,14,102,0,2026-05-31 18:36:07
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FIL-4001,21,102,0,2026-07-22 20:03:16
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FIL-4002,24,146,5,2026-07-27 17:49:42
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FIL-4003,28,172,13,2026-07-17 18:43:51
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FIL-4004,12,85,2,2026-07-14 17:57:41
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FIL-4005,27,160,4,2026-07-22 18:29:18
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",HYD-1001,28,117,4,2026-07-09 19:08:45
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",HYD-1002,14,38,4,2026-06-26 19:57:49
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",HYD-1003,28,106,0,2026-07-06 19:13:09
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",HYD-1004,19,61,3,2026-06-13 19:38:25
+Pune Midwest Hub,WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",HYD-1005,22,60,4,2026-07-25 19:11:49

@@ -1,0 +1,58 @@
+0,1,2
+Categories.csv,Category_ID,Primary key for product category
+Categories.csv,Category_Name,Category name
+Parts.csv,Part_ID,Primary key for spare part
+Parts.csv,Part_Name,Spare part name
+Parts.csv,Category_ID,Foreign key to Categories
+Parts.csv,Unit_Price_USD,Current catalog unit price
+Part_Demand_7D.csv,Part_ID,Foreign key to Parts
+Part_Demand_7D.csv,Units_Sold_7_Days,Recent seven-day units sold
+Part_Demand_7D.csv,Units_Returned_7_Days,Recent seven-day units returned
+Part_Demand_7D.csv,Net_Units_Sold_7_Days,Units sold minus returns
+Warehouses.csv,Warehouse_ID,Primary key for warehouse
+Warehouses.csv,Warehouse_Name,Warehouse name
+Warehouses.csv,City,Warehouse city
+Warehouses.csv,State,Warehouse state/region subdivision
+Warehouses.csv,Region,Operational region
+Warehouses.csv,Base_Lead_Days,Base fulfillment lead time
+Warehouses.csv,Reliability,Warehouse reliability score
+Inventory.csv,Warehouse_ID,Foreign key to Warehouses
+Inventory.csv,Part_ID,Foreign key to Parts
+Inventory.csv,On_Hand,Physical units on hand
+Inventory.csv,Reserved,Units reserved
+Inventory.csv,Damaged,Damaged units
+Inventory.csv,Available,Available units
+Inventory.csv,Reorder_Level,Inventory reorder threshold
+Orders.csv,Order_ID,Primary key for fulfillment request
+Orders.csv,Part_ID,Foreign key to Parts
+Orders.csv,Priority,Order priority
+Orders.csv,Reserved,Whether the order is reserved
+Candidates.csv,Candidate_ID,Primary key for fulfillment candidate
+Candidates.csv,Order_ID,Foreign key to Orders
+Candidates.csv,Warehouse_ID,Foreign key to Warehouses
+Candidates.csv,Base_Unit_Cost_USD,Candidate base cost
+Candidates.csv,Items_Sold_To_Date,Historical units sold for candidate part
+TOPSIS_Evaluation.csv,Candidate_ID,Foreign key to Candidates
+TOPSIS_Evaluation.csv,Rank,TOPSIS rank
+TOPSIS_Evaluation.csv,Effective_Unit_Cost_USD,Adjusted candidate cost
+TOPSIS_Evaluation.csv,Effective_Lead_Time_Days,Adjusted lead time
+TOPSIS_Evaluation.csv,TOPSIS_Score,Multi-criteria ranking score
+Buyer_Alternative_Parts.csv,Buyer_ID,Buyer identifier
+Buyer_Alternative_Parts.csv,Requested_Part_ID,Requested part foreign key
+Buyer_Alternative_Parts.csv,Alternative_Part_ID,Alternative part foreign key
+Sales_Transactions.csv,Sale_ID,Primary key for sale
+Sales_Transactions.csv,Buyer_ID,Buyer identifier
+Sales_Transactions.csv,Seller_ID,Seller identifier
+Sales_Transactions.csv,Warehouse_ID,Warehouse foreign key
+Sales_Transactions.csv,Part_ID,Part foreign key
+Sales_Transactions.csv,Quantity_Sold,Units sold
+Sales_Transactions.csv,Quantity_Returned,Units returned
+Sales_Transactions.csv,Unit_Price_USD,Historical transaction price
+Buyer_Sales_Summary.csv,Buyer_ID + Part_ID,Composite key
+Seller_Sales_Summary.csv,Seller_ID + Warehouse_ID + Part_ID,Composite key
+Category_Demand_TimeSeries.csv,Timestamp + Category_ID,Logical time/category key
+Demand_Prediction_Logic.csv,Variable,Input variable used by prediction/orchestration logic
+Fulfillment_Decision.csv,Order_ID,Primary/foreign key to Orders
+Fulfillment_Decision.csv,Warehouse_ID,Selected warehouse
+Fulfillment_Decision.csv,Decision,Fulfillment decision
+Fulfillment_Decision.csv,TOPSIS_Score,Decision score

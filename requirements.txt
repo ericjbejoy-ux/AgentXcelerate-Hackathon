@@ -1,9 +1,11 @@
 ﻿fastapi
 uvicorn
-streamlit
 pydantic
 google-genai
 numpy
 pandas
 requests
-asyncio
+groq
+httpx
+pytest
+pytest-asyncio

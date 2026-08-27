@@ -18,9 +18,9 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from mocks.inventory_db import SKU_CATALOG, get_sku
 from mocks.suppliers import MockSupplierAPI, SupplierID, SupplierCatalog, SupplierQuote
 from mocks.logistics import calculate_freight_quote, FreightQuoteRequest, FreightQuoteResponse
+from core.database import db
 
 logger = logging.getLogger("supplier_server")
 
@@ -123,7 +123,7 @@ async def get_freight_quote(payload: FreightQuoteRequest):
     if not supplier_api:
         raise HTTPException(status_code=404, detail=f"Supplier {payload.origin} not found")
         
-    sku_data = get_sku(payload.sku)
+    sku_data = db.inventory.get_sku(payload.sku)
     if not sku_data:
         raise HTTPException(status_code=404, detail=f"SKU {payload.sku} not found")
         
@@ -169,7 +169,7 @@ async def create_seller_order(supplier_id: str, payload: PlaceOrderPayload):
     if not api:
         raise HTTPException(status_code=404, detail=f"Unknown supplier: {supplier_id}")
         
-    sku_data = get_sku(payload.sku)
+    sku_data = db.inventory.get_sku(payload.sku)
     if not sku_data:
         raise HTTPException(status_code=404, detail=f"SKU not found in master catalog: {payload.sku}")
         

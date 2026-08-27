@@ -1,0 +1,301 @@
+Warehouse_ID,Warehouse_Address,Part_ID,On_Hand,Reserved,Damaged,Available,Reorder_Level
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",HYD-1001,46,4,0,42,9
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",HYD-1001,56,6,1,49,12
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",HYD-1001,53,6,1,46,8
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",HYD-1001,65,9,1,55,12
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",HYD-1001,81,6,1,74,18
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",HYD-1001,49,5,0,44,10
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",HYD-1001,59,7,1,51,13
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",HYD-1001,62,9,1,52,12
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",HYD-1001,63,5,1,57,10
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",HYD-1001,58,6,1,51,12
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",HYD-1001,60,7,1,52,15
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",HYD-1001,62,9,1,52,14
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",HYD-1001,63,5,1,57,12
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",HYD-1001,72,7,1,64,14
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",HYD-1001,60,7,1,52,12
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",HYD-1002,36,4,0,32,6
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",HYD-1002,45,5,0,40,9
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",HYD-1002,41,6,0,35,5
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",HYD-1002,50,4,0,46,8
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",HYD-1002,39,4,0,35,9
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",HYD-1002,39,5,0,34,7
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",HYD-1002,46,6,0,40,9
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",HYD-1002,48,4,0,44,8
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",HYD-1002,51,5,1,45,8
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",HYD-1002,38,5,0,33,8
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",HYD-1002,45,6,0,39,10
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",HYD-1002,47,4,0,43,9
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",HYD-1002,51,5,1,45,9
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",HYD-1002,41,5,0,36,7
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",HYD-1002,41,6,0,35,9
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",HYD-1003,38,5,0,33,6
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",HYD-1003,47,7,0,40,9
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",HYD-1003,43,3,0,40,5
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",HYD-1003,46,5,0,41,9
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",HYD-1003,43,5,0,38,10
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",HYD-1003,41,6,0,35,7
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",HYD-1003,48,4,0,44,9
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",HYD-1003,50,5,0,45,8
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",HYD-1003,34,4,0,30,6
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",HYD-1003,42,6,0,36,9
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",HYD-1003,48,4,0,44,10
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",HYD-1003,49,5,0,44,9
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",HYD-1003,53,6,1,46,9
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",HYD-1003,36,5,0,31,7
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",HYD-1003,43,3,0,40,9
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",HYD-1004,56,8,1,47,10
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",HYD-1004,68,5,1,62,14
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",HYD-1004,52,5,1,46,8
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",HYD-1004,68,8,1,59,14
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",HYD-1004,61,9,1,51,14
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",HYD-1004,62,5,1,56,12
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",HYD-1004,70,7,1,62,14
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",HYD-1004,64,8,1,55,14
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",HYD-1004,49,7,0,42,9
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",HYD-1004,60,5,1,54,13
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",HYD-1004,71,7,1,63,16
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",HYD-1004,72,9,1,62,14
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",HYD-1004,48,7,0,41,10
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",HYD-1004,52,4,1,47,10
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",HYD-1004,64,6,1,57,14
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",HYD-1005,43,3,0,40,6
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",HYD-1005,44,4,0,40,9
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",HYD-1005,42,5,0,37,6
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",HYD-1005,39,5,0,34,7
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",HYD-1005,48,4,0,44,10
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",HYD-1005,47,5,0,42,8
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",HYD-1005,45,5,0,40,9
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",HYD-1005,49,7,0,42,9
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",HYD-1005,38,3,0,35,6
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",HYD-1005,47,5,0,42,9
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",HYD-1005,54,6,1,47,11
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",HYD-1005,50,7,0,43,11
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",HYD-1005,37,3,0,34,7
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",HYD-1005,41,4,0,37,7
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",HYD-1005,48,6,0,42,9
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",ELE-2001,36,4,0,32,7
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",ELE-2001,44,5,0,39,10
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",ELE-2001,42,6,0,36,7
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",ELE-2001,39,3,0,36,8
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",ELE-2001,46,5,0,41,10
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",ELE-2001,39,5,0,34,8
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",ELE-2001,45,6,0,39,10
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",ELE-2001,37,3,0,34,8
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",ELE-2001,38,4,0,34,7
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",ELE-2001,45,5,0,40,9
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",ELE-2001,45,6,0,39,11
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",ELE-2001,48,4,0,44,11
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",ELE-2001,38,4,0,34,8
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",ELE-2001,41,5,0,36,8
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",ELE-2001,48,7,0,41,10
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",ELE-2002,27,3,0,24,4
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",ELE-2002,36,5,0,31,8
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",ELE-2002,23,2,0,21,3
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",ELE-2002,29,3,0,26,5
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",ELE-2002,30,4,0,26,7
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",ELE-2002,29,4,0,25,5
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",ELE-2002,37,3,0,34,8
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",ELE-2002,28,3,0,25,5
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",ELE-2002,28,3,0,25,4
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",ELE-2002,30,4,0,26,6
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",ELE-2002,37,3,0,34,9
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",ELE-2002,28,3,0,25,6
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",ELE-2002,29,3,0,26,5
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",ELE-2002,31,4,0,27,5
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",ELE-2002,30,2,0,28,6
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",ELE-2003,24,3,0,21,3
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",ELE-2003,29,2,0,27,5
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",ELE-2003,21,2,0,19,2
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",ELE-2003,22,3,0,19,4
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",ELE-2003,28,4,0,24,6
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",ELE-2003,26,2,0,24,4
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",ELE-2003,23,2,0,21,4
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",ELE-2003,25,3,0,22,4
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",ELE-2003,21,3,0,18,3
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",ELE-2003,27,2,0,25,5
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",ELE-2003,30,3,0,27,6
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",ELE-2003,24,3,0,21,4
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",ELE-2003,26,4,0,22,4
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",ELE-2003,23,2,0,21,4
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",ELE-2003,27,3,0,24,5
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",ELE-2004,42,3,0,39,7
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",ELE-2004,40,4,0,36,9
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",ELE-2004,32,4,0,28,6
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",ELE-2004,39,5,0,34,8
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",ELE-2004,47,4,0,43,11
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",ELE-2004,49,5,0,44,10
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",ELE-2004,42,5,0,37,9
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",ELE-2004,37,5,0,32,8
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",ELE-2004,38,3,0,35,7
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",ELE-2004,47,5,0,42,10
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",ELE-2004,41,5,0,36,10
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",ELE-2004,43,6,0,37,9
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",ELE-2004,38,3,0,35,8
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",ELE-2004,41,4,0,37,8
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",ELE-2004,49,6,0,43,11
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",ELE-2005,35,4,0,31,6
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",ELE-2005,27,3,0,24,6
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",ELE-2005,23,3,0,20,3
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",ELE-2005,29,2,0,27,5
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",ELE-2005,35,4,0,31,7
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",ELE-2005,27,3,0,24,5
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",ELE-2005,27,4,0,23,6
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",ELE-2005,28,2,0,26,5
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",ELE-2005,28,3,0,25,4
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",ELE-2005,38,5,0,33,8
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",ELE-2005,32,4,0,28,7
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",ELE-2005,28,2,0,26,6
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",ELE-2005,28,3,0,25,5
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",ELE-2005,34,4,0,30,7
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",ELE-2005,29,4,0,25,6
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FAS-3001,103,12,1,90,14
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FAS-3001,96,13,1,82,17
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FAS-3001,88,7,1,80,8
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FAS-3001,112,11,1,100,16
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FAS-3001,136,16,1,119,24
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FAS-3001,85,12,1,72,14
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FAS-3001,101,8,1,92,18
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FAS-3001,104,10,1,93,15
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FAS-3001,108,13,1,94,12
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FAS-3001,98,14,1,83,15
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FAS-3001,100,8,1,91,21
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FAS-3001,103,10,1,92,18
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FAS-3001,109,13,1,95,16
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FAS-3001,118,17,1,100,16
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FAS-3001,105,8,1,96,17
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FAS-3002,82,11,1,70,11
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FAS-3002,103,8,1,94,18
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FAS-3002,95,10,1,84,8
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FAS-3002,119,14,1,104,16
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FAS-3002,125,18,1,106,26
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FAS-3002,90,7,1,82,14
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FAS-3002,106,11,1,94,18
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FAS-3002,112,13,1,98,16
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FAS-3002,115,16,1,98,12
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FAS-3002,90,7,1,82,17
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FAS-3002,106,11,1,94,21
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FAS-3002,111,13,1,97,19
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FAS-3002,115,16,1,98,16
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FAS-3002,92,7,1,84,12
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FAS-3002,93,9,1,83,17
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FAS-3003,88,7,1,80,11
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FAS-3003,110,11,1,98,18
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FAS-3003,101,12,1,88,8
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FAS-3003,104,15,1,88,16
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FAS-3003,98,8,1,89,20
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FAS-3003,96,10,1,85,14
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FAS-3003,114,14,1,99,19
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FAS-3003,119,17,1,101,16
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FAS-3003,103,8,1,94,14
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FAS-3003,96,10,1,85,17
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FAS-3003,114,14,1,99,22
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FAS-3003,118,17,1,100,19
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FAS-3003,122,10,1,111,16
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FAS-3003,85,8,1,76,14
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FAS-3003,101,12,1,88,18
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FAS-3004,93,9,1,83,11
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FAS-3004,116,14,1,101,18
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FAS-3004,87,12,1,74,8
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FAS-3004,111,9,1,101,16
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FAS-3004,104,10,1,93,20
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FAS-3004,104,12,1,91,15
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FAS-3004,121,17,1,103,19
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FAS-3004,104,8,1,95,16
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FAS-3004,82,8,1,73,11
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FAS-3004,103,12,1,90,18
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FAS-3004,120,17,1,102,22
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FAS-3004,126,10,1,115,20
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FAS-3004,111,11,1,99,18
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FAS-3004,90,11,1,78,14
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FAS-3004,106,15,1,90,18
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FAS-3005,100,12,1,87,11
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FAS-3005,104,15,1,88,19
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FAS-3005,93,7,1,85,8
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FAS-3005,90,9,1,80,14
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FAS-3005,111,13,1,97,21
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FAS-3005,110,15,1,94,15
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FAS-3005,107,9,1,97,19
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FAS-3005,111,11,1,99,16
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FAS-3005,88,11,1,76,11
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FAS-3005,110,15,1,94,18
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FAS-3005,128,10,1,117,23
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FAS-3005,111,11,1,99,20
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FAS-3005,88,11,1,76,14
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FAS-3005,96,13,1,82,14
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FAS-3005,114,9,1,104,19
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FIL-4001,77,11,1,65,12
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FIL-4001,99,8,1,90,20
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FIL-4001,90,9,1,80,11
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FIL-4001,83,10,1,72,14
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FIL-4001,102,14,1,87,20
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FIL-4001,85,7,1,77,15
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FIL-4001,101,10,1,90,20
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FIL-4001,77,9,1,67,13
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FIL-4001,82,11,1,70,12
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FIL-4001,101,8,1,92,18
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FIL-4001,101,10,1,90,23
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FIL-4001,105,13,1,91,21
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FIL-4001,81,11,1,69,14
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FIL-4001,90,7,1,82,15
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FIL-4001,103,10,1,92,18
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FIL-4002,69,6,1,62,9
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FIL-4002,84,8,1,75,14
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FIL-4002,59,7,1,51,6
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FIL-4002,73,10,1,62,10
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FIL-4002,77,6,1,70,16
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FIL-4002,74,7,1,66,11
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FIL-4002,88,11,1,76,15
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FIL-4002,69,10,1,58,10
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FIL-4002,71,6,1,64,8
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FIL-4002,75,8,1,66,14
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FIL-4002,87,10,1,76,17
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FIL-4002,68,10,1,57,12
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FIL-4002,71,6,1,64,10
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FIL-4002,79,8,1,70,11
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FIL-4002,77,9,1,67,14
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FIL-4003,73,7,1,65,9
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FIL-4003,90,11,1,78,15
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FIL-4003,63,9,1,53,6
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FIL-4003,66,5,1,60,11
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FIL-4003,81,8,1,72,16
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FIL-4003,80,10,1,69,12
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FIL-4003,70,10,1,59,12
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FIL-4003,73,6,1,66,10
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FIL-4003,63,6,1,56,8
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FIL-4003,80,10,1,69,14
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FIL-4003,93,13,1,79,18
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FIL-4003,72,6,1,65,12
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FIL-4003,77,8,1,68,11
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FIL-4003,70,8,1,61,11
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FIL-4003,82,11,1,70,14
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FIL-4004,96,12,1,83,14
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FIL-4004,116,16,1,99,21
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FIL-4004,67,5,1,61,9
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FIL-4004,85,8,1,76,15
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FIL-4004,107,13,1,93,23
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FIL-4004,104,15,1,88,17
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FIL-4004,91,7,1,83,17
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FIL-4004,80,8,1,71,15
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FIL-4004,82,10,1,71,12
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FIL-4004,104,15,1,88,20
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FIL-4004,88,7,1,80,18
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FIL-4004,93,9,1,83,17
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FIL-4004,82,10,1,71,15
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FIL-4004,93,13,1,79,17
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FIL-4004,106,8,1,97,20
+WH-Central-TX,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",FIL-4005,101,14,1,86,14
+WH-East-NC,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",FIL-4005,76,6,1,69,15
+WH-West-CA,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",FIL-4005,72,7,1,64,9
+WH-North-IL,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",FIL-4005,90,11,1,78,15
+WH-South-FL,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",FIL-4005,112,16,1,95,23
+WH-Midwest-OH,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",FIL-4005,109,9,1,99,17
+WH-Pacific-WA,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",FIL-4005,81,8,1,72,17
+WH-Mountain-CO,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",FIL-4005,85,10,1,74,15
+WH-Southwest-AZ,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",FIL-4005,90,13,1,76,14
+WH-Southeast-GA,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",FIL-4005,109,9,1,99,20
+WH-Northeast-NY,"Beltola Industrial Area, Guwahati, Assam 781028, India",FIL-4005,94,9,1,84,19
+WH-MidAtlantic-VA,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",FIL-4005,84,10,1,73,17
+WH-GreatLakes-MI,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",FIL-4005,87,12,1,74,15
+WH-SouthCentral-OK,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",FIL-4005,98,8,1,89,17
+WH-Rockies-UT,"Chakan MIDC, Pune, Maharashtra 410501, India",FIL-4005,82,8,1,73,15

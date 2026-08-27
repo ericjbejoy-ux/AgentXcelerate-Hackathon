@@ -50,13 +50,13 @@ def test_client_catalog():
     client = SupplierClient(base_url="http://127.0.0.1:8002")
     catalog = client.get_catalog("supplier_a")
     assert catalog.supplier_id == "supplier_a"
-    assert len(catalog.items) == 10
+    assert len(catalog.items) == 20
 
 
 def test_client_get_quote():
     client = SupplierClient(base_url="http://127.0.0.1:8002")
-    quote = client.get_quote("supplier_a", "SKU-MOTOR-001", quantity=3)
-    assert quote.sku == "SKU-MOTOR-001"
+    quote = client.get_quote("supplier_a", "HYD-1001", quantity=3)
+    assert quote.sku == "HYD-1001"
     assert quote.available_qty > 0
     assert quote.supplier_id == "supplier_a"
 
@@ -66,7 +66,7 @@ def test_logistics_quote_endpoint():
     quote = client.get_freight_quote(
         origin="supplier_b",
         destination="ZONE-WEST",
-        sku="SKU-MOTOR-001",
+        sku="HYD-1001",
         quantity=5,
         transit_speed_mode="express"
     )
@@ -78,7 +78,7 @@ def test_logistics_quote_endpoint():
 
 def test_seller_order_placement_and_reallocation():
     client = SupplierClient(base_url="http://127.0.0.1:8002")
-    sku = "SKU-MOTOR-001"
+    sku = "HYD-1001"
     
     # 1. Place a low priority buffer order to commit some stock
     low_order = client.place_seller_order(

@@ -41,15 +41,15 @@ class TestSupplierAPI:
     async def test_get_catalog_returns_items(self) -> None:
         api = MockSupplierAPI(SupplierID.A)
         catalog = await api.get_catalog()
-        assert len(catalog.items) == 10
+        assert len(catalog.items) == 20
         assert catalog.supplier_id == "supplier_a"
 
     @pytest.mark.asyncio
     async def test_get_quote_known_sku(self) -> None:
         api = MockSupplierAPI(SupplierID.A)
-        quote = await api.get_quote("SKU-MOTOR-001", quantity=5)
+        quote = await api.get_quote("HYD-1001", quantity=5)
         assert quote is not None
-        assert quote.sku == "SKU-MOTOR-001"
+        assert quote.sku == "HYD-1001"
         assert quote.unit_price > 0
 
     @pytest.mark.asyncio
@@ -62,14 +62,14 @@ class TestSupplierAPI:
     async def test_supplier_b_higher_prices_than_a(self) -> None:
         a = MockSupplierAPI(SupplierID.A)
         b = MockSupplierAPI(SupplierID.B)
-        qa = await a.get_quote("SKU-MOTOR-001")
-        qb = await b.get_quote("SKU-MOTOR-001")
+        qa = await a.get_quote("HYD-1001")
+        qb = await b.get_quote("HYD-1001")
         assert qa is not None and qb is not None
         assert qb.unit_price > qa.unit_price  # Express is more expensive
 
     @pytest.mark.asyncio
     async def test_query_all_suppliers(self) -> None:
-        quotes = await query_all_suppliers("SKU-VALVE-003", quantity=10)
+        quotes = await query_all_suppliers("FIL-4001", quantity=10)
         assert len(quotes) == 3
         supplier_ids = {q.supplier_id for q in quotes}
         assert supplier_ids == {"supplier_a", "supplier_b", "supplier_c"}
