@@ -1,118 +1,137 @@
 # Mock Suppliers & Logistics Module
 
-This package mock-simulates external supplier REST APIs, manages central synthetic inventory data, and calculates total landed logistics costs with lead-time constraints.
+This package simulates external supplier REST APIs, manages central synthetic inventory catalogs, calculates dynamic logistics freight charges, and handles priority-based stock reallocations.
+
+---
 
 ## Architecture & Data Flow
 
 ```
                      +---------------------------------------+
                      |           mocks/inventory_db.py       |
-                     |  (SKU Master Catalog & Base Prices)   |
+                     |     (SKU Catalog & Warehouse Stock)   |
                      +-----------------------+---------------+
                                              |
                                              v
-                     +---------------------------------------+
-                     |           mocks/suppliers.py          |
-                     |     (Supplier Profiles A, B, & C)     |
                      +-----------------------+---------------+
-                                             |
-                                             v
-                     +---------------------------------------+
                      |        mocks/supplier_server.py       |
                      |    (FastAPI Mock REST API on :8001)   |
-                     +-----------------------+---------------+
-                                             | (HTTP requests)
-                                             v
-                     +---------------------------------------+
+                     +------------+--------------------+-----+
+                                  |                    |
+          (Seller Routes /seller) |                    | (Logistics Routes /logistics)
+                                  v                    v
+                     +------------+----------+   +-----+---------------+
+                     |     Seller Endpoints  |   | Logistics Endpoints |
+                     |   - Check stock logs  |   |  - Query transit    |
+                     |   - Place/Cancel POs  |   |    speeds & weights |
+                     |   - Reallocations     |   |  - Dynamic freight  |
+                     +------------+----------+   +-----+---------------+
+                                  |                    |
+                                  +---------+----------+
+                                            | (HTTP JSON)
+                                            v
+                     +----------------------+----------------+
                      |        mocks/supplier_client.py       |
                      |    (Python HTTP Wrapper for Agents)   |
-                     +-----------------------+---------------+
-                                             |
-                                             v
-                     +---------------------------------------+
-                     |           mocks/logistics.py          |
-                     |   (Landed Costs & Constraint Filter)  |
+                     +----------------------+----------------+
+                                            |
+                                            v
+                     +----------------------+----------------+
+                     |         Autonomous Orchestrator       |
+                     |          (Fulfillment Agents)         |
                      +---------------------------------------+
 ```
 
 ---
 
 ## 1. Central Inventory: `inventory_db.py`
-Acts as the shared single source of truth. Contains **10 synthetic SKUs** across categories (Connectivity, Actuators, Fluid Handling, Automation, etc.).
+Shared database containing **10 synthetic SKUs** across categories (Connectivity, Actuators, Fluid Handling, Automation, etc.).
 * **Model:** `SKURecord` (includes properties like `base_unit_price`, `weight_kg`, and a `critical` flag).
-* **Model:** `WarehouseStock` (tracks `on_hand_qty`, `reserved_qty`, and triggers `needs_reorder`).
+* **Model:** `WarehouseStock` (tracks `on_hand_qty`, `reserved_qty`, and the physical distribution center `warehouse_loc`).
 
 ---
 
-## 2. Supplier Profiles: `suppliers.py`
-Defines 3 distinct vendor behaviors matching the hackathon criteria:
-1. **Supplier A (Primary):** Full stock (1.0x ratio), base prices (1.0x multiplier), slow lead time (10 days), low speed factor (0.3).
-2. **Supplier B (Express):** Partial stock (0.35x ratio), premium prices (1.45x markup), fast lead time (2 days), high speed factor (1.8).
-3. **Supplier C (Alt Region):** Medium stock (0.60x ratio), mid prices (1.15x markup), medium lead time (4 days), variable speed factor (1.0).
-
----
-
-## 3. REST API Server: `supplier_server.py`
-Simulates external REST endpoints. Run it via:
+## 2. API Server Endpoints: `supplier_server.py`
+Starts a unified mock gateway on `http://localhost:8001`. Run using:
 ```bash
 python -m mocks.supplier_server
-# Server starts on http://localhost:8001
 ```
-### Primary Endpoints:
-* `GET /health`: Returns loaded mock suppliers.
-* `GET /{supplier_id}/catalog`: Fetches the supplier's stock catalog.
-* `GET /{supplier_id}/quote?sku={sku}&quantity={q}`: Requests a price and lead-time quote.
-* `GET /quotes/all?sku={sku}&quantity={q}`: Concurrently queries all 3 suppliers (fan-out pattern).
+
+### A. Seller & Order Management (`/seller/*`)
+Used by agents to place purchase orders and by the frontend to monitor system state.
+
+* **List Orders:** `GET /seller/orders` (or `?supplier_id=supplier_a`)
+  * Returns the full log of incoming orders including allocation schemas, warehouse locations, gross margins, and operational directives.
+* **Place Purchase Order:** `POST /seller/{supplier_id}/order`
+  * **Payload:**
+    ```json
+    {
+      "buyer_id": "CLIENT-NEXUS-9",
+      "sku": "SKU-MOTOR-001",
+      "quantity": 5,
+      "priority": "HIGH",
+      "destination_zone": "ZONE-EAST",
+      "transit_speed_mode": "express"
+    }
+    ```
+  * **Stock Reallocation Logic:** If a `HIGH` priority order has insufficient stock, the API automatically hijacks inventory from an active `LOW` or `MEDIUM` priority order, logging the hijacked target in `deprioritized_order_id` and applying a `10%` SLA penalty.
+* **Cancel/Reject Order:** `POST /seller/orders/{order_id}/cancel`
+  * Cancels the order, changes status to `CANCELLED`, and automatically restores the allocated stock back to the supplier's catalog.
+
+### B. Logistics Carrier Simulator (`/logistics/*`)
+Used by agents to calculate dynamic freight charges.
+
+* **Retrieve Freight Quote:** `POST /logistics/quote`
+  * **Payload:**
+    ```json
+    {
+      "origin": "supplier_b",
+      "destination": "ZONE-WEST",
+      "sku": "SKU-MOTOR-001",
+      "quantity": 5,
+      "transit_speed_mode": "express"
+    }
+    ```
+  * **Calculation Formula:**
+    $$\text{Freight Cost} = \left(\text{Base Rate} + \text{Weight Markup}\right) \times e^{(\text{Speed Factor})} \times \text{Distance Factor}$$
+  * Returns dynamic freight charges (adjusted for SKU weights) and transit days (carrier transit time + supplier handling delays).
 
 ---
 
-## 4. Client Wrapper: `supplier_client.py`
-Teammates should import `SupplierClient` to query suppliers over HTTP:
+## 3. Client SDK: `supplier_client.py`
+Teammates can query the REST API directly using Python bindings:
 ```python
 from mocks.supplier_client import SupplierClient
 
 client = SupplierClient(base_url="http://localhost:8001")
-# Get quotes from all 3 suppliers
-quotes = client.get_all_quotes(sku="SKU-MOTOR-001", quantity=5)
+
+# 1. Get Freight Rates & Speeds
+shipping_quote = client.get_freight_quote(
+    origin="supplier_b",
+    destination="ZONE-WEST",
+    sku="SKU-MOTOR-001",
+    quantity=5,
+    transit_speed_mode="express"
+)
+print(f"Transit: {shipping_quote.total_transit_days} days. Cost: ${shipping_quote.freight_cost}")
+
+# 2. Place Order
+order_receipt = client.place_seller_order(
+    supplier_id="supplier_b",
+    buyer_id="CLIENT-NEXUS-9",
+    sku="SKU-MOTOR-001",
+    quantity=5,
+    priority="HIGH",
+    destination_zone="ZONE-WEST",
+    transit_speed_mode="express"
+)
 ```
 
 ---
 
-## 5. Cost & Constraint Engine: `logistics.py`
-Calculates final metrics and filters viable shipping paths.
-* **Landed Cost Formula:**
-  $$\text{Landed Cost} = (\text{Unit Price} \times Q) + \text{Freight Base Rate} \times e^{(\text{Speed Factor})}$$
-* **Constraint Filtering:** Partition quotes into `viable` vs `rejected` categories matching the customer's maximum lead-time limit.
-
-### Usage:
-```python
-from mocks.logistics import build_cost_breakdown, filter_by_lead_time
-
-# 1. Calculate costs
-breakdowns = [build_cost_breakdown(quote, quantity=5) for quote in quotes]
-
-# 2. Filter by threshold (e.g., max 5 days)
-result = filter_by_lead_time(breakdowns, max_lead_time_days=5.0)
-
-print(result.cheapest) # Best price among matching paths
-print(result.fastest)  # Shortest transit time among matching paths
+## 4. Supplier Dashboard: `supplier_dashboard.py`
+Streamlit application visualizing live catalog levels, incoming orders, reallocations, and margin metrics. Runs on port `8502`:
+```bash
+streamlit run mocks/supplier_dashboard.py --server.port 8502
 ```
-
----
-
-## 🔄 Keeping this File Synced
-
-To ensure this document does not drift from code changes, follow these guidelines:
-
-1. **Verify Changes via Tests:**
-   Run the tests before updating anything. If you alter the data models or mock structures, update the test suite to reflect those modifications:
-   ```bash
-   pytest tests/test_supplier_server.py
-   pytest tests/test_suppliers_logistics.py
-   ```
-2. **Formula Alignment:**
-   The landed cost formula in `logistics.py` (`calculate_landed_cost`) **must** mathematically match the equation documented in this file.
-3. **Endpoint Contracts:**
-   If you add/modify paths in `supplier_server.py`, immediately add the signature to Section 3 above and update `supplier_client.py` accordingly.
-4. **Pydantic V2 Consistency:**
-   Ensure any changes to the schemas in `inventory_db.py`, `suppliers.py`, or `logistics.py` use Pydantic V2 definitions and reflect any parameter type shifts here.
+*Allows judges to manually cancel active orders to verify multi-agent fallback behavior.*
