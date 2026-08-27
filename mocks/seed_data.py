@@ -1,0 +1,6 @@
+import json, os
+os.makedirs("mocks", exist_ok=True)
+data = [{"part_id": "BRK-7702-X", "warehouse_id": "WH-Central-TX", "available_stock": 150, "allocated_stock": 20, "base_unit_cost": 145.5, "standard_lead_time_days": 5, "expedited_lead_time_days": 2, "expedited_cost_multiplier": 1.5, "supplier_reliability_score": 0.96}]
+with open("mocks/inventory_db.json", "w") as f:
+    json.dump(data, f, indent=2)
+print("Data seeded successfully!")
