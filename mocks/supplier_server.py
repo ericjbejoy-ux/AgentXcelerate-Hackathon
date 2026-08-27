@@ -195,10 +195,13 @@ async def create_seller_order(supplier_id: str, payload: PlaceOrderPayload):
         api._catalog[payload.sku].available_qty -= payload.quantity
     else:
         # Scenario B: Insufficient stock. Check priority for stock hijack / reallocation
-        if payload.priority.upper() == "HIGH":
-            # Search for a lower-priority order from the same supplier to hijack stock from
+        if payload.priority.upper() in ("HIGH", "CRITICAL"):
+            # Search for a lower-priority order to hijack stock from (match by part_id)
             lower_priority_order = next(
-                (o for o in _SELLER_ORDERS if o.supplier_id == supplier_id and o.priority in ("LOW", "MEDIUM") and o.status == "PENDING"),
+                (o for o in _SELLER_ORDERS
+                 if o.part_id == payload.sku
+                 and o.priority in ("LOW", "MEDIUM")
+                 and o.automated_approval_status == "APPROVED"),
                 None
             )
             if lower_priority_order:
@@ -206,21 +209,22 @@ async def create_seller_order(supplier_id: str, payload: PlaceOrderPayload):
                 reallocation_triggered = True
                 deprioritized_id = lower_priority_order.incoming_order_id
                 affected_cust = lower_priority_order.buyer_id
-                sla_penalty_fee = round(lower_priority_order.total_cost * 0.10, 2) # 10% SLA penalty
-                
+                sla_penalty_fee = round(lower_priority_order.gross_revenue * 0.10, 2)  # 10% SLA penalty
+
                 # Take stock
                 allocated = payload.quantity
                 # Deduct rest from supplier catalog
                 needed_from_cat = max(0, payload.quantity - lower_priority_order.requested_qty)
                 api._catalog[payload.sku].available_qty = max(0, api._catalog[payload.sku].available_qty - needed_from_cat)
-                
-                action_directive = f"Stock hijacked from low priority PO {deprioritized_id}."
+
+                action_directive = f"Stock reallocated from lower-priority PO {deprioritized_id}."
             else:
                 # No orders to hijack from. Fall back to production run or tier-2 supplier
                 fulfillment_route = "Production Run"
                 allocated = payload.quantity
                 action_directive = "Insufficient stock. Initiated expedited production run."
                 automated_approval = "PENDING_SIGN_OFF"
+
         else:
             # Low/Medium priority order with insufficient stock gets waitlisted
             fulfillment_route = "Tier-2 Supplier"

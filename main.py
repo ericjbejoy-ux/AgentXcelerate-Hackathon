@@ -1,10 +1,10 @@
-from fastapi import FastAPI, HTTPException
+﻿from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sys
 
 from agents.demand_agent import process_demand_layer
-from core.topsis import run_topsis_optimization
+from utils.topsis import run_topsis_optimization
 from agents.explanation_agent import generate_reasoning_with_groq
 
 app = FastAPI(title="Autonomous SCM Multi-Agent Mesh")
@@ -23,6 +23,10 @@ class OrderRequest(BaseModel):
     requested_qty: int
     max_lead_time_days: int
     priority: str
+
+@app.get("/api/v1/health")
+def health():
+    return {"status": "ok"}
 
 @app.post("/api/v1/process-order")
 def process_order(request: OrderRequest):

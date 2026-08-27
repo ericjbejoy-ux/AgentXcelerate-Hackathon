@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parts Optimization Dashboard</title>
+    <style>
+        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 2rem; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        h1 { margin-bottom: 0.5rem; }
+        .subtitle { color: #64748b; margin-bottom: 2rem; }
+        .grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
+        .card { background: var(--card); border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.4rem; font-size: 0.9rem; }
+        input, select { width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; background: var(--primary); color: white; padding: 0.75rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; }
+        button:hover { background: #1d4ed8; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+        th { background: #f1f5f9; font-weight: 600; }
+        .badge { background: #dcfce7; color: #166534; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: bold; font-size: 0.8rem; }
+        .explanation { background: #eff6ff; border-left: 4px solid var(--primary); padding: 1rem; margin-top: 1rem; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Parts Investigation System</h1>
+        <p class="subtitle">Discover stock, evaluate strategy options, and run TOPSIS optimization.</p>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>Request Optimization</h3>
+                <form id="optimizeForm">
+                    <div class="form-group">
+                        <label>Part ID / SKU</label>
+                        <input type="text" id="partId" value="ELE-RLY-133" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Requested Quantity</label>
+                        <input type="number" id="qty" value="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Max Lead Time (Days)</label>
+                        <input type="number" id="maxLeadTime" value="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Order Priority</label>
+                        <select id="priority">
+                            <option value="HIGH">HIGH</option>
+                            <option value="MEDIUM">MEDIUM</option>
+                            <option value="LOW">LOW</option>
+                        </select>
+                    </div>
+                    <button type="submit">Run Optimization</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Optimization Results</h3>
+                <div id="resultsPlaceholder">Submit an order request on the left to analyze inventory.</div>
+                <div id="resultsContent" style="display:none;">
+                    <div class="explanation" id="explanationText"></div>
+                    <h4>Evaluated Candidates</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Warehouse</th>
+                                <th>Unit Cost</th>
+                                <th>Lead Time</th>
+                                <th>Reliability</th>
+                                <th>TOPSIS Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="candidatesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("optimizeForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const payload = {
+                part_id: document.getElementById("partId").value,
+                requested_qty: parseInt(document.getElementById("qty").value),
+                max_lead_time_days: parseInt(document.getElementById("maxLeadTime").value),
+                priority: document.getElementById("priority").value
+            };
+
+            try {
+                const res = await fetch("/api/optimize", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                
+                if (data.error) {
+                    alert("Error: " + data.error);
+                    return;
+                }
+
+                document.getElementById("resultsPlaceholder").style.display = "none";
+                document.getElementById("resultsContent").style.display = "block";
+                document.getElementById("explanationText").innerText = data.explanation;
+
+                const tbody = document.getElementById("candidatesBody");
+                tbody.innerHTML = "";
+                data.candidate_strategies.forEach((item, index) => {
+                    const badgeHtml = index === 0 ? ' <span class="badge">WINNER</span>' : '';
+                    const row = `<tr>
+                        <td>${item.warehouse_id}${badgeHtml}</td>
+                        <td>$${item.unit_cost}</td>
+                        <td>${item.lead_time_days} days</td>
+                        <td>${(item.reliability_score * 100).toFixed(0)}%</td>
+                        <td><b>${item.topsis_score}</b></td>
+                    </tr>`;
+                    tbody.innerHTML += row;
+                });
+            } catch (err) {
+                alert("Failed to query optimization API.");
+            }
+        });
+    </script>
+</body>
+</html>

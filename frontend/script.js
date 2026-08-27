@@ -4,7 +4,9 @@ const STORAGE_KEYS = {
 };
 
 const SELLER_API_BASE_URL = "http://localhost:8001";
+const API_BASE_URL = "http://localhost:8000";
 const sellerState = { supplierId: "supplier_a", catalog: null, orders: [] };
+const analysisState = { orderId: null, selectedOption: null, orderPayload: null };
 
 const partCatalog = {
   Hydraulics: [
@@ -119,6 +121,8 @@ const strategyResults = document.getElementById("strategyResults");
 const agentRecommendation = document.getElementById("agentRecommendation");
 const recommendationContent = document.getElementById("recommendationContent");
 const approvalGate = document.getElementById("approvalGate");
+const approvalGateTitle = document.getElementById("approvalGateTitle");
+const approvalGateMessage = document.getElementById("approvalGateMessage");
 const agentRejection = document.getElementById("agentRejection");
 
 const authModal = document.getElementById("authModal");
@@ -265,6 +269,19 @@ function updateDashboardForRole() {
 async function sellerRequest(path, options = {}) {
   const response = await fetch(`${SELLER_API_BASE_URL}${path}`, {
     headers: { Accept: "application/json" },
+    ...options
+  });
+  if (!response.ok) {
+    let message = `Request failed (${response.status})`;
+    try { message = (await response.json()).detail || message; } catch (error) {}
+    throw new Error(message);
+  }
+  return response.json();
+}
+
+async function buyerRequest(path, options = {}) {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
     ...options
   });
   if (!response.ok) {
@@ -460,9 +477,12 @@ function resetAgentExecution() {
   agentRecommendation.hidden = true;
   approvalGate.hidden = true;
   agentRejection.hidden = true;
+  approvalGateTitle.textContent = "⏸ Waiting for Human Approval";
+  approvalGateMessage.textContent = "No supplier order will be placed until you approve this strategy.";
   document.querySelectorAll("#agentPipeline li").forEach((step, index) => {
-    step.dataset.status = index === 0 ? "completed" : "waiting";
-    step.querySelector(".pipeline-symbol").textContent = index === 0 ? "✓" : "○";
+    step.dataset.status = "waiting";
+    step.querySelector(".pipeline-symbol").textContent = "○";
+    step.querySelector("small").textContent = "Waiting for backend event";
   });
 }
 
@@ -493,7 +513,17 @@ function handleAgentEvent(event) {
 }
 
 function renderAgentRecommendation(data) {
-  recommendationContent.innerHTML = `<div class="recommendation-grid"><p>Recommended Strategy<strong>${data.strategy_name || "--"}</strong></p><p>Fulfillment Allocation<strong>${data.fulfillment_allocation || "--"}</strong></p><p>Total Cost<strong>${data.total_cost ?? "--"}</strong></p><p>Estimated Lead Time<strong>${data.estimated_lead_time ?? "--"} days</strong></p><p>TOPSIS Score<strong>${data.topsis_score ?? "--"}</strong></p></div><p>${data.explanation || "No explanation provided."}</p>`;
+  recommendationContent.innerHTML = `<div class="recommendation-grid"><p>Recommended Strategy<strong>${data.strategy_name || "--"}</strong></p><p>Fulfillment Allocation<strong>${data.fulfillment_allocation || "--"}</strong></p><p>Total Cost<strong>${data.total_cost ?? "--"}</strong></p><p>Estimated Lead Time<strong>${data.estimated_lead_time ?? "--"} days</strong></p><p>TOPSIS Score<strong>${data.topsis_score ?? "--"}</strong></p></div><div class="recommendation-explanation"><h4>Backend Explanation</h4><ul id="recommendationExplanationList"></ul></div>`;
+  const explanationLines = String(data.explanation || "No explanation provided.")
+    .split(/\n+/)
+    .map((line) => line.replace(/[✅📊📦🚚]/g, "").replace(/\*\*/g, "").trim())
+    .filter(Boolean);
+  const explanationList = document.getElementById("recommendationExplanationList");
+  explanationLines.forEach((line) => {
+    const item = document.createElement("li");
+    item.textContent = line;
+    explanationList.appendChild(item);
+  });
   agentRecommendation.hidden = false;
   approvalGate.hidden = false;
 }
@@ -504,10 +534,78 @@ function startAgentExecution(payload) {
   agentExecution.hidden = false;
   agentStateLabel.textContent = "ANALYZING";
   renderExecutionConstraints(payload);
+  window.requestAnimationFrame(() => {
+    agentExecution.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
+function applyBackendResult(result) {
+  ["order_requirements", "inventory_sources", "supplier_evaluation", "logistics_evaluation", "strategy_generation", "topsis_optimization", "final_recommendation"].forEach((stage) => {
+    updatePipelineStage(stage, "completed", "Completed by backend orchestration");
+  });
+
+  const selected = result.selected_option || {};
+  analysisState.orderId = result.order_id;
+  analysisState.selectedOption = selected;
+  executionState = "WAITING_FOR_APPROVAL";
+  renderAgentRecommendation({
+    strategy_name: selected.fulfillment_type || selected.candidate_id || "Recommended fulfillment option",
+    fulfillment_allocation: selected.source || selected.warehouse_id || "Backend-selected source",
+    total_cost: selected.total_cost,
+    estimated_lead_time: selected.lead_time_days,
+    topsis_score: selected.topsis_score,
+    explanation: result.explanation
+  });
+  agentStateLabel.textContent = "WAITING FOR APPROVAL";
+}
+
+async function analyzeWithBackend(payload) {
+  analysisState.orderPayload = payload;
+  return buyerRequest("/api/v1/process-order", {
+    method: "POST",
+    body: JSON.stringify({
+      order_id: `REQ-${Date.now()}`,
+      customer_id: payload.customerId,
+      part_id: payload.partId,
+      requested_qty: payload.requestedQuantity,
+      max_lead_time_days: payload.maximumAcceptableLeadTimeDays,
+      priority: payload.priorityLevel
+    })
+  });
+}
+
+async function replanStrategy() {
+  if (!analysisState.orderPayload || !analysisState.selectedOption) {
+    throw new Error("No strategy is available to re-plan.");
+  }
+
+  const payload = analysisState.orderPayload;
+  return buyerRequest("/api/v1/replan-strategy", {
+    method: "POST",
+    body: JSON.stringify({
+      order_id: analysisState.orderId,
+      customer_id: payload.customerId,
+      part_id: payload.partId,
+      requested_qty: payload.requestedQuantity,
+      max_lead_time_days: payload.maximumAcceptableLeadTimeDays,
+      priority: payload.priorityLevel,
+      rejected_candidate_id: analysisState.selectedOption.candidate_id
+    })
+  });
 }
 
 async function approveStrategy(strategy) {
-  console.warn("Approval API is not connected yet. No supplier order was placed.", strategy);
+  if (!analysisState.orderId || !analysisState.selectedOption) {
+    throw new Error("No completed recommendation is available for approval.");
+  }
+
+  return buyerRequest("/api/v1/approve-strategy", {
+    method: "POST",
+    body: JSON.stringify({
+      order_id: analysisState.orderId,
+      strategy: strategy || analysisState.selectedOption
+    })
+  });
 }
 
 function setAuthMode(mode) {
@@ -697,7 +795,7 @@ sellerOrdersBody.addEventListener("click", (event) => {
   }
 });
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
   clearErrors();
   updateCustomerIdFromSession();
@@ -717,8 +815,22 @@ form.addEventListener("submit", (event) => {
   renderSummaryTable(orderPayload);
   startAgentExecution(orderPayload);
 
-  statusMessage.textContent = "Order validated successfully. Visible table stays clean, while customer ID remains hidden inside the payload.";
-  statusMessage.classList.add("status-message--success");
+  statusMessage.textContent = "Order validated. Sending fulfillment request to the orchestration backend...";
+  statusMessage.classList.remove("status-message--success");
+
+  try {
+    const result = await analyzeWithBackend(orderPayload);
+    if (result.status !== "success") throw new Error(result.detail || "The backend did not return a successful result.");
+    applyBackendResult(result);
+    statusMessage.textContent = "Fulfillment analysis complete. Review the recommendation before approval.";
+    statusMessage.classList.add("status-message--success");
+  } catch (error) {
+    executionState = "ERROR";
+    agentStateLabel.textContent = "ERROR";
+    statusMessage.textContent = "Fulfillment analysis is unavailable. Your request is still captured locally.";
+    statusMessage.classList.remove("status-message--success");
+    console.error("Buyer fulfillment request failed:", error);
+  }
 });
 
 document.getElementById("returnToRequest").addEventListener("click", () => {
@@ -727,15 +839,55 @@ document.getElementById("returnToRequest").addEventListener("click", () => {
 });
 
 document.getElementById("approveStrategy").addEventListener("click", () => {
-  approveStrategy(null);
+  const button = document.getElementById("approveStrategy");
+  button.disabled = true;
+  button.textContent = "Approving...";
+  approveStrategy(null)
+    .then((result) => {
+      executionState = "APPROVED";
+      agentStateLabel.textContent = "APPROVED";
+      approvalGateTitle.textContent = "✓ Recommendation Approved";
+      approvalGateMessage.textContent = result.message;
+      button.hidden = true;
+      document.getElementById("rejectStrategy").hidden = true;
+      statusMessage.textContent = "Strategy approval recorded by the backend. No supplier order was placed.";
+      statusMessage.classList.add("status-message--success");
+    })
+    .catch((error) => {
+      button.disabled = false;
+      button.textContent = "Approve Strategy";
+      statusMessage.textContent = "Strategy approval could not be recorded.";
+      console.error("Buyer strategy approval failed:", error);
+    });
 });
 
 document.getElementById("rejectStrategy").addEventListener("click", () => {
-  executionState = "REJECTED";
-  agentRecommendation.hidden = true;
-  approvalGate.hidden = true;
-  agentRejection.hidden = false;
-  agentStateLabel.textContent = "REJECTED";
+  const button = document.getElementById("rejectStrategy");
+  button.disabled = true;
+  button.textContent = "Re-planning...";
+  executionState = "ANALYZING";
+  agentStateLabel.textContent = "RE-PLANNING";
+  resetAgentExecution();
+  agentExecution.hidden = false;
+  agentStateLabel.textContent = "RE-PLANNING";
+  replanStrategy()
+    .then((result) => {
+      if (result.status !== "success") throw new Error(result.detail || "No alternative strategy was returned.");
+      applyBackendResult(result);
+      statusMessage.textContent = "The rejected strategy was detected. A new fulfillment strategy is ready for approval.";
+      statusMessage.classList.remove("status-message--success");
+    })
+    .catch((error) => {
+      executionState = "ERROR";
+      agentStateLabel.textContent = "RE-PLAN FAILED";
+      agentRejection.hidden = false;
+      statusMessage.textContent = "No alternative strategy could be generated.";
+      console.error("Buyer strategy re-plan failed:", error);
+    })
+    .finally(() => {
+      button.disabled = false;
+      button.textContent = "Reject Strategy";
+    });
 });
 
 updateCustomerIdFromSession();
@@ -748,4 +900,11 @@ if (getCurrentUser()) {
   showWelcomeScreen();
 }
 
-  loadSellerHealth();
+  if (getCurrentUser()?.role !== "Seller") {
+    buyerRequest("/api/v1/health")
+      .then(() => setConnectionStatus(true))
+      .catch((error) => {
+        setConnectionStatus(false);
+        console.error("Buyer orchestration health check failed:", error);
+      });
+  }
