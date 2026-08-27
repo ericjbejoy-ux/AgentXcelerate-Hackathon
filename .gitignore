@@ -1,0 +1,6 @@
+.vscode/
+.trae/
+.antigravity/
+.idea/
+__pycache__/
+.env

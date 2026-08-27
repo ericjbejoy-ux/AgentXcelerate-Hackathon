@@ -1,0 +1,32 @@
+# AgentXcelerate-Hackathon Global AI Rules
+
+## 1. Project Context & Stack
+- Project Name: Autonomous Supply Chain Ops (AgentXcelerate)
+- Architecture: Event-Driven Multi-Agent Architecture (Async Orchestrator + Event Bus)
+- Python Version: 3.10+
+- Primary Libraries: FastAPI, Streamlit, Pydantic (v2), google-genai, asyncio, requests
+- Key Goal: Hackathon MVP focused on speed, modularity, and explicit inter-agent logging.
+
+## 2. Directory Structure Conventions
+Keep all code strictly inside assigned modular subdirectories:
+- `agents/`: Individual agent logic files (`diagnostic_agent.py`, `inventory_agent.py`, `procurement_agent.py`, `logistics_agent.py`)
+- `core/`: Event Bus, state schemas, and central orchestration logic (`event_bus.py`, `orchestrator.py`, `schemas.py`)
+- `frontend/`: Streamlit dashboard and backend client (`app.py`, `api_client.py`)
+- `mocks/`: Mock database definitions and vendor API wrappers (`suppliers.py`, `inventory_db.py`)
+- `tests/`: Isolated unit/integration scripts per component
+
+## 3. Communication & Schema Rules
+- EVERY inter-agent message MUST adhere to the `AgentEvent` Pydantic structure containing:
+  `trace_id` (str), `timestamp` (ISO str), `sender_agent` (str), `recipient_agent` (str), `event_type` (str), `data` (dict).
+- Do NOT use raw, unstructured strings for agent-to-agent communication. Use JSON-serializable structures or Pydantic models.
+
+## 4. Code Style & Quality Standards
+- Async First: Use standard `async/await` patterns for network requests, mock delays, and agent operations.
+- Explicit Typing: Include Python type hints (`str`, `dict`, `List`, `Optional`) on all functions.
+- Error Handling: Fail gracefully with standard logging—never allow uncaught exceptions to crash the FastAPI/Streamlit processes.
+- Documentation: Keep inline comments concise and functional. No verbose boilerplate.
+
+## 5. AI Assistant Behavior Constraints
+- Do NOT rewrite entire codebases when asked to make small changes. Modify only the targeted functions.
+- Respect environment isolation—never leak API key placeholders into code files (always source from `os.getenv`).
+- Avoid introducing unrequested third-party dependencies beyond `requirements.txt`.
