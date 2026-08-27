@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Ingestion Interface</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <section class="welcome-screen" id="welcomeScreen" aria-labelledby="welcomeTitle">
+    <div class="welcome-screen__content">
+      <p class="eyebrow">Parts Investigation System</p>
+      <h1 id="welcomeTitle" aria-live="polite">Welcome!</h1>
+      <p class="welcome-screen__subtitle">A focused workspace for discovering, requesting, and fulfilling spare parts.</p>
+      <button type="button" class="button-primary welcome-screen__button" id="welcomeContinue" hidden>
+        Continue to Login
+      </button>
+    </div>
+  </section>
+
+  <main class="page" id="dashboardPage" hidden>
+    <section class="dashboard" aria-labelledby="order-ingestion-title">
+      <header class="dashboard__topbar">
+        <div class="brand-block">
+          <p class="eyebrow">Autonomous Spare Parts Supply Chain Orchestration Agent</p>
+          <h1 id="order-ingestion-title">Order Ingestion Interface</h1>
+          <p class="lead">
+            Capture spare-parts requests, validate them locally, and review a compact
+            fulfillment summary before wiring this screen into backend services.
+          </p>
+        </div>
+
+        <div class="auth-launcher" aria-label="System and account status">
+          <div class="connection-status" id="connectionStatus" role="status" aria-live="polite">
+            <span class="connection-status__dot" aria-hidden="true">●</span>
+            <span>BACKEND ONLINE</span>
+          </div>
+          <a class="profile-link" href="./profile.html">Profile</a>
+        </div>
+      </header>
+
+      <div class="dashboard__content">
+        <section class="panel panel--form" id="requestPanel" aria-labelledby="form-title">
+          <div class="panel__header">
+            <h2 id="form-title">New Fulfillment Request</h2>
+            <p id="form-description">Choose a category and part name. The matching part ID is filled in automatically.</p>
+          </div>
+
+          <div class="seller-workspace" id="sellerWorkspace" hidden>
+            <span class="seller-workspace__mark">S</span>
+            <div>
+              <h3>Seller workspace</h3>
+              <p>Order requests are created by buyers. Use your account profile to manage seller details.</p>
+            </div>
+          </div>
+
+          <form id="order-form" novalidate>
+            <input id="customerId" name="customerId" type="hidden" value="CUST-BUY-1001">
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                  <option value="">Select category</option>
+                  <option value="Hydraulics">Hydraulics</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Fasteners">Fasteners</option>
+                  <option value="Filtration">Filtration</option>
+                </select>
+                <p class="error-message" id="categoryError" aria-live="polite"></p>
+              </div>
+
+              <div class="form-field">
+                <label for="partName">Part Name</label>
+                <select id="partName" name="partName" required disabled>
+                  <option value="">Select category first</option>
+                </select>
+                <p class="error-message" id="partNameError" aria-live="polite"></p>
+              </div>
+
+              <div class="form-field">
+                <label for="partId">Part ID</label>
+                <input id="partId" name="partId" type="text" placeholder="Auto-selected from category and part name" readonly required>
+                <p class="error-message" id="partIdError" aria-live="polite"></p>
+              </div>
+
+              <div class="form-field">
+                <label for="requestedQuantity">Requested Quantity</label>
+                <input id="requestedQuantity" name="requestedQuantity" type="number" min="1" step="1" placeholder="e.g. 25" required>
+                <p class="error-message" id="requestedQuantityError" aria-live="polite"></p>
+              </div>
+
+              <div class="form-field">
+                <label for="leadTime">Maximum Acceptable Lead Time <span class="unit">(days)</span></label>
+                <input id="leadTime" name="leadTime" type="number" min="1" step="1" placeholder="e.g. 7" required>
+                <p class="error-message" id="leadTimeError" aria-live="polite"></p>
+              </div>
+
+              <div class="form-field">
+                <label for="priorityLevel">Priority Level</label>
+                <select id="priorityLevel" name="priorityLevel" required>
+                  <option value="">Select priority</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Critical">Critical</option>
+                </select>
+                <p class="error-message" id="priorityLevelError" aria-live="polite"></p>
+              </div>
+
+              <div class="form-field form-field--full">
+                <label for="specialInstructions">Special Instructions / Constraints <span class="optional">(optional)</span></label>
+                <textarea
+                  id="specialInstructions"
+                  name="specialInstructions"
+                  rows="5"
+                  placeholder="Examples: Avoid Warehouse B if possible&#10;Prefer lower cost over faster delivery"
+                ></textarea>
+                <p class="help-text">Use this space to describe preferences, exclusions, or fulfillment constraints.</p>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="button-primary">Analyze Fulfillment</button>
+              <p class="form-note">Current behavior: validates inputs and displays the order payload locally.</p>
+            </div>
+          </form>
+        </section>
+
+        <aside class="panel panel--results" aria-labelledby="results-title">
+          <div class="panel__header">
+            <h2 id="results-title">Captured Order Data</h2>
+            <p>The validated request appears in a compact summary table and is also logged to the browser console.</p>
+          </div>
+
+          <div id="statusMessage" class="status-message" aria-live="polite">
+            Submit the form to preview the order payload.
+          </div>
+
+          <div class="table-wrap">
+            <table class="summary-table" aria-label="Order summary table">
+              <tbody id="resultTableBody">
+                <tr>
+                  <th scope="row">Category</th>
+                  <td>Not submitted yet</td>
+                </tr>
+                <tr>
+                  <th scope="row">Part Name</th>
+                  <td>Not submitted yet</td>
+                </tr>
+                <tr>
+                  <th scope="row">Part ID</th>
+                  <td>Not submitted yet</td>
+                </tr>
+                <tr>
+                  <th scope="row">Requested Quantity</th>
+                  <td>Not submitted yet</td>
+                </tr>
+                <tr>
+                  <th scope="row">Lead Time</th>
+                  <td>Not submitted yet</td>
+                </tr>
+                <tr>
+                  <th scope="row">Priority Level</th>
+                  <td>Not submitted yet</td>
+                </tr>
+                <tr>
+                  <th scope="row">Special Instructions</th>
+                  <td>Not submitted yet</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="authModal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+      <button type="button" class="modal-close" id="closeAuthModal" aria-label="Close login portal">×</button>
+
+      <div class="modal-header" id="authModalHeader">
+        <p class="eyebrow eyebrow--small" id="authRoleBadge">Buyer Access</p>
+        <h2 id="authModalTitle">Login Portal</h2>
+        <p id="authModalText">Use the demo credentials below or create a dummy account locally.</p>
+      </div>
+
+      <div class="role-selection" id="roleSelection">
+        <button type="button" class="role-choice role-choice--buyer" data-role-select="Buyer">
+          <strong>Buyer</strong>
+          <span>Submit and track fulfillment requests</span>
+        </button>
+        <button type="button" class="role-choice role-choice--seller" data-role-select="Seller">
+          <strong>Seller</strong>
+          <span>Manage supply and fulfillment activity</span>
+        </button>
+      </div>
+
+      <div class="auth-panel" id="authPanel" hidden>
+        <div class="demo-credentials" id="demoCredentials">
+          <p><strong>Buyer:</strong> `buyer@demo.com` / `buyer123`</p>
+          <p><strong>Seller:</strong> `seller@demo.com` / `seller123`</p>
+        </div>
+
+        <form id="authForm" class="auth-form" novalidate>
+        <div class="form-grid form-grid--single">
+          <div class="form-field" id="nameField" hidden>
+            <label for="authName">Full Name</label>
+            <input id="authName" name="authName" type="text" placeholder="e.g. Jordan Lee">
+          </div>
+
+          <div class="form-field">
+            <label for="authEmail">Email</label>
+            <input id="authEmail" name="authEmail" type="email" placeholder="name@company.com" required>
+          </div>
+
+          <div class="form-field" id="companyField" hidden>
+            <label for="authCompany">Company</label>
+            <input id="authCompany" name="authCompany" type="text" placeholder="e.g. Apex Components">
+          </div>
+
+          <div class="form-field">
+            <label for="authPassword">Password</label>
+            <input id="authPassword" name="authPassword" type="password" placeholder="Enter password" required>
+          </div>
+        </div>
+
+        <p class="error-message" id="authError" aria-live="polite"></p>
+
+        <div class="modal-actions">
+          <button type="submit" class="button-primary" id="authSubmitButton">Login</button>
+          <button type="button" class="button-secondary" id="toggleAuthMode">New here? Sign up</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
