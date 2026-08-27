@@ -3,6 +3,9 @@ const STORAGE_KEYS = {
   currentUser: "ax_current_user"
 };
 
+const SELLER_API_BASE_URL = "http://localhost:8001";
+const sellerState = { supplierId: "supplier_a", catalog: null, orders: [] };
+
 const partCatalog = {
   Hydraulics: [
     { name: "Hydraulic Pump", id: "HYD-PMP-001" },
@@ -91,6 +94,20 @@ const welcomeScreen = document.getElementById("welcomeScreen");
 const welcomeTitle = document.getElementById("welcomeTitle");
 const welcomeContinue = document.getElementById("welcomeContinue");
 const dashboardPage = document.getElementById("dashboardPage");
+const buyerDashboardContent = document.getElementById("buyerDashboardContent");
+const sellerCommandCenter = document.getElementById("sellerCommandCenter");
+const connectionStatus = document.getElementById("connectionStatus");
+const connectionStatusText = document.getElementById("connectionStatusText");
+const retryConnection = document.getElementById("retryConnection");
+const sellerApiMessage = document.getElementById("sellerApiMessage");
+const sellerInventoryBody = document.getElementById("sellerInventoryBody");
+const sellerCatalogMeta = document.getElementById("sellerCatalogMeta");
+const sellerOrdersBody = document.getElementById("sellerOrdersBody");
+const sellerDetailsPanel = document.getElementById("sellerDetailsPanel");
+const sellerDetailsTitle = document.getElementById("sellerDetailsTitle");
+const sellerDetailsContent = document.getElementById("sellerDetailsContent");
+const sellerRiskPanel = document.getElementById("sellerRiskPanel");
+const sellerRiskContent = document.getElementById("sellerRiskContent");
 
 const authModal = document.getElementById("authModal");
 const closeAuthModalButton = document.getElementById("closeAuthModal");
@@ -212,6 +229,116 @@ function updateDashboardForRole() {
   formDescription.textContent = isSeller
     ? "Your account is ready for seller-side fulfillment activity."
     : "Choose a category and part name. The matching part ID is filled in automatically.";
+  buyerDashboardContent.hidden = isSeller;
+  sellerCommandCenter.hidden = !isSeller;
+  if (isSeller) refreshSellerData();
+}
+
+async function sellerRequest(path, options = {}) {
+  const response = await fetch(`${SELLER_API_BASE_URL}${path}`, {
+    headers: { Accept: "application/json" },
+    ...options
+  });
+  if (!response.ok) {
+    let message = `Request failed (${response.status})`;
+    try { message = (await response.json()).detail || message; } catch (error) {}
+    throw new Error(message);
+  }
+  return response.json();
+}
+
+function formatSellerCurrency(value) {
+  return Number.isFinite(Number(value)) ? `$${Number(value).toFixed(2)}` : "--";
+}
+
+function sellerValue(value) {
+  return value === null || value === undefined || value === "" ? "--" : value;
+}
+
+function showSellerMessage(message, type = "error") {
+  sellerApiMessage.textContent = message;
+  sellerApiMessage.dataset.type = type;
+}
+
+function setConnectionStatus(isOnline) {
+  connectionStatus.dataset.status = isOnline ? "online" : "offline";
+  connectionStatusText.textContent = isOnline ? "SYSTEM ONLINE" : "SYSTEM OFFLINE";
+}
+
+function renderSellerCatalog(catalog) {
+  const items = catalog.items || [];
+  sellerCatalogMeta.textContent = `${catalog.supplier_name} / ${items.length} SKUs`;
+  document.getElementById("sellerCatalogCount").textContent = items.length;
+  document.getElementById("sellerStockCount").textContent = items.reduce((total, item) => total + Number(item.available_qty || 0), 0).toLocaleString();
+  sellerInventoryBody.innerHTML = items.length ? items.map(item => {
+    const stock = Number(item.available_qty || 0);
+    const stockState = stock === 0 ? "out" : stock < 50 ? "low" : "healthy";
+    const stockLabel = stockState === "out" ? "Out of stock" : stockState === "low" ? "Low stock" : "Healthy stock";
+    return `<tr><td class="seller-mono">${item.sku}</td><td>${item.description}</td><td>${formatSellerCurrency(item.unit_price)}</td><td class="seller-stock"><span class="stock-indicator stock-indicator--${stockState}"></span>${item.available_qty}<small>${stockLabel}</small></td></tr>`;
+  }).join("") : '<tr><td colspan="4">No catalog items returned.</td></tr>';
+}
+
+function renderSellerOrders(orders) {
+  sellerState.orders = orders;
+  document.getElementById("sellerOrderCount").textContent = orders.length;
+  document.getElementById("sellerMarginTotal").textContent = formatSellerCurrency(orders.reduce((total, order) => total + Number(order.net_margin || 0), 0));
+  sellerOrdersBody.innerHTML = orders.length ? orders.map(order => `<tr><td class="seller-mono">${order.incoming_order_id}</td><td>${order.buyer_id}</td><td><span class="seller-mono">${order.part_id}</span><br>${order.requested_qty} requested</td><td>${order.allocated_stock}</td><td><span class="seller-priority seller-priority--${String(order.priority).toLowerCase()}">${order.priority}</span></td><td>${order.fulfillment_type}</td><td>${order.automated_approval_status}</td><td class="seller-actions"><button type="button" class="button-secondary" data-seller-action="details" data-order-id="${order.incoming_order_id}">View Details</button><button type="button" class="seller-cancel" data-seller-action="cancel" data-order-id="${order.incoming_order_id}">Cancel / Restock Order</button></td></tr>`).join("") : '<tr><td colspan="8">No active orders for this supplier.</td></tr>';
+}
+
+function renderSellerDetails(order) {
+  sellerDetailsTitle.textContent = order.incoming_order_id;
+  const groups = [["Demand", [["Buyer ID", order.buyer_id], ["Part ID", order.part_id], ["Requested Quantity", order.requested_qty], ["Priority", order.priority]]], ["Inventory / Fulfillment", [["Current Stock", order.current_stock], ["Allocated Stock", order.allocated_stock], ["Remaining Stock", order.remaining_stock], ["Warehouse Location", order.warehouse_loc], ["Fulfillment Type", order.fulfillment_type]]], ["Financial", [["Gross Revenue", formatSellerCurrency(order.gross_revenue)], ["Fulfillment Cost", formatSellerCurrency(order.fulfillment_cost)], ["Expedited Freight Cost", formatSellerCurrency(order.expedited_freight_cost)], ["Net Margin", formatSellerCurrency(order.net_margin)]]], ["Operational", [["Recommended Action", order.recommended_action], ["Automated Approval Status", order.automated_approval_status], ["Created At", order.created_at]]]];
+  sellerDetailsContent.innerHTML = groups.map(([title, fields]) => `<div class="seller-detail-group"><h4>${title}</h4>${fields.map(([label, value]) => `<div><span>${label}</span><strong>${sellerValue(value)}</strong></div>`).join("")}</div>`).join("");
+  sellerDetailsPanel.hidden = false;
+  renderSellerRisk(order);
+  sellerDetailsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderSellerRisk(order) {
+  const hasRisk = order.deprioritized_order_id || order.affected_customer || Number(order.sla_penalty || 0) > 0;
+  sellerRiskPanel.hidden = !hasRisk;
+  if (hasRisk) sellerRiskContent.innerHTML = [["Deprioritized Order ID", order.deprioritized_order_id], ["Affected Customer", order.affected_customer], ["SLA Penalty", formatSellerCurrency(order.sla_penalty)]].map(([label, value]) => `<div><span>${label}</span><strong>${sellerValue(value)}</strong></div>`).join("");
+}
+
+async function loadSellerHealth() {
+  try {
+    await sellerRequest("/health");
+    setConnectionStatus(true);
+    showSellerMessage("Live supplier data connected.", "success");
+  } catch (error) {
+    setConnectionStatus(false);
+    showSellerMessage("Unable to retrieve live supplier data.");
+    console.error("Seller backend health check failed:", error);
+  }
+}
+
+async function loadSellerCatalog() {
+  sellerInventoryBody.innerHTML = '<tr><td colspan="4">Loading catalog...</td></tr>';
+  try { sellerState.catalog = await sellerRequest("/supplier_a/catalog"); renderSellerCatalog(sellerState.catalog); } catch (error) { sellerCatalogMeta.textContent = "Unavailable"; sellerInventoryBody.innerHTML = '<tr><td colspan="4">Unable to retrieve inventory.</td></tr>'; console.error("Seller catalog request failed:", error); }
+}
+
+async function loadSellerOrders() {
+  sellerOrdersBody.innerHTML = '<tr><td colspan="8">Loading orders...</td></tr>';
+  try {
+    const orders = await sellerRequest("/seller/orders");
+    const supplierOrders = orders.filter((order) => !order.recommended_action || order.recommended_action.toLowerCase().includes("[supplier_a]"));
+    renderSellerOrders(supplierOrders);
+  } catch (error) { sellerState.orders = []; sellerOrdersBody.innerHTML = '<tr><td colspan="8">Unable to retrieve incoming orders.</td></tr>'; document.getElementById("sellerOrderCount").textContent = "--"; document.getElementById("sellerMarginTotal").textContent = "--"; console.error("Seller orders request failed:", error); }
+}
+
+async function refreshSellerData() {
+  sellerDetailsPanel.hidden = true;
+  sellerRiskPanel.hidden = true;
+  await Promise.all([loadSellerHealth(), loadSellerCatalog(), loadSellerOrders()]);
+}
+
+async function cancelSellerOrder(orderId, button) {
+  const shouldCancel = window.confirm("Cancel this order?\n\nThis will cancel the fulfillment request and restore allocated inventory.");
+  if (!shouldCancel) return;
+
+  button.disabled = true;
+  button.textContent = "Cancelling...";
+  try { const result = await sellerRequest(`/seller/orders/${encodeURIComponent(orderId)}/cancel`, { method: "POST" }); showSellerMessage(`${result.message} Restored ${result.restored_stock} unit(s).`, "success"); await refreshSellerData(); } catch (error) { showSellerMessage(`Could not cancel ${orderId}: ${error.message}`); button.disabled = false; button.textContent = "Cancel / Restock Order"; }
 }
 
 function showDashboard() {
@@ -460,6 +587,26 @@ partNameSelect.addEventListener("change", () => {
   syncPartId();
   setFieldError("partName", "");
   setFieldError("partId", "");
+});
+
+document.getElementById("refreshSellerData").addEventListener("click", refreshSellerData);
+retryConnection.addEventListener("click", refreshSellerData);
+document.getElementById("closeSellerDetails").addEventListener("click", () => {
+  sellerDetailsPanel.hidden = true;
+  sellerRiskPanel.hidden = true;
+});
+
+sellerOrdersBody.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-seller-action]");
+  if (!button) return;
+
+  const order = sellerState.orders.find((item) => item.incoming_order_id === button.dataset.orderId);
+  if (button.dataset.sellerAction === "details" && order) {
+    renderSellerDetails(order);
+  }
+  if (button.dataset.sellerAction === "cancel") {
+    cancelSellerOrder(button.dataset.orderId, button);
+  }
 });
 
 form.addEventListener("submit", (event) => {

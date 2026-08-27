@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Ingestion Interface</title>
+  <title>Supplier Operations Center</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,25 +24,72 @@
   <main class="page" id="dashboardPage" hidden>
     <section class="dashboard" aria-labelledby="order-ingestion-title">
       <header class="dashboard__topbar">
-        <div class="brand-block">
-          <p class="eyebrow">Autonomous Spare Parts Supply Chain Orchestration Agent</p>
-          <h1 id="order-ingestion-title">Order Ingestion Interface</h1>
-          <p class="lead">
-            Capture spare-parts requests, validate them locally, and review a compact
-            fulfillment summary before wiring this screen into backend services.
-          </p>
+        <div class="brand-block seller-account-identity">
+          <p class="eyebrow">Seller Account</p>
+          <h1 id="order-ingestion-title">Supplier Operations Center</h1>
+          <p class="lead">Monitor inventory, incoming orders, fulfillment decisions, and supply-chain impact.</p>
+          <div class="seller-account-label">
+            <strong>SUPPLIER A</strong>
+            <span>Primary Supplier</span>
+            <span>Seller Account</span>
+          </div>
         </div>
 
         <div class="auth-launcher" aria-label="System and account status">
           <div class="connection-status" id="connectionStatus" role="status" aria-live="polite">
             <span class="connection-status__dot" aria-hidden="true">●</span>
-            <span>BACKEND ONLINE</span>
+            <span id="connectionStatusText">SYSTEM OFFLINE</span>
           </div>
+          <button type="button" class="profile-link retry-button" id="retryConnection">Retry Connection</button>
           <a class="profile-link" href="./profile.html">Profile</a>
         </div>
       </header>
 
-      <div class="dashboard__content">
+      <section class="seller-command-center" id="sellerCommandCenter" hidden aria-labelledby="sellerViewTitle">
+        <div class="seller-view-header">
+          <div>
+            <p class="eyebrow eyebrow--small">Seller Operations</p>
+            <h2 id="sellerViewTitle">Seller Command Center</h2>
+            <p class="lead">Monitor supplier inventory, incoming orders, and fulfillment risk.</p>
+          </div>
+          <div class="seller-controls">
+            <span class="seller-controls__label">Seller identity</span>
+            <strong>SUPPLIER A</strong>
+            <span class="supplier-id">supplier_a</span>
+          </div>
+        </div>
+
+        <div id="sellerApiMessage" class="seller-api-message" role="status" aria-live="polite"></div>
+
+        <div class="seller-metrics">
+          <div><span>Catalog items</span><strong id="sellerCatalogCount">--</strong></div>
+          <div><span>Available units</span><strong id="sellerStockCount">--</strong></div>
+          <div><span>Active orders</span><strong id="sellerOrderCount">--</strong></div>
+          <div><span>Net margin</span><strong id="sellerMarginTotal">--</strong></div>
+        </div>
+
+        <section class="seller-panel" aria-labelledby="sellerInventoryTitle">
+          <div class="seller-panel__heading"><div><p class="eyebrow eyebrow--small">01 / INVENTORY</p><h3 id="sellerInventoryTitle">Supplier Catalog</h3></div><span id="sellerCatalogMeta">Loading catalog...</span></div>
+          <div class="table-wrap"><table class="seller-table"><thead><tr><th>SKU</th><th>Description</th><th>Unit Price ($)</th><th>Available Stock</th></tr></thead><tbody id="sellerInventoryBody"><tr><td colspan="4">Loading catalog...</td></tr></tbody></table></div>
+        </section>
+
+        <section class="seller-panel" aria-labelledby="sellerOrdersTitle">
+          <div class="seller-panel__heading"><div><p class="eyebrow eyebrow--small">02 / INCOMING ORDERS</p><h3 id="sellerOrdersTitle">Fulfillment Queue</h3></div><button type="button" class="button-secondary" id="refreshSellerData">Refresh data</button></div>
+          <div class="table-wrap"><table class="seller-table"><thead><tr><th>Order ID</th><th>Buyer ID</th><th>Part / Requested</th><th>Allocated</th><th>Priority</th><th>Fulfillment</th><th>Approval</th><th>Actions</th></tr></thead><tbody id="sellerOrdersBody"><tr><td colspan="8">Loading orders...</td></tr></tbody></table></div>
+        </section>
+
+        <section class="seller-panel seller-details" id="sellerDetailsPanel" hidden aria-labelledby="sellerDetailsTitle">
+          <div class="seller-panel__heading"><div><p class="eyebrow eyebrow--small">03 / Order Details</p><h3 id="sellerDetailsTitle">Order Details</h3></div><button type="button" class="button-secondary" id="closeSellerDetails">Close</button></div>
+          <div id="sellerDetailsContent" class="seller-details-grid"></div>
+        </section>
+
+        <section class="seller-panel seller-risk" id="sellerRiskPanel" hidden aria-labelledby="sellerRiskTitle">
+          <div class="seller-panel__heading"><div><p class="eyebrow eyebrow--small">03 / SUPPLY-CHAIN IMPACT</p><h3 id="sellerRiskTitle">Stock Reallocated</h3></div><span>REVIEW</span></div>
+          <div id="sellerRiskContent" class="seller-risk-grid"></div>
+        </section>
+      </section>
+
+      <div class="dashboard__content" id="buyerDashboardContent">
         <section class="panel panel--form" id="requestPanel" aria-labelledby="form-title">
           <div class="panel__header">
             <h2 id="form-title">New Fulfillment Request</h2>
