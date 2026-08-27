@@ -1,8 +1,9 @@
-fastapi
+﻿fastapi
 uvicorn
 streamlit
 pydantic
 google-genai
-python-dotenv
-asyncio
+numpy
+pandas
 requests
+asyncio
