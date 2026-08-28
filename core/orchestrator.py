@@ -79,6 +79,22 @@ class Orchestrator:
             trace_id=trace_id,
         ))
 
+        # Count candidates with distance data
+        geo_count = sum(1 for c in demand_result["candidates"] if c.get("distance_km") is not None)
+        event_bus.publish_sync(create_event(
+            sender_agent="DemandAgent",
+            event_type="GEO_ROUTE_COMPLETED",
+            data={
+                "candidates_with_distance": geo_count,
+                "total_candidates": len(demand_result["candidates"]),
+                "user_lat": order_dict.get("latitude"),
+                "user_lon": order_dict.get("longitude"),
+                "user_city": order_dict.get("user_location_city"),
+                "message": f"Geocoded {geo_count} warehouses for distance-based lead times"
+            },
+            trace_id=trace_id,
+        ))
+
         event_bus.publish_sync(create_event(
             sender_agent="Orchestrator",
             event_type="AGENT_STATUS",

@@ -75,6 +75,8 @@ class Warehouse:
     region: str
     base_lead_days: int
     reliability: float
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
 
 
 # ── Inventory DB ──
@@ -129,17 +131,29 @@ class InventoryDB:
         with get_conn() as conn:
             row = conn.execute("SELECT * FROM warehouses WHERE warehouse_id=?", (warehouse_id,)).fetchone()
             if row:
+                from core.geocoder import geocode
+                coords = geocode(row["city"])
                 return Warehouse(row["warehouse_id"], row["warehouse_name"], row["address"],
                                  row["city"], row["state"], row["region"],
-                                 row["base_lead_days"], row["reliability"])
+                                 row["base_lead_days"], row["reliability"],
+                                 latitude=coords[0] if coords else None,
+                                 longitude=coords[1] if coords else None)
         return None
 
     def get_warehouses(self) -> Dict[str, Warehouse]:
         with get_conn() as conn:
             rows = conn.execute("SELECT * FROM warehouses").fetchall()
-            return {r["warehouse_id"]: Warehouse(r["warehouse_id"], r["warehouse_name"],
+            from core.geocoder import geocode
+            result = {}
+            for r in rows:
+                coords = geocode(r["city"])
+                result[r["warehouse_id"]] = Warehouse(
+                    r["warehouse_id"], r["warehouse_name"],
                     r["address"], r["city"], r["state"], r["region"],
-                    r["base_lead_days"], r["reliability"]) for r in rows}
+                    r["base_lead_days"], r["reliability"],
+                    latitude=coords[0] if coords else None,
+                    longitude=coords[1] if coords else None)
+            return result
 
     def get_all_skus(self) -> List[str]:
         with get_conn() as conn:
@@ -250,6 +264,101 @@ class InventoryDB:
                 conn.commit()
                 return True
         return False
+
+    # ── Buyer Sales Summary ──
+
+    def get_buyer_sales_summary(self, buyer_id: str = None, limit: int = 50) -> List[dict]:
+        with get_conn() as conn:
+            if buyer_id:
+                rows = conn.execute(
+                    "SELECT * FROM buyer_sales_summary WHERE buyer_id=? ORDER BY last_purchase_timestamp DESC LIMIT ?",
+                    (buyer_id, limit)
+                ).fetchall()
+            else:
+                rows = conn.execute(
+                    "SELECT * FROM buyer_sales_summary ORDER BY last_purchase_timestamp DESC LIMIT ?",
+                    (limit,)
+                ).fetchall()
+            return [dict(r) for r in rows]
+
+    def get_buyer_top_parts(self, buyer_id: str, limit: int = 10) -> List[dict]:
+        with get_conn() as conn:
+            rows = conn.execute(
+                "SELECT * FROM buyer_sales_summary WHERE buyer_id=? ORDER BY buyer_units_purchased DESC LIMIT ?",
+                (buyer_id, limit)
+            ).fetchall()
+            return [dict(r) for r in rows]
+
+    # ── Seller Sales Summary ──
+
+    def get_seller_sales_summary(self, seller_id: str = None, warehouse_id: str = None, limit: int = 50) -> List[dict]:
+        with get_conn() as conn:
+            if seller_id:
+                rows = conn.execute(
+                    "SELECT * FROM seller_sales_summary WHERE seller_id=? ORDER BY last_sale_timestamp DESC LIMIT ?",
+                    (seller_id, limit)
+                ).fetchall()
+            elif warehouse_id:
+                rows = conn.execute(
+                    "SELECT * FROM seller_sales_summary WHERE warehouse_id=? ORDER BY last_sale_timestamp DESC LIMIT ?",
+                    (warehouse_id, limit)
+                ).fetchall()
+            else:
+                rows = conn.execute(
+                    "SELECT * FROM seller_sales_summary ORDER BY last_sale_timestamp DESC LIMIT ?",
+                    (limit,)
+                ).fetchall()
+            return [dict(r) for r in rows]
+
+    # ── Demand Price History ──
+
+    def get_demand_price_history(self, part_id: str = None, limit: int = 100) -> List[dict]:
+        with get_conn() as conn:
+            if part_id:
+                rows = conn.execute(
+                    "SELECT * FROM demand_price_history WHERE canonical_part_id=? ORDER BY date DESC LIMIT ?",
+                    (part_id, limit)
+                ).fetchall()
+            else:
+                rows = conn.execute(
+                    "SELECT * FROM demand_price_history ORDER BY date DESC LIMIT ?",
+                    (limit,)
+                ).fetchall()
+            return [dict(r) for r in rows]
+
+    # ── Macro Sentiment ──
+
+    def get_macro_sentiment(self, limit: int = 50) -> List[dict]:
+        with get_conn() as conn:
+            rows = conn.execute(
+                "SELECT * FROM macro_sentiment ORDER BY date DESC LIMIT ?",
+                (limit,)
+            ).fetchall()
+            return [dict(r) for r in rows]
+
+    def get_latest_sentiment(self) -> Optional[dict]:
+        with get_conn() as conn:
+            row = conn.execute(
+                "SELECT * FROM macro_sentiment ORDER BY date DESC LIMIT 1"
+            ).fetchone()
+            return dict(row) if row else None
+
+    # ── Marketing Calendar ──
+
+    def get_marketing_calendar(self, limit: int = 50) -> List[dict]:
+        with get_conn() as conn:
+            rows = conn.execute(
+                "SELECT * FROM marketing_calendar ORDER BY date DESC LIMIT ?",
+                (limit,)
+            ).fetchall()
+            return [dict(r) for r in rows]
+
+    def get_active_promos(self) -> List[dict]:
+        with get_conn() as conn:
+            rows = conn.execute(
+                "SELECT * FROM marketing_calendar WHERE promo_active=1 ORDER BY date DESC"
+            ).fetchall()
+            return [dict(r) for r in rows]
 
 
 # ── Supplier DB ──

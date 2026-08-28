@@ -78,6 +78,7 @@
           <button class="nav-tab" data-view="analytics">Analytics</button>
           <button class="nav-tab" data-view="inventory">Inventory</button>
           <button class="nav-tab" data-view="history">History</button>
+          <button class="nav-tab" data-view="info">Info</button>
         </nav>
       </div>
       <div class="flex items-center gap-3">
@@ -153,6 +154,36 @@
                 <span id="priorityLevelError" class="text-xs text-red-500 min-h-[1.2em]"></span>
               </div>
               <div class="field col-span-full flex flex-col gap-1.5">
+                <label for="locationCity" class="text-xs font-semibold text-gray-700">Delivery Location</label>
+                <div class="flex gap-2">
+                  <button type="button" id="gpsBtn" class="h-11 px-4 rounded-lg border-[1.5px] border-gray-200 bg-white text-sm font-medium text-brand-500 hover:bg-brand-50 transition-all duration-200 flex items-center gap-1.5 flex-shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><circle cx="12" cy="12" r="4"/></svg>
+                    <span id="gpsBtnText">Use GPS</span>
+                  </button>
+                  <select id="locationCity" name="locationCity" class="input-field h-11 px-3.5 rounded-lg border-[1.5px] border-gray-200 bg-white text-sm font-normal outline-none transition-all duration-200 focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/10 flex-1">
+                    <option value="">Or select your city</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="New Delhi">New Delhi</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Bengaluru">Bengaluru</option>
+                    <option value="Jaipur">Jaipur</option>
+                    <option value="Ahmedabad">Ahmedabad</option>
+                    <option value="Bhubaneswar">Bhubaneswar</option>
+                    <option value="Guwahati">Guwahati</option>
+                    <option value="Lucknow">Lucknow</option>
+                    <option value="Nagpur">Nagpur</option>
+                    <option value="Coimbatore">Coimbatore</option>
+                    <option value="Indore">Indore</option>
+                  </select>
+                </div>
+                <span id="locationStatus" class="text-xs text-gray-400 min-h-[1.2em]"></span>
+                <input id="userLat" name="userLat" type="hidden">
+                <input id="userLon" name="userLon" type="hidden">
+              </div>
+              <div class="field col-span-full flex flex-col gap-1.5">
                 <label for="specialInstructions" class="text-xs font-semibold text-gray-700">Special Instructions <span class="text-gray-400 font-normal">(optional)</span></label>
                 <textarea id="specialInstructions" name="specialInstructions" rows="2" placeholder="Preferences, exclusions, or constraints..." class="input-field min-h-[70px] px-3.5 py-2.5 rounded-lg border-[1.5px] border-gray-200 bg-white text-sm font-normal outline-none transition-all duration-200 focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/10 resize-y"></textarea>
               </div>
@@ -182,6 +213,14 @@
               <div class="flex flex-col gap-0.5">
                 <span class="text-sm font-semibold text-gray-900">Demand Agent</span>
                 <span class="step-desc text-xs text-gray-400">Scanning warehouses & suppliers...</span>
+              </div>
+              <div class="step-bar"><div class="step-fill"></div></div>
+            </div>
+            <div id="step-georoute" class="pipeline-step">
+              <div class="step-dot"></div>
+              <div class="flex flex-col gap-0.5">
+                <span class="text-sm font-semibold text-gray-900">Geo Routing</span>
+                <span class="step-desc text-xs text-gray-400">Resolving location & computing distances...</span>
               </div>
               <div class="step-bar"><div class="step-fill"></div></div>
             </div>
@@ -368,6 +407,174 @@
             </thead>
             <tbody id="historyTableBody"></tbody>
           </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ INFO VIEW ═══ -->
+    <div id="infoView" class="view flex-1 p-7">
+      <div class="max-w-4xl mx-auto space-y-6">
+        <div>
+          <h2 class="text-2xl font-bold mb-1">System Information</h2>
+          <p class="text-sm text-gray-500">How AutoSCM works under the hood.</p>
+        </div>
+
+        <!-- Architecture -->
+        <div class="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm">
+          <h3 class="text-sm font-bold text-gray-900 mb-3">Architecture</h3>
+          <p class="text-sm text-gray-600 leading-relaxed mb-4">
+            AutoSCM is an autonomous supply chain orchestration system. It uses a multi-agent pipeline to process spare parts fulfillment requests in real-time, ranking options across warehouse inventory and external suppliers.
+          </p>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="bg-gray-50 rounded-xl p-3 text-center">
+              <div class="text-xs font-bold text-brand-500 mb-1">Orchestrator</div>
+              <div class="text-[11px] text-gray-500">Receives orders, coordinates agents</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-3 text-center">
+              <div class="text-xs font-bold text-brand-500 mb-1">Demand Agent</div>
+              <div class="text-[11px] text-gray-500">Scans warehouses & suppliers for candidates</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-3 text-center">
+              <div class="text-xs font-bold text-brand-500 mb-1">Geo Routing</div>
+              <div class="text-[11px] text-gray-500">Computes distances, adjusts lead times</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-3 text-center">
+              <div class="text-xs font-bold text-brand-500 mb-1">TOPSIS Ranking</div>
+              <div class="text-[11px] text-gray-500">Multi-criteria decision scoring</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Pipeline -->
+        <div class="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm">
+          <h3 class="text-sm font-bold text-gray-900 mb-3">Order Pipeline</h3>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-500 text-white text-xs font-bold flex items-center justify-center">1</span>
+              <div>
+                <div class="text-sm font-semibold text-gray-900">Order Submitted</div>
+                <div class="text-xs text-gray-500">You submit a part request with quantity, priority, and delivery location.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-500 text-white text-xs font-bold flex items-center justify-center">2</span>
+              <div>
+                <div class="text-sm font-semibold text-gray-900">Candidate Generation</div>
+                <div class="text-xs text-gray-500">The Demand Agent scans all warehouses for stock and queries 3 external suppliers for availability and pricing.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-500 text-white text-xs font-bold flex items-center justify-center">3</span>
+              <div>
+                <div class="text-sm font-semibold text-gray-900">Distance Calculation</div>
+                <div class="text-xs text-gray-500">Your GPS location (or selected city) is geocoded. Great-circle distance to each warehouse is computed and converted to transit time, which adjusts the lead time for each warehouse candidate.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-500 text-white text-xs font-bold flex items-center justify-center">4</span>
+              <div>
+                <div class="text-sm font-semibold text-gray-900">TOPSIS Ranking</div>
+                <div class="text-xs text-gray-500">Each candidate is scored on three criteria — cost, lead time (now including distance), and reliability — weighted by your order priority. The TOPSIS algorithm ranks them from best to worst.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-500 text-white text-xs font-bold flex items-center justify-center">5</span>
+              <div>
+                <div class="text-sm font-semibold text-gray-900">AI Explanation</div>
+                <div class="text-xs text-gray-500">A Groq-hosted LLM (Qwen 3.8B) generates a plain-English explanation of why the top-ranked option was selected.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-500 text-white text-xs font-bold flex items-center justify-center">6</span>
+              <div>
+                <div class="text-sm font-semibold text-gray-900">Approval & Execution</div>
+                <div class="text-xs text-gray-500">You review the recommendation and approve or reject it. Approved orders either deduct warehouse stock or place a supplier order via the mock logistics API.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOPSIS Criteria -->
+        <div class="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm">
+          <h3 class="text-sm font-bold text-gray-900 mb-3">TOPSIS Criteria & Weights</h3>
+          <p class="text-xs text-gray-500 mb-3">Weights change based on order priority. Higher priority orders favor speed; lower priority orders favor cost.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b-2 border-gray-100">
+                  <th class="px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider text-gray-400">Priority</th>
+                  <th class="px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider text-gray-400">Cost Weight</th>
+                  <th class="px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider text-gray-400">Lead Time Weight</th>
+                  <th class="px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider text-gray-400">Reliability Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-gray-50"><td class="px-3 py-2 font-semibold text-gray-900">Critical</td><td class="px-3 py-2">10%</td><td class="px-3 py-2 font-semibold text-brand-500">60%</td><td class="px-3 py-2">30%</td></tr>
+                <tr class="border-b border-gray-50"><td class="px-3 py-2 font-semibold text-gray-900">High</td><td class="px-3 py-2">20%</td><td class="px-3 py-2 font-semibold text-brand-500">50%</td><td class="px-3 py-2">30%</td></tr>
+                <tr class="border-b border-gray-50"><td class="px-3 py-2 font-semibold text-gray-900">Medium</td><td class="px-3 py-2">35%</td><td class="px-3 py-2">35%</td><td class="px-3 py-2">30%</td></tr>
+                <tr><td class="px-3 py-2 font-semibold text-gray-900">Low</td><td class="px-3 py-2 font-semibold text-green-600">55%</td><td class="px-3 py-2">15%</td><td class="px-3 py-2">30%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm">
+          <h3 class="text-sm font-bold text-gray-900 mb-3">Tech Stack</h3>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Backend</div>
+              <ul class="space-y-1.5 text-gray-600">
+                <li>FastAPI (Python)</li>
+                <li>SQLite (inventory, sales, orders)</li>
+                <li>Nominatim / OpenStreetMap (geocoding)</li>
+                <li>Haversine formula (distance calc)</li>
+                <li>TOPSIS multi-criteria ranking</li>
+                <li>Groq LLM — Qwen 3.8B (explanations)</li>
+              </ul>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Frontend</div>
+              <ul class="space-y-1.5 text-gray-600">
+                <li>Vanilla JS (no framework)</li>
+                <li>Tailwind CSS (CDN)</li>
+                <li>Browser Geolocation API (GPS)</li>
+                <li>Server-Sent Events (pipeline animation)</li>
+                <li>localStorage (demo auth)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Sources -->
+        <div class="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm">
+          <h3 class="text-sm font-bold text-gray-900 mb-3">Data Sources</h3>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+            <div class="bg-gray-50 rounded-xl p-3">
+              <div class="font-semibold text-gray-900">20 Spare Parts</div>
+              <div class="text-xs text-gray-500">Across 4 categories: Hydraulics, Electronic, Fasteners, Filters</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-3">
+              <div class="font-semibold text-gray-900">15 Warehouses</div>
+              <div class="text-xs text-gray-500">Across Indian cities with geocoded coordinates</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-3">
+              <div class="font-semibold text-gray-900">300 Inventory Records</div>
+              <div class="text-xs text-gray-500">20 parts x 15 warehouses with stock levels</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-3">
+              <div class="font-semibold text-gray-900">6,000 Sales Transactions</div>
+              <div class="text-xs text-gray-500">Historical buyer/seller data for demand signals</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-3">
+              <div class="font-semibold text-gray-900">3 Mock Suppliers</div>
+              <div class="text-xs text-gray-500">Primary, Express, and Alt Region with dynamic pricing</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-3">
+              <div class="font-semibold text-gray-900">17 CSV Datasets</div>
+              <div class="text-xs text-gray-500">Categories, parts, demand, inventory, orders, evaluations</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

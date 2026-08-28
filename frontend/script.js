@@ -110,8 +110,17 @@ const userAvatar = $("userAvatar");
 const userName = $("userName");
 const logoutBtn = $("logoutBtn");
 const demoAutofillButtons = document.querySelectorAll(".demo-autofill");
+const gpsBtn = $("gpsBtn");
+const gpsBtnText = $("gpsBtnText");
+const locationCitySelect = $("locationCity");
+const locationStatus = $("locationStatus");
+const userLatInput = $("userLat");
+const userLonInput = $("userLon");
 
 let authState = { role: "Buyer", mode: "login" };
+
+// ── Location state ─────────────────────────────────────────
+let userLocation = { lat: null, lon: null, city: null };
 
 // ── Validation ─────────────────────────────────────────────
 const fieldConfig = [
@@ -200,6 +209,7 @@ function switchView(viewName) {
 const PIPELINE_STEPS = [
   { id: "step-orchestrator", agent: "Orchestrator", desc: "Receiving order..." },
   { id: "step-demand", agent: "DemandAgent", desc: "Scanning warehouses & suppliers..." },
+  { id: "step-georoute", agent: "GeoRouting", desc: "Resolving location & computing distances..." },
   { id: "step-ranking", agent: "RankingEngine", desc: "Multi-criteria scoring..." },
   { id: "step-explanation", agent: "ExplanationAgent", desc: "Generating reasoning via LLM..." },
 ];
@@ -247,8 +257,9 @@ function animatePipeline(events, callback) {
   const eventToStep = {
     ORDER_RECEIVED: 0,
     CANDIDATES_GENERATED: 1,
-    TOPSIS_COMPLETED: 2,
-    EXPLANATION_GENERATED: 3,
+    GEO_ROUTE_COMPLETED: 2,
+    TOPSIS_COMPLETED: 3,
+    EXPLANATION_GENERATED: 4,
   };
 
   // Filter to key events (skip AGENT_STATUS)
@@ -608,6 +619,54 @@ function handleSignup() {
 }
 function logout() { localStorage.removeItem(STORAGE_KEYS.currentUser); showWelcomeScreen(); }
 
+// ── Location / GPS ─────────────────────────────────────────
+function acquireGPSLocation() {
+  if (!navigator.geolocation) {
+    locationStatus.textContent = "GPS not supported — select a city below.";
+    return;
+  }
+  gpsBtn.disabled = true;
+  gpsBtnText.textContent = "Locating...";
+  locationStatus.textContent = "Requesting location access...";
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      userLocation.lat = pos.coords.latitude;
+      userLocation.lon = pos.coords.longitude;
+      userLatInput.value = pos.coords.latitude;
+      userLonInput.value = pos.coords.longitude;
+      userLocation.city = null;
+      locationCitySelect.value = "";
+      gpsBtnText.textContent = "GPS Locked";
+      locationStatus.textContent = `Location: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+      locationStatus.className = "text-xs text-green-600 min-h-[1.2em]";
+      gpsBtn.disabled = false;
+    },
+    err => {
+      locationStatus.textContent = "GPS unavailable — select your city from the dropdown.";
+      locationStatus.className = "text-xs text-amber-600 min-h-[1.2em]";
+      gpsBtnText.textContent = "Use GPS";
+      gpsBtn.disabled = false;
+    },
+    { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 }
+  );
+}
+
+gpsBtn.addEventListener("click", acquireGPSLocation);
+
+locationCitySelect.addEventListener("change", () => {
+  const city = locationCitySelect.value;
+  if (city) {
+    userLocation.city = city;
+    userLocation.lat = null;
+    userLocation.lon = null;
+    userLatInput.value = "";
+    userLonInput.value = "";
+    locationStatus.textContent = `City selected: ${city}`;
+    locationStatus.className = "text-xs text-green-600 min-h-[1.2em]";
+  }
+});
+
 // ── Form submit ────────────────────────────────────────────
 function buildOrderPayload(formData) {
   return {
@@ -617,6 +676,9 @@ function buildOrderPayload(formData) {
     max_lead_time_days: Number(formData.get("leadTime")),
     priority: formData.get("priorityLevel"),
     notes: formData.get("specialInstructions").trim() || "None provided",
+    latitude: userLocation.lat,
+    longitude: userLocation.lon,
+    user_location_city: userLocation.city,
   };
 }
 

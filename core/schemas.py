@@ -13,6 +13,9 @@ class OrderRequest(BaseModel):
     priority: str  # "LOW", "MEDIUM", "HIGH", "CRITICAL"
     raw_text: Optional[str] = None
     notes: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    user_location_city: Optional[str] = None
 
 
 class UnstructuredOrderRequest(BaseModel):

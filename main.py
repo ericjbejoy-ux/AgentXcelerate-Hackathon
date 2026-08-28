@@ -248,6 +248,37 @@ def get_analytics():
     }
 
 
+@app.get("/api/v1/buyer-sales-summary")
+def get_buyer_sales_summary(buyer_id: str = None, limit: int = 50):
+    """Get buyer sales summary. Optionally filter by buyer_id."""
+    data = db.inventory.get_buyer_sales_summary(buyer_id=buyer_id, limit=limit)
+    return {"summary": data, "count": len(data)}
+
+
+@app.get("/api/v1/seller-sales-summary")
+def get_seller_sales_summary(seller_id: str = None, warehouse_id: str = None, limit: int = 50):
+    """Get seller sales summary. Optionally filter by seller_id or warehouse_id."""
+    data = db.inventory.get_seller_sales_summary(seller_id=seller_id, warehouse_id=warehouse_id, limit=limit)
+    return {"summary": data, "count": len(data)}
+
+
+@app.get("/api/v1/market-intelligence")
+def get_market_intelligence():
+    """Combined market intelligence: demand/price history, macro sentiment, marketing calendar."""
+    demand_history = db.inventory.get_demand_price_history(limit=50)
+    sentiment = db.inventory.get_macro_sentiment(limit=30)
+    marketing = db.inventory.get_marketing_calendar(limit=30)
+    active_promos = db.inventory.get_active_promos()
+    latest_sentiment = db.inventory.get_latest_sentiment()
+    return {
+        "demand_price_history": demand_history,
+        "macro_sentiment": sentiment,
+        "marketing_calendar": marketing,
+        "active_promos": active_promos,
+        "latest_sentiment": latest_sentiment,
+    }
+
+
 @app.get("/traces")
 def list_traces():
     traces = event_bus.get_all_traces()

@@ -1,6 +1,7 @@
 import logging
 import math
 from core.database import db
+from core.geocoder import geocode, haversine_km, distance_km_to_transit_days
 from mocks.suppliers import query_all_suppliers, get_all_supplier_apis, SupplierID, MockSupplierAPI
 from mocks.logistics import calculate_freight_quote
 import asyncio
@@ -31,6 +32,16 @@ def _build_warehouse_candidates(order: dict) -> list:
     if max_lead <= 0:
         max_lead = 999
 
+    # Resolve user location for distance calculation
+    user_lat = order.get("latitude")
+    user_lon = order.get("longitude")
+    if user_lat is None or user_lon is None:
+        user_city = order.get("user_location_city")
+        if user_city:
+            user_coords = geocode(user_city)
+            if user_coords:
+                user_lat, user_lon = user_coords
+
     logger.info("[WAREHOUSE] Looking up SKU=%s across all warehouses (requested=%d, max_lead=%dd)", part_id, requested_qty, max_lead)
     all_stocks = db.inventory.get_all_stocks(part_id)
     if not all_stocks:
@@ -47,10 +58,19 @@ def _build_warehouse_candidates(order: dict) -> list:
             continue
 
         wh = db.inventory.get_warehouse(stock.warehouse_loc)
-        lead_time = wh.base_lead_days if wh else 2
+        base_lead_time = wh.base_lead_days if wh else 2
         wh_reliability = wh.reliability if wh else 0.95
 
         fulfilled = min(requested_qty, stock.available_qty)
+
+        # Compute distance-based lead time adjustment
+        distance_km = None
+        transit_days = 0.0
+        if wh and wh.latitude is not None and wh.longitude is not None and user_lat is not None and user_lon is not None:
+            distance_km = haversine_km(user_lat, user_lon, wh.latitude, wh.longitude)
+            transit_days = distance_km_to_transit_days(distance_km)
+
+        lead_time = base_lead_time + int(math.ceil(transit_days))
 
         # Reliability based on warehouse reliability + lead time constraint
         reliability = wh_reliability
@@ -64,7 +84,7 @@ def _build_warehouse_candidates(order: dict) -> list:
             reliability *= fill_ratio
 
         total_cost = round(unit_price * fulfilled, 2)
-        candidates.append({
+        candidate = {
             "option_id": f"WH-{stock.warehouse_loc}",
             "strategy_name": f"Warehouse ({wh.warehouse_name if wh else stock.warehouse_loc})",
             "source": stock.warehouse_loc,
@@ -74,7 +94,11 @@ def _build_warehouse_candidates(order: dict) -> list:
             "lead_time_days": lead_time,
             "reliability_score": round(reliability, 2),
             "warehouse_id": stock.warehouse_loc,
-        })
+        }
+        if distance_km is not None:
+            candidate["distance_km"] = distance_km
+            candidate["transit_days"] = round(transit_days, 1)
+        candidates.append(candidate)
 
     logger.info("[WAREHOUSE] Generated %d warehouse candidates", len(candidates))
     return candidates
