@@ -13,3 +13,5 @@ dist/
 build/
 .pytest_cache/
 *.egg-info/
+nohup.out
+scm.db

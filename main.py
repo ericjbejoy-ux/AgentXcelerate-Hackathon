@@ -7,9 +7,11 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(message)s")
 
+import os
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import Optional
 
@@ -29,7 +31,6 @@ app.add_middleware(
 )
 
 
-@app.get("/")
 @app.get("/api/v1/health")
 def health():
     return {"status": "online", "system": "Autonomous SCM"}
@@ -284,3 +285,12 @@ async def stream_events(trace_id: str):
         yield f"data: {json.dumps({'event': 'STREAM_END', 'message': 'Done'})}\n\n"
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
+
+
+# ── Frontend Serving ─────────────────────────────────────────
+# Must be LAST — mount catches all non-API routes.
+
+FRONTEND_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend")
+
+if os.path.exists(FRONTEND_DIR):
+    app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")

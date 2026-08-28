@@ -2,7 +2,7 @@
    AutoSCM — Autonomous SCM Frontend
    ============================================================ */
 
-const API_BASE = "http://localhost:5555";
+const API_BASE = "http://localhost:8000";
 
 const STORAGE_KEYS = { users: "ax_users", currentUser: "ax_current_user" };
 
