@@ -1,0 +1,16 @@
+warehouse_id,warehouse_name,address,city,state,region,base_lead_days,reliability
+WH-Central-TX,Hyderabad Central Hub,"Plot 12, HITEC City Road, Madhapur, Hyderabad, Telangana 500081, India",Hyderabad,Telangana,South,2,0.96
+WH-East-NC,Kolkata East Hub,"19 Canal South Road, Topsia, Kolkata, West Bengal 700046, India",Kolkata,West Bengal,East,4,0.88
+WH-GreatLakes-MI,Nagpur Central Hub,"Hingna Industrial Area, Nagpur, Maharashtra 440016, India",Nagpur,Maharashtra,Central,3,0.95
+WH-MidAtlantic-VA,Lucknow Mid-India Hub,"Transport Nagar, Lucknow, Uttar Pradesh 226012, India",Lucknow,Uttar Pradesh,North,4,0.93
+WH-Midwest-OH,Pune Midwest Hub,"Peenya Industrial Area, Bengaluru, Karnataka 560058, India",Pune,Maharashtra,West,3,0.93
+WH-Mountain-CO,Jaipur Regional Hub,"Sanand Industrial Area, Sanand, Ahmedabad, Gujarat 382110, India",Jaipur,Rajasthan,North,3,0.92
+WH-North-IL,Delhi North Hub,"Sector 18, Rohini Industrial Area, New Delhi, Delhi 110085, India",New Delhi,Delhi,North,3,0.94
+WH-Northeast-NY,Guwahati Northeast Hub,"Beltola Industrial Area, Guwahati, Assam 781028, India",Guwahati,Assam,Northeast,5,0.89
+WH-Pacific-WA,Bengaluru Technology Hub,"Avinashi Road Industrial Estate, Coimbatore, Tamil Nadu 641018, India",Bengaluru,Karnataka,South,4,0.95
+WH-Rockies-UT,Indore Central-West Hub,"Chakan MIDC, Pune, Maharashtra 410501, India",Indore,Madhya Pradesh,Central,4,0.92
+WH-South-FL,Chennai South Hub,"Guindy Industrial Estate, Guindy, Chennai, Tamil Nadu 600032, India",Chennai,Tamil Nadu,South,5,0.91
+WH-SouthCentral-OK,Coimbatore South Central Hub,"Pithampur Industrial Area, Indore, Madhya Pradesh 453331, India",Coimbatore,Tamil Nadu,South,3,0.91
+WH-Southeast-GA,Bhubaneswar Southeast Hub,"Mancheswar Industrial Estate, Bhubaneswar, Odisha 751010, India",Bhubaneswar,Odisha,East,4,0.9
+WH-Southwest-AZ,Ahmedabad Southwest Hub,"Sitapura Industrial Area, Jaipur, Rajasthan 302022, India",Ahmedabad,Gujarat,West,2,0.94
+WH-West-CA,Mumbai West Hub,"MIDC Andheri East, Andheri East, Mumbai, Maharashtra 400093, India",Mumbai,Maharashtra,West,1,0.99

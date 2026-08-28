@@ -8,12 +8,12 @@ export default defineConfig({
     port: 5173,
     proxy: {
       // Proxy API + backend routes to the FastAPI backend instance
-      '/api': 'http://localhost:8100',
-      '/orders': 'http://localhost:8100',
-      '/approve-execution': 'http://localhost:8100',
-      '/traces': 'http://localhost:8100',
+      '/api': 'http://localhost:8101',
+      '/orders': 'http://localhost:8101',
+      '/approve-execution': 'http://localhost:8101',
+      '/traces': 'http://localhost:8101',
       '/stream-events': {
-        target: 'http://localhost:8100',
+        target: 'http://localhost:8101',
         ws: true,
       },
     },

@@ -1,7 +1,12 @@
 import logging
 import math
+import re
+from typing import Optional
 from core.database import db
-from core.geocoder import geocode, haversine_km, distance_km_to_transit_days
+from core.geocoder import (
+    geocode, haversine_km, distance_km_to_transit_days,
+    distance_km_to_shipping_cost, regional_price_multiplier,
+)
 from mocks.suppliers import query_all_suppliers, get_all_supplier_apis, SupplierID, MockSupplierAPI
 from mocks.logistics import calculate_freight_quote
 import asyncio
@@ -17,6 +22,55 @@ _REGION_TO_ZONE = {
     "Central": "ZONE-CENTRAL",
     "Northeast": "ZONE-EAST",
 }
+
+
+def parse_budget_from_notes(notes: str) -> Optional[float]:
+    """
+    Extract a maximum order budget (in USD) from free-text notes /
+    special instructions. Returns None if no budget is expressed.
+    Recognised forms:
+      - "budget $5000", "budget of 5000", "budget: 5000"
+      - "max $5000", "maximum 5500", "cap 6000", "<= 5000"
+      - "total under 5k", "$5k", "5.5k", "cheapest under 4200"
+    Time/duration numbers ("within 3 days", "deliver in 5d") are NEVER
+    treated as a budget.
+    """
+    if not notes:
+        return None
+    text = str(notes)
+
+    def looks_like_time(suffix: str) -> bool:
+        return bool(re.search(r"\b(?:days?|d|hrs?|hours?|weeks?|working\s*days?)\b", suffix, re.IGNORECASE))
+
+    candidates = []
+    # Explicit money/limit keywords only.
+    keyword_patterns = [
+        r"budget\s*(?:of|around|approx|~|near|:)?\s*\$?\s*([\d,]+(?:\.\d+)?)\b",  # budget $5000
+        r"(?:max|maximum|cap|limit|total|spend|overall)\s*(?:cost|budget|spend|of|at)?\s*\$?\s*([\d,]+(?:\.\d+)?)\b",  # max 5000
+        r"under\s*\$?\s*([\d,]+(?:\.\d+)?)\b",                   # under 5000
+    ]
+    for pat in keyword_patterns:
+        for m in re.finditer(pat, text, re.IGNORECASE):
+            after = text[m.end():m.end() + 12]
+            if looks_like_time(after):
+                continue  # "max 5 days" is time, not money
+            candidates.append(float(m.group(1).replace(",", "")))
+
+    # Handle "k" (thousand) shorthand explicitly tied to money/limits.
+    for m in re.finditer(r"(?:budget|max|cap|limit|total|under|around|approx|~|<=)\s*\$?\s*([\d.]+)\s*k\b", text, re.IGNORECASE):
+        candidates.append(float(m.group(1).replace(",", "")) * 1000.0)
+
+    # Bare dollar figure as a last resort (e.g. "please keep it near $5200").
+    if not candidates:
+        for m in re.finditer(r"\$\s*([\d,]+(?:\.\d+)?)", text):
+            candidates.append(float(m.group(1).replace(",", "")))
+
+    if not candidates:
+        return None
+    return round(max(candidates), 2)
+
+
+
 
 
 def _build_warehouse_candidates(order: dict) -> list:
@@ -83,13 +137,21 @@ def _build_warehouse_candidates(order: dict) -> list:
             fill_ratio = fulfilled / requested_qty
             reliability *= fill_ratio
 
-        total_cost = round(unit_price * fulfilled, 2)
+        # Cost of goods: regional operating multiplier per warehouse city
+        city = wh.city if wh else None
+        region_mult = regional_price_multiplier(city or "")
+        unit_cost = round(unit_price * region_mult, 2)
+
+        # Shipping: distance-based last-mile cost (0 for the local hub)
+        shipping_cost = distance_km_to_shipping_cost(distance_km) if distance_km is not None else 0.0
+
+        total_cost = round(unit_cost * fulfilled + shipping_cost, 2)
         candidate = {
             "option_id": f"WH-{stock.warehouse_loc}",
             "strategy_name": f"Warehouse ({wh.warehouse_name if wh else stock.warehouse_loc})",
             "source": stock.warehouse_loc,
             "fulfilled_qty": fulfilled,
-            "unit_cost": round(unit_price, 2),
+            "unit_cost": unit_cost,
             "total_cost": total_cost,
             "lead_time_days": lead_time,
             "reliability_score": round(reliability, 2),
@@ -98,6 +160,7 @@ def _build_warehouse_candidates(order: dict) -> list:
         if distance_km is not None:
             candidate["distance_km"] = distance_km
             candidate["transit_days"] = round(transit_days, 1)
+        candidate["shipping_cost"] = shipping_cost
         candidates.append(candidate)
 
     logger.info("[WAREHOUSE] Generated %d warehouse candidates", len(candidates))
@@ -167,7 +230,11 @@ def _build_supplier_candidates(order: dict) -> list:
                      quote.supplier_name, speed_mode, lead_time, freight.supplier_handling_days,
                      freight.carrier_transit_days, freight_cost)
 
-        reliability = 0.90
+        # Per-supplier historical reliability (not a flat default).
+        # The DTO doesn't carry it, so read it from the supplier profile
+        # keyed by supplier_id.
+        supplier_profile = supplier_apis.get(quote.supplier_id)
+        reliability = supplier_profile.reliability if supplier_profile else 0.90
 
         if lead_time > max_lead:
             overage = (lead_time - max_lead) / max_lead
@@ -219,6 +286,18 @@ def process_demand_layer(order: dict) -> dict:
     candidates = _build_warehouse_candidates(order)
     candidates.extend(_build_supplier_candidates(order))
 
+    # ── Budget constraint (parsed from notes / special instructions) ──
+    max_budget = parse_budget_from_notes(order.get("notes"))
+    budget = max_budget
+    if budget is not None:
+        before = len(candidates)
+        candidates = [c for c in candidates if c.get("total_cost", float("inf")) <= budget]
+        removed = before - len(candidates)
+        logger.info("[DEMAND] Budget cap=$%.2f applied — dropped %d of %d candidates over budget",
+                     budget, removed, before)
+        order["max_budget"] = budget
+        order["budget_removed_count"] = removed
+
     if not candidates:
         logger.warning("[DEMAND] NO CANDIDATES FOUND — using emergency fallback")
         sku_record = db.inventory.get_sku(order.get("part_id", ""))
@@ -233,9 +312,10 @@ def process_demand_layer(order: dict) -> dict:
             "lead_time_days": 7,
             "reliability_score": 0.60,
             "warehouse_id": None,
+            "over_budget": budget is None or (round(unit_cost * order.get("requested_qty", 1), 2) > budget),
         })
 
     weights = _calculate_priority_weights(order.get("priority", "MEDIUM"))
     logger.info("[DEMAND] TRANSMITTING %d candidates to RankingEngine with weights=%s", len(candidates), weights)
     logger.info("="*60)
-    return {"order": order, "candidates": candidates, "weights": weights}
+    return {"order": order, "candidates": candidates, "weights": weights, "max_budget": budget}

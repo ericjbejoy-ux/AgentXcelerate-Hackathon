@@ -104,6 +104,55 @@ def distance_km_to_transit_days(km: float) -> float:
     return round(max(0.1, days), 1)
 
 
+def distance_km_to_shipping_cost(km: float) -> float:
+    """
+    Estimate a distance-based last-mile shipping cost in USD.
+    Flat handling fee plus a per-km freight rate. The nearest leg is most
+    expensive per km (last-mile), then it flattens out for long hauls.
+    Returns 0 for trivially close destinations (local hub dispatch).
+    """
+    if km <= 0:
+        return 0.0
+    # Last-mile handling fee for any dispatched shipment
+    base_handling = 25.0
+    # Freight: first 100km at $1.2/km, next 400km at $0.6/km, then $0.3/km
+    rate = 0.0
+    remaining = km
+    for (width, cost) in ((100.0, 1.2), (400.0, 0.6), (1e9, 0.3)):
+        leg = min(remaining, width)
+        rate += leg * cost
+        remaining -= leg
+        if remaining <= 0:
+            break
+    return round(base_handling + rate, 2)
+
+
+# Regional operating-cost multiplier per warehouse city (tier-1 metros cost
+# more to operate out of than tier-3 hubs). Higher = more expensive warehouse.
+_CITY_COST_MULTIPLIER: dict[str, float] = {
+    "Mumbai": 1.35, "New Delhi": 1.30, "Bengaluru": 1.28, "Delhi": 1.30,
+    "Chennai": 1.22, "Kolkata": 1.20, "Hyderabad": 1.18, "Pune": 1.15,
+    "Ahmedabad": 1.10, "Jaipur": 1.05, "Lucknow": 1.03, "Nagpur": 1.02,
+    "Indore": 1.00, "Coimbatore": 1.02, "Bhubaneswar": 1.00, "Guwahati": 1.06,
+}
+
+
+def regional_price_multiplier(city: str) -> float:
+    """
+    Return a stable per-warehouse price multiplier for a given city.
+    Tier-1 metros are costlier to operate out of (higher multiplier);
+    tier-3 hubs are cheaper. Falls back to 1.0 for unknown cities.
+    """
+    if not city:
+        return 1.0
+    norm = city.strip().title()
+    # Match the base city name (e.g. "New Delhi" in "New Delhi Warehouse")
+    for key, mult in _CITY_COST_MULTIPLIER.items():
+        if key in norm or norm in key:
+            return mult
+    return 1.0
+
+
 def reset_cache():
     """Clear the geocoding cache (useful for tests)."""
     _city_cache.clear()

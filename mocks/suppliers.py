@@ -97,6 +97,7 @@ class _SupplierProfile:
     speed_factor: float
     price_multiplier: float  # applied to a base price
     stock_ratio: float  # fraction of max stock available (0.0–1.0)
+    reliability: float = 0.90  # historical fulfillment reliability (0.0–1.0)
     base_prices: Dict[str, float] = field(default_factory=dict)
     max_stock: int = 500
 
@@ -125,6 +126,7 @@ _PROFILES: Dict[SupplierID, _SupplierProfile] = {
         speed_factor=0.3,  # low — standard shipping
         price_multiplier=1.0,  # cheapest
         stock_ratio=1.0,  # full stock
+        reliability=0.97,  # bulk, proven — high reliability
         base_prices=_BASE_PRICES,
     ),
     SupplierID.B: _SupplierProfile(
@@ -135,6 +137,7 @@ _PROFILES: Dict[SupplierID, _SupplierProfile] = {
         speed_factor=1.8,  # high — express premium
         price_multiplier=1.45,  # 45 % markup
         stock_ratio=0.35,  # partial stock
+        reliability=0.82,  # speed premium, lower reliability
         base_prices=_BASE_PRICES,
     ),
     SupplierID.C: _SupplierProfile(
@@ -145,6 +148,7 @@ _PROFILES: Dict[SupplierID, _SupplierProfile] = {
         speed_factor=1.0,  # moderate
         price_multiplier=1.15,  # 15 % markup
         stock_ratio=0.60,  # medium stock
+        reliability=0.90,  # moderate
         base_prices=_BASE_PRICES,
     ),
 }
@@ -189,6 +193,10 @@ class MockSupplierAPI:
     @property
     def speed_factor(self) -> float:
         return self._profile.speed_factor
+
+    @property
+    def reliability(self) -> float:
+        return self._profile.reliability
 
     async def get_catalog(self) -> SupplierCatalog:
         """Return the full catalog for this supplier (simulates network delay)."""

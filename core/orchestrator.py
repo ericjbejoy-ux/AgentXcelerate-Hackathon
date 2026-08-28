@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from core.event_bus import event_bus, AgentEvent, create_event
 from core.schemas import OrderRequest, StrategyRecommendation, FulfillmentOption
 from core.topsis import run_topsis_optimization
+from core.decision_agent import decide as decision_agent_decide
 from core.database import db
 from agents.demand_agent import process_demand_layer
 from agents.explanation_agent import generate_reasoning_with_groq
@@ -135,8 +136,34 @@ class Orchestrator:
             trace_id=trace_id,
         ))
 
+        # ── DecisionAgent: the Orchestrator makes the FINAL call, interpreting ──
+        # the special instructions / prompt (constraints + language priority) on
+        # top of the TOPSIS score — not just returning the top formula result.
+        event_bus.publish_sync(create_event(
+            sender_agent="Orchestrator",
+            event_type="AGENT_STATUS",
+            data={"agent": "DecisionAgent", "status": "working",
+                  "message": "Interpreting special instructions and making the final fulfillment decision..."},
+            trace_id=trace_id,
+        ))
+        decision = decision_agent_decide(order_dict, ranked, demand_result["weights"])
+        winner = decision["selected_option"]
+        decision_weights = decision["final_weights"]
+        logger.info("[%s] DecisionAgent intent=%s constraints=%s -> winner=%s", trace_id[:8],
+                    decision["intention"], decision["constraints"],
+                    winner["strategy_name"] if winner else "None")
+
+        event_bus.publish_sync(create_event(
+            sender_agent="DecisionAgent",
+            event_type="AGENT_STATUS",
+            data={"agent": "DecisionAgent", "status": "done",
+                  "message": f"Chose '{winner['strategy_name']}' (intent: {decision['intention']}, "
+                            f"llm_decided={decision['llm_decided']})" if winner else "No decision possible"},
+            trace_id=trace_id,
+        ))
+
         explanation = ""
-        if ranked:
+        if winner:
             event_bus.publish_sync(create_event(
                 sender_agent="Orchestrator",
                 event_type="AGENT_STATUS",
@@ -144,7 +171,8 @@ class Orchestrator:
                 trace_id=trace_id,
             ))
             logger.info("[%s] Generating LLM explanation...", trace_id[:8])
-            explanation = generate_reasoning_with_groq(order_dict, ranked[0], demand_result["weights"])
+            explanation = generate_reasoning_with_groq(order_dict, winner, decision_weights)
+            explanation = f"[{decision['intention']}] {decision['rationale']} " + explanation
             logger.info("[%s] Explanation generated (%d chars)", trace_id[:8], len(explanation))
 
         event_bus.publish_sync(create_event(
@@ -177,7 +205,8 @@ class Orchestrator:
             "order_data": order_dict,
             "candidates": ranked,
             "weights": demand_result["weights"],
-            "selected_option": ranked[0] if ranked else None,
+            "selected_option": winner,
+            "decision": decision,
             "explanation": explanation,
             "status": "PENDING_APPROVAL",
             "approval_status": "PENDING",
@@ -191,11 +220,19 @@ class Orchestrator:
             "trace_id": trace_id,
             "order_id": order_id,
             "order_status": "PENDING_APPROVAL",
-            "selected_option": ranked[0] if ranked else None,
+            "selected_option": winner,
             "all_candidates": ranked,
             "total_candidates": len(ranked),
             "feasible_count": sum(1 for c in ranked if c.get("lead_time_days", 999) <= order_dict.get("max_lead_time_days", 999)),
-            "criteria_weights": demand_result["weights"],
+            "criteria_weights": decision_weights,
+            "decision": {
+                "intention": decision["intention"],
+                "constraints": decision["constraints"],
+                "final_weights": decision["final_weights"],
+                "dropped_by_constraint": decision["dropped_by_constraint"],
+                "llm_decided": decision["llm_decided"],
+                "rationale": decision["rationale"],
+            },
             "explanation": explanation,
             "agent_events": order_state["agent_events"],
         }
