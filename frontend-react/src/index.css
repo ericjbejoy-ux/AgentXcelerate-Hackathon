@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════
+   AutoSCM — custom styles
+   ═══════════════════════════════════════════════════════════ */
+
+[hidden] { display: none !important; }
+
+body { background: #f4f4f1; }
+
+/* ═══ PIPELINE STEPS ═══ */
+.pipeline-step {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  grid-template-rows: auto 3px;
+  gap: 0;
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid #efefeb;
+  opacity: 0.35;
+  transition: all 0.4s ease;
+}
+.pipeline-step:last-child { border-bottom: none; }
+.pipeline-step.is-active { opacity: 1; background: linear-gradient(90deg, rgba(49,92,218,0.04), transparent); }
+.pipeline-step.is-done { opacity: 1; }
+.pipeline-step.is-error { opacity: 1; }
+
+.step-dot {
+  grid-row: 1; grid-column: 1;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #e5e5e0;
+  align-self: center; justify-self: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 3px #fff;
+}
+.pipeline-step.is-active .step-dot {
+  background: #315cda;
+  box-shadow: 0 0 0 3px #e8edfb, 0 0 12px rgba(49,92,218,0.3);
+  animation: dot-pulse 1s ease infinite;
+}
+.pipeline-step.is-done .step-dot { background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.15); }
+.pipeline-step.is-error .step-dot { background: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.15); }
+
+.step-desc { transition: color 0.3s; }
+.pipeline-step.is-active .step-desc { color: #315cda !important; }
+.pipeline-step.is-done .step-desc { color: #16a34a !important; }
+.pipeline-step.is-error .step-desc { color: #dc2626 !important; }
+
+.step-bar {
+  grid-row: 2; grid-column: 1 / -1;
+  height: 3px; background: #efefeb;
+  border-radius: 2px; overflow: hidden; margin-top: 8px;
+}
+.step-fill {
+  height: 100%; width: 0%;
+  background: #315cda; border-radius: 2px; transition: width 0.3s ease;
+}
+.pipeline-step.is-active .step-fill { animation: bar-fill 1.8s ease-in-out infinite; }
+.pipeline-step.is-done .step-fill { width: 100% !important; background: #16a34a; animation: none; }
+
+@keyframes dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px #e8edfb, 0 0 12px rgba(49,92,218,0.3); }
+  50% { box-shadow: 0 0 0 6px rgba(49,92,218,0.08), 0 0 20px rgba(49,92,218,0.15); }
+}
+@keyframes bar-fill {
+  0% { width: 0%; margin-left: 0; }
+  50% { width: 60%; margin-left: 20%; }
+  100% { width: 0%; margin-left: 100%; }
+}
+
+/* ═══ STATUS PILL ═══ */
+.status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: 999px;
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.03em;
+}
+.status-pill--online { background: #f0fdf4; color: #16a34a; border: 1px solid rgba(22,163,74,0.2); }
+.status-pill--offline { background: #fef2f2; color: #dc2626; border: 1px solid rgba(220,38,38,0.2); }
+
+/* ═══ SCORE BAR ═══ */
+.score-bar {
+  display: inline-block; width: 60px; height: 6px;
+  background: #e5e5e0; border-radius: 3px; overflow: hidden;
+  vertical-align: middle; margin-right: 6px;
+}
+.score-bar__fill { height: 100%; background: #315cda; border-radius: 3px; transition: width 0.6s ease; }
+
+/* ═══ AUTH ROLE TAB ═══ */
+.auth-role-tab {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 0; border: none; border-radius: 8px;
+  background: transparent; color: #6b6b6b;
+  font: inherit; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.auth-role-tab--active { background: #fff; color: #315cda; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+
+/* ═══ FORM INPUT ═══ */
+.input-field.input-error { border-color: #dc2626 !important; }
+.input-field:focus { border-color: #315cda; box-shadow: 0 0 0 3px rgba(49,92,218,0.1); }
+
+/* ═══ KEYFRAMES ═══ */
+@keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slide-right { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes row-in { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+.animate-fade-up { animation: fade-up 0.5s ease both; }
+.animate-slide-right { animation: slide-right 0.5s cubic-bezier(0.4,0,0.2,1) both; }
+.animate-row-in { animation: row-in 0.3s ease both; }
