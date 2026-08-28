@@ -1,46 +1,63 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PIPELINE_STEPS, EVENT_TO_STEP } from "../api/client";
 
 export default function Pipeline({ events = [], onComplete, error }) {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [descs, setDescs] = useState(PIPELINE_STEPS.map((s) => s.desc));
   const [done, setDone] = useState(false);
+  const timersRef = useRef([]);
 
   useEffect(() => {
+    // Clear any previous timers.
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
+
     const eventToStep = EVENT_TO_STEP;
-    const keyEvents = events.filter((e) => eventToStep[e.event_type] !== undefined);
     const seen = new Set();
-    const unique = keyEvents.filter((e) => {
+    const unique = (events || []).filter((e) => {
+      if (eventToStep[e.event_type] === undefined) return false;
       if (seen.has(e.event_type)) return false;
       seen.add(e.event_type);
       return true;
     });
 
-    let i = 0;
-    const reset = PIPELINE_STEPS.map((s) => s.desc);
-    setDescs(reset);
-    setActiveIndex(0);
+    setDescs(PIPELINE_STEPS.map((s) => s.desc));
+    setActiveIndex(-1);
     setDone(false);
 
-    const step = () => {
+    if (unique.length === 0) {
+      // No steps to show: if we already have a result, finish immediately.
+      if (onComplete) {
+        const t = setTimeout(() => onComplete(), 120);
+        timersRef.current.push(t);
+      }
+      return;
+    }
+
+    let i = 0;
+    const advance = () => {
       if (i >= unique.length) {
         setActiveIndex(PIPELINE_STEPS.length);
         setDone(true);
-        setTimeout(() => onComplete && onComplete(), 400);
+        const t = setTimeout(() => onComplete && onComplete(), 300);
+        timersRef.current.push(t);
         return;
       }
       const ev = unique[i];
       const idx = eventToStep[ev.event_type];
       const desc = ev.data?.message || ev.event_type.replace(/_/g, " ").toLowerCase();
       setDescs((prev) => prev.map((d, k) => (k === idx ? desc : d)));
-      setActiveIndex(Math.max(activeIndex, idx + 1));
-      setTimeout(() => {
-        i++;
-        setTimeout(step, 200);
-      }, 600);
+      // Functional update so we never read a stale value.
+      setActiveIndex((prev) => Math.max(prev, idx));
+      i += 1;
+      const t = setTimeout(advance, 500);
+      timersRef.current.push(t);
     };
-    const t = setTimeout(step, 500);
-    return () => clearTimeout(t);
+
+    const t = setTimeout(advance, 300);
+    timersRef.current.push(t);
+
+    return () => timersRef.current.forEach(clearTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events]);
 

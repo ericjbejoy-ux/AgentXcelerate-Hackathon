@@ -190,7 +190,8 @@ def _describe(c: Dict, idx: int) -> str:
 
 def llm_make_decision(order: Dict, ranked: List[Dict], intention: str,
                       constraints: Dict[str, float], base_weights: Dict[str, float],
-                      prompt: Optional[str], max_candidates: int = 6) -> Optional[Dict]:
+                      prompt: Optional[str], max_candidates: int = 6,
+                      feedback: Optional[str] = None) -> Optional[Dict]:
     """Ask an LLM to pick the final option from the TOPSIS shortlist."""
     import os
     try:
@@ -224,13 +225,18 @@ def llm_make_decision(order: Dict, ranked: List[Dict], intention: str,
         "\"selected\" (the index number you chose) and \"rationale\" (one sentence "
         "explaining the decision in terms of the instructions)."
     )
+    feedback_block = (
+        f"\nThe customer REJECTED the previous top option because: \"{feedback}\". "
+        f"Choose a different option that better addresses this concern.\n"
+    ) if feedback else ""
     user = (
         f"Order: {qty}x {part} for customer {order.get('customer_id')}, "
         f"priority {order.get('priority')}.\n"
         f"Special instructions: \"{special}\"\n"
         f"Hard constraints parsed: {constraint_str}\n"
         f"Base priority weights: {json.dumps(base_weights)} "
-        f"(cost, lead_time, reliability)\n\n"
+        f"(cost, lead_time, reliability)\n"
+        f"{feedback_block}"
         f"Candidate shortlist:\n{lines}\n\n"
         "Return the JSON decision now."
     )
@@ -268,10 +274,13 @@ def llm_make_decision(order: Dict, ranked: List[Dict], intention: str,
 # 3. Public entry point
 # ---------------------------------------------------------------------------
 
-def decide(order: Dict, ranked: List[Dict], base_weights: Dict[str, float]) -> Dict[str, Any]:
+def decide(order: Dict, ranked: List[Dict], base_weights: Dict[str, float],
+           feedback: Optional[str] = None) -> Dict[str, Any]:
     """
     Make the final decision for an order.
     Returns {selected_option, rationale, intention, constraints, final_weights, all_ranked}
+    When `feedback` is provided (a rejection reason), it is folded into the prompt so
+    the deterministic intent parser and the LLM tier both steer away from the prior pick.
     """
     if not ranked:
         return {"selected_option": None, "rationale": "No candidates available to decide from.",
@@ -279,6 +288,8 @@ def decide(order: Dict, ranked: List[Dict], base_weights: Dict[str, float]) -> D
                 "all_ranked": [], "dropped_by_constraint": 0}
 
     prompt = order.get("notes") or ""
+    if feedback:
+        prompt = f"{prompt}. Rejected previous option because: {feedback}"
     qty = order.get("requested_qty", 1)
     parsed = interpret_prompt(prompt, qty)
 
@@ -301,7 +312,8 @@ def decide(order: Dict, ranked: List[Dict], base_weights: Dict[str, float]) -> D
     # Let the LLM make the explicit final call when available; else fall back
     # to the (already prompt-tuned) TOPSIS winner.
     llm = llm_make_decision(order, tuned_ranked, parsed["intention"],
-                            parsed["constraints"], final_weights, prompt)
+                            parsed["constraints"], final_weights, prompt,
+                            feedback=feedback)
     if llm:
         selected = llm["option"]
         rationale = f"[DecisionAgent] {llm['rationale']}"

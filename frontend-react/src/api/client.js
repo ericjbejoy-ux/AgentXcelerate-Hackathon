@@ -106,11 +106,11 @@ export const api = {
   async analytics() {
     return handle(await fetch(`${API_BASE}/api/v1/analytics`));
   },
-  async approve(orderId, action) {
+  async approve(orderId, action, notes = "") {
     const res = await fetch(`${API_BASE}/approve-execution`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ order_id: orderId, action }),
+      body: JSON.stringify({ order_id: orderId, action, notes }),
     });
     return res.json();
   },

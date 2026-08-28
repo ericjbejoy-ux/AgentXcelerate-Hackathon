@@ -277,19 +277,64 @@ class Orchestrator:
                     "message": f"Order {order_id} approved but execution failed: {execution_result.get('error')}",
                 }
         else:
-            order_state["status"] = "REJECTED"
-            order_state["approval_status"] = "REJECTED"
+            # REJECT = "this option is unacceptable" -> drop it and offer the next best.
+            ranked = order_state.get("candidates", [])
+            rejected = order_state.get("selected_option", {})
+            rejected_id = rejected.get("option_id") or rejected.get("source") or rejected.get("strategy_name")
+            remaining = [
+                c for c in ranked
+                if (c.get("option_id") or c.get("source") or c.get("strategy_name")) != rejected_id
+            ]
+
+            order_state["rejected_options"] = order_state.get("rejected_options", [])
+            order_state["rejected_options"].append(rejected)
+
+            if not remaining:
+                order_state["status"] = "REJECTED"
+                order_state["approval_status"] = "REJECTED"
+                event_bus.publish_sync(create_event(
+                    sender_agent="HumanOperator",
+                    event_type="EXECUTION_REJECTED",
+                    data={"notes": notes},
+                    trace_id=trace_id,
+                ))
+                return {
+                    "order_id": order_id,
+                    "status": "REJECTED",
+                    "executed_option": None,
+                    "message": f"Order {order_id} rejected — no alternatives remain.",
+                    "all_candidates": [],
+                }
+
+            # Re-run the DecisionAgent on the surviving candidates (same prompt/weights).
+            base_weights = order_state.get("weights", {})
+            order_copy = dict(order_state["order_data"])
+            decision = decision_agent_decide(order_copy, remaining, base_weights, feedback=notes or None)
+            next_best = decision["selected_option"]
+
+            order_state["selected_option"] = next_best
+            order_state["candidates"] = decision["all_ranked"]
+            order_state["decision"] = decision
+
             event_bus.publish_sync(create_event(
                 sender_agent="HumanOperator",
-                event_type="EXECUTION_REJECTED",
-                data={"notes": notes},
+                event_type="CANDIDATE_REJECTED",
+                data={
+                    "notes": notes,
+                    "rejected": rejected_id,
+                    "next": next_best.get("strategy_name") if next_best else None,
+                },
                 trace_id=trace_id,
             ))
+
             return {
                 "order_id": order_id,
-                "status": "REJECTED",
-                "executed_option": None,
-                "message": f"Order {order_id} rejected.",
+                "status": "PENDING_APPROVAL",
+                "rejected_option": rejected_id,
+                "selected_option": next_best,
+                "all_candidates": decision["all_ranked"],
+                "explanation": (decision['rationale'] if decision['rationale'].startswith('[DecisionAgent]') else f"[DecisionAgent] {decision['rationale']}"),
+                "message": f"Rejected '{rejected_id}'. Offering next best alternative.",
             }
 
     def _execute_order(self, order_state: dict) -> dict:

@@ -8,10 +8,16 @@ export default {
     extend: {
       fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
       colors: {
-        brand: { 50:'#e8edfb', 100:'#d1dbf7', 200:'#a3b7ef', 400:'#5580e0', 500:'#315cda', 600:'#2648b0', 700:'#1d378a' },
-        surface: { DEFAULT:'#ffffff', hover:'#fafaf9', muted:'#f5f5f3' },
-        muted: '#999999',
+        brand: { 50:'#eff6f5', 100:'#d7ece9', 200:'#aed9d4', 400:'#2bb5a3', 500:'#0d9488', 600:'#0b7f75', 700:'#09665e' },
+        surface: { DEFAULT:'#ffffff', hover:'#fafaf8', muted:'#f4f3ef' },
+        muted: '#8a8f98',
+        ink: { DEFAULT:'#12161f', soft:'#3c4250', faint:'#697080' },
       },
+      boxShadow: {
+        card: '0 1px 2px rgba(18,22,31,0.04), 0 8px 24px rgba(18,22,31,0.06)',
+        lift: '0 2px 4px rgba(18,22,31,0.06), 0 16px 40px rgba(18,22,31,0.12)',
+      },
+      borderRadius: { xl: '16px', '2xl': '20px' },
     },
   },
   plugins: [],

@@ -4,8 +4,7 @@ import { api, partCatalog, warehouseCities } from "../api/client";
 import Pipeline from "../components/Pipeline";
 import Results from "../components/Results";
 
-const inputCls =
-  "h-11 px-3.5 rounded-lg border-[1.5px] border-gray-200 bg-white text-sm font-normal outline-none transition-all duration-200 focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/10";
+const inputCls = "input-field";
 
 const fields = [
   { id: "category", validate: (v) => v.trim() !== "", msg: "Select a category." },
@@ -127,10 +126,10 @@ export default function NewOrder() {
     <div id="orderView" className="flex-1 p-7">
       <div className="flex gap-7 items-start justify-center min-h-[calc(100vh-120px)] max-w-6xl mx-auto">
         {/* Form */}
-        <section className="w-full max-w-[520px] bg-white border border-gray-200/80 rounded-2xl p-8 shadow-sm">
-          <div className="mb-7">
-            <h2 className="text-xl font-bold mb-1.5">Fulfillment Request</h2>
-            <p className="text-sm text-gray-500 leading-relaxed">Select a category and part. The AI mesh will find the optimal strategy.</p>
+        <section className="w-full max-w-[560px] bg-white border border-[#e6e4dd] rounded-2xl p-9 shadow-card">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold tracking-tight mb-2 text-[#12161f]">Fulfillment Request</h2>
+            <p className="text-[0.95rem] text-[#697080] leading-relaxed">Select a category and part. The AI mesh will find the optimal strategy.</p>
           </div>
           <form onSubmit={submit} noValidate>
             <input type="hidden" value={customerId} readOnly />
@@ -207,7 +206,7 @@ export default function NewOrder() {
             </div>
             <div className="mt-6">
               <button type="submit" disabled={phase === "processing"}
-                className="w-full h-12 rounded-full bg-brand-500 text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-brand-600 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-brand-500/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                className="w-full h-[52px] rounded-full bg-brand-500 text-white font-semibold text-[0.95rem] flex items-center justify-center gap-2.5 hover:bg-brand-600 hover:-translate-y-0.5 hover:shadow-lift transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                 <span>{phase === "processing" ? "Analyzing..." : "Run AI Analysis"}</span>
                 {phase === "processing" && <span className="w-[18px] h-[18px] border-[2.5px] border-white/30 border-t-white rounded-full animate-spin"></span>}
               </button>
@@ -224,8 +223,24 @@ export default function NewOrder() {
               onComplete={() => { if (result) setPhase("done"); }}
             />
             {result && phase === "done" && (
-              <Results selected={result.selected} candidates={result.candidates}
-                explanation={result.explanation} orderId={orderId} />
+              <Results
+                selected={result.selected}
+                candidates={result.candidates}
+                explanation={result.explanation}
+                orderId={orderId}
+                onReplace={(data) => {
+                  // Reject returned a new alternative: swap the whole result.
+                  if (!data || !data.selected_option) {
+                    setResult({ selected: null, candidates: [], explanation: "No feasible alternative remains." });
+                    return;
+                  }
+                  setResult({
+                    selected: data.selected_option,
+                    candidates: data.all_candidates || [],
+                    explanation: data.explanation || "",
+                  });
+                }}
+              />
             )}
           </div>
         )}
